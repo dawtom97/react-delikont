@@ -56,7 +56,75 @@ export const mainMenu = [
     },
     {
         name:"kawy i herbaty",
-        url:"/kategorie/chemia-i-kosmetyki"
+        url:"/kategorie/chemia-i-kosmetyki",
+        subcategories: [
+            {
+                name:"dodatki do kawy",
+                url:"aaa"
+            },
+            {
+                name:'herbaty',
+                url:"aa",
+                categories: [
+                    {
+                        name:"czarne",
+                        url:"/kategorie/dzieciece/kaszki"
+                    },
+                    {
+                        name:"inne",
+                        url:"/kategorie/dzieciece/napoje"
+                    },
+                    {
+                        name:"owocowe",
+                        url:"/kategorie/dzieciece/desery"
+                    },
+                    {
+                        name:"ziołowe",
+                        url:"/kategorie/dzieciece/obiadki"
+                    }
+                ]
+            },
+            {
+                name:"inne",
+                url:"aa",
+                categories:[
+                    {
+                        name:"czekolady",
+                        url:"/kategorie/dzieciece/kaszki"
+                    },
+                    {
+                        name:"kakao",
+                        url:"/kategorie/dzieciece/kaszki"
+                    }
+                ]
+            },
+            {
+                name:'kawy',
+                url:"aa",
+                categories: [
+                    {
+                        name:"cappuccino",
+                        url:"/kategorie/dzieciece/kaszki"
+                    },
+                    {
+                        name:"mielone",
+                        url:"/kategorie/dzieciece/napoje"
+                    },
+                    {
+                        name:"rozpuszczalne",
+                        url:"/kategorie/dzieciece/desery"
+                    },
+                    {
+                        name:"zbożowe",
+                        url:"/kategorie/dzieciece/obiadki"
+                    },
+                    {
+                        name:"ziarniste",
+                        url:"/kategorie/dzieciece/obiadki"
+                    }
+                ]
+            },
+        ]
     },
     {
         name:"piwo",
