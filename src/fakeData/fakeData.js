@@ -2,7 +2,25 @@
 export const mainMenu = [
     {
         name:"chemia i kosmetyki",
-        url:"/kategorie/chemia-i-kosmetyki"
+        url:"/kategorie/chemia-i-kosmetyki",
+        subcategories: [
+            {
+                name:'Papiery toaletowe',
+                url:"aa"
+            },
+            {
+                name:'pielęgnacja ciała',
+                url:"aa"
+            },
+            {
+                name:'środki czyszczące',
+                url:"aa"
+            },
+            {
+                name:"środki piorące",
+                url:"aa"
+            }
+        ]
     },
     {
         name:"dla zwierząt",
@@ -10,7 +28,31 @@ export const mainMenu = [
     },
     {
         name:"dziecięce",
-        url:"/kategorie/chemia-i-kosmetyki"
+        url:"/kategorie/dzieciece",
+        subcategories: [
+            {
+                name:'spożywcze',
+                url:"aa",
+                categories: [
+                    {
+                        name:"kaszki",
+                        url:"/kategorie/dzieciece/kaszki"
+                    },
+                    {
+                        name:"napoje",
+                        url:"/kategorie/dzieciece/napoje"
+                    },
+                    {
+                        name:"desery",
+                        url:"/kategorie/dzieciece/desery"
+                    },
+                    {
+                        name:"obiadki",
+                        url:"/kategorie/dzieciece/obiadki"
+                    }
+                ]
+            }
+        ]
     },
     {
         name:"kawy i herbaty",

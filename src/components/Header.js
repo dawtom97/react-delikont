@@ -14,7 +14,7 @@ export const Wrapper = styled.header``;
 export const InnerWrapper = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 30px 0px;
+  padding: 30px 10px;
   display: flex;
   align-items: center;
 `;
@@ -78,19 +78,39 @@ export const Nav = styled.nav`
     display: flex;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 10px 0px;
-    gap:30px;
+    padding: 0px 10px;
+    gap: 30px;
     & > li {
       text-transform: uppercase;
       width: auto;
       font-weight: 400;
       text-align: left;
       color: #fff;
+      height: 100%;
+      padding: 10px 0px;
       font-size: 15px;
       cursor: pointer;
+     
+
+      &:hover ul {
+        opacity: 1;
+        display: block;
+      }
     }
   }
 `;
+
+export const SubMenu = styled.ul`
+  list-style: none;
+  opacity:0;
+  display: none;
+  position: absolute;
+  transition: 0.4s;
+  color: black;
+  background-color: #fff;
+  width: 100%;
+  left: 0;
+`
 
 export const Header = () => {
   const { isLogged, currentUser } = useContext(UserContext);
@@ -139,7 +159,32 @@ export const Header = () => {
         <ul>
           {mainMenu.map((category) => (
             <Link key={category.name} href={category.url}>
-              <li>{category.name}</li>
+              <li>
+                {category.name}
+                {category?.subcategories?.length > 0 && (
+                  <SubMenu>
+                   
+                    {category.subcategories.map((subcat, index) => (
+                      <li key={index}>
+                        <Link href={subcat.url}>
+                        <span>{subcat.name}</span>
+                        </Link>
+                     
+                        {subcat?.categories?.map((item,index)=>(
+                            <ul key={index}>
+                                <li>
+                                    <Link href={item.url}>
+                                        <span>{item.name}</span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        ))}
+                      </li>
+                    ))}
+                  
+                  </SubMenu>
+                )}
+              </li>
             </Link>
           ))}
         </ul>
