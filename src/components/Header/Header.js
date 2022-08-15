@@ -17,7 +17,7 @@ import { AiOutlineMail } from "react-icons/ai";
 export const Header = () => {
   const { isLogged, currentUser } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
-  console.log(isLogged, currentUser);
+ // console.log(isLogged, currentUser);
 
   const handleAccountClick = () => setAuthPanelVisible(prev=>!prev);
 
