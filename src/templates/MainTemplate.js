@@ -6,14 +6,13 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
+import { magentoCategories } from "../graphql/magentoCategories";
 
 export const InnerWrapper = styled.main`
   margin-top: 160px;
   max-width: 1400px;
   margin: 160px auto 0;
 `;
-
-const API_URL = "http://185.200.44.108/graphql";
 
 export const MainTemplate = ({ children }) => {
   const [crumbs, setCrumbs] = useState();
@@ -38,35 +37,10 @@ export const MainTemplate = ({ children }) => {
   }, [router]);
 
   useEffect(() => {
-    setCategories(getAllCategories());
+    setCategories(magentoCategories());
     console.log(categories);
   }, []);
 
-  const getAllCategories = () => {
-    axios({
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://185.200.44.108/graphql",
-      },
-      url: API_URL,
-      method: "post",
-      data: {
-        query: `{
-          categoryList(filters:{}) {
-              name
-              children_count
-              children {
-                  id 
-                  level
-              }
-          }
-      }`,
-      },
-    })
-    .then((res)=>console.log(res))
-    .catch(err => console.log(err))
-    ;
-  };
 
   console.log(crumbs);
 
