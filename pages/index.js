@@ -1,34 +1,25 @@
-import { useEffect, useState } from 'react'
-import Products from '../src/components/Products/Products'
-import { magentoProducts } from '../src/graphql/magentoProducts'
-import { MainTemplate } from '../src/templates/MainTemplate'
+import { useEffect, useState } from "react";
+import { Filters } from "../src/components/Filters";
+import { Heading } from "../src/components/Heading";
+import Products from "../src/components/Products/Products";
+import { magentoProducts } from "../src/graphql/magentoProducts";
+import { MainTemplate } from "../src/templates/MainTemplate";
 
+export default function Home() {
+  const [allProducts, setAllProducts] = useState();
+  const [producents, setProducents] = useState();
 
-// export const getStaticProps = () => {
-//   const res = magentoProducts();
-//   console.log(res)
+  useEffect(() => {
+    magentoProducts().then((res) => setAllProducts(res.products.items));
+  }, []);
 
-//   return {
-//     props: {
-//       products: res
-//     }
-//   }
-// }
-
-
-export default function Home({products}) {
-  const [prod,setProducts] = useState()
-
-  useEffect(()=>{
-      
-      setProducts(magentoProducts());
-      console.log(prod);
-  },[])
-
+  console.log(allProducts);
 
   return (
     <MainTemplate>
-         <Products/>
+      <Heading level='h1'>Strona główna</Heading>
+      <Filters/>
+      {!allProducts ? "Loading..." : <Products products={allProducts} />}
     </MainTemplate>
-  )
+  );
 }

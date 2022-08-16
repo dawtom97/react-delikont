@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "./config";
+import { API_URL,headers } from "./config";
 
 export const magentoCategories = async () => {
 
@@ -17,9 +17,7 @@ export const magentoCategories = async () => {
     }`,
     variables: {}
   };
-  const headers = {
-    "content-type": "application/json",
-  }
+
   const options = {
     method: "POST",
     headers,

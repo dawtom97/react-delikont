@@ -12,6 +12,10 @@ export const InnerWrapper = styled.main`
   margin-top: 160px;
   max-width: 1400px;
   margin: 160px auto 0;
+
+  & > a {
+    font-size: 12px;
+  }
 `;
 
 export const MainTemplate = ({ children }) => {
@@ -19,28 +23,28 @@ export const MainTemplate = ({ children }) => {
   const [categories, setCategories] = useState();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const paths = router.asPath
-  //     ?.split("/")
-  //     .filter((item) => item !== "" && item !== "kategorie");
+  useEffect(() => {
+    const paths = router.asPath
+      ?.split("/")
+      .filter((item) => item !== "" && item !== "kategorie");
 
-  //   const breadcrumbs = paths.map((path, index) => {
-  //     const href = "/" + paths.slice(0, index + 1).join("/");
-  //     return {
-  //       href,
-  //       label:
-  //         path.charAt(0).toUpperCase() + path.slice(1).replaceAll("-", " "),
-  //     };
-  //   });
+    const breadcrumbs = paths.map((path, index) => {
+      const href = "/" + paths.slice(0, index + 1).join("/");
+      return {
+        href,
+        label:
+          path.charAt(0).toUpperCase() + path.slice(1).replaceAll("-", " "),
+      };
+    });
 
-  //   setCrumbs([{ href: "/", label: "Strona główna" }, ...breadcrumbs]);
-  // }, [router]);
+    setCrumbs([{ href: "/", label: "Strona główna" }, ...breadcrumbs]);
+  }, [router]);
 
   useEffect(() => {
     magentoCategories().then(res=>setCategories(res));
   }, []);
 
-  console.log(categories);
+ // console.log(categories);
 
 
  // console.log(crumbs);
@@ -49,11 +53,11 @@ export const MainTemplate = ({ children }) => {
     <div>
       <Header/>
       <InnerWrapper>
-        {/* {crumbs?.map((crumb, index) => (
+        {crumbs?.map((crumb, index) => (
           <Link key={index} href={crumb?.href}>
             {index !== crumbs.length - 1 ? crumb?.label + " > " : crumb?.label}
           </Link>
-        ))} */}
+        ))}
         {children}
       </InnerWrapper>
       <Footer />
