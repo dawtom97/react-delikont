@@ -5,7 +5,11 @@ export const GlobalStyles = createGlobalStyle`
 body {
   padding: 0;
   margin: 0;
-  font-family: Roboto, sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+button,input, input::placeholder, textarea, textarea::placeholder {
+  font-family: 'Roboto', sans-serif;
 }
 
 a {
