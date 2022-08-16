@@ -4,7 +4,7 @@ export const Wrapper = styled.header`
 top:0;
 position: fixed;
 width: 100%;
-
+z-index: 100;
 `;
 
 export const InnerWrapper = styled.div`
@@ -99,7 +99,7 @@ export const Nav = styled.nav`
 
 export const SubMenu = styled.div`
   padding: 0px 10px;
-
+  z-index: 10;
   position: absolute;
   transition: 0.4s;
   min-height: 300px;
