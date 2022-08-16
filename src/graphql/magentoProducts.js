@@ -3,13 +3,14 @@ import { API_URL } from "./config";
 
 export const magentoProducts = (props) => {
 
-  axios({
+  const res = axios({
     url: API_URL,
     method: "post",
+    withCredentials:false,
     data: {
       // if search key will have a name, query will search for a specific product
       query: `{
-                products(search: "" | ${props?.name}) {
+                products(search: "coca-cola") {
                   items {
                     id
                     name
@@ -185,5 +186,13 @@ export const magentoProducts = (props) => {
                 }
               }`,
     },
-  });
+  })
+  console.log(res.data)
+
+  const data = res.data;
+  console.log(data)
+
+
+  return res;
+  ;
 };
