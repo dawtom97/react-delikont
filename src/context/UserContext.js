@@ -30,10 +30,7 @@ export const UserContextProvider = ({ children }) => {
   const userLogin = async (data) => {
     try {
       const getToken = await magentoUserToken(data.email, data.password);
-      localStorage.setItem(
-        "Bearer",
-        await getToken.generateCustomerToken.token
-      );
+      localStorage.setItem("Bearer", getToken.generateCustomerToken.token);
       await magentoLogin().then((res) => setCurrentUser(res?.customer));
       setIsLogged(true);
       location.push("/moje-konto");
