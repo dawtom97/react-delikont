@@ -177,7 +177,7 @@ export const ProductCard =forwardRef (({ product },ref) => {
           <p>sztuk:</p>
           <Controls>
             <button>-</button>
-            <input type="number" name="qty" value="5" />
+            <input type="number" name="qty"  />
             <button>+</button>
           </Controls>
         </div>
@@ -185,7 +185,7 @@ export const ProductCard =forwardRef (({ product },ref) => {
           <p>kartonów:</p>
           <Controls>
             <button>-</button>
-            <input type="number" name="qty" value="1" />
+            <input type="number" name="qty"  />
             <button>+</button>
           </Controls>
         </div>

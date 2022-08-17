@@ -1,6 +1,6 @@
 import logo from "../../../public/logo.png";
 import Image from "next/dist/client/image";
-import * as Styled from './Header.styles';
+import * as Styled from "./Header.styles";
 import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
 import { useContext, useState } from "react";
@@ -12,14 +12,39 @@ import { BiGitCompare, BiCalendar } from "react-icons/bi";
 import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 
-
-
-export const Header = ({categories}) => {
-  const { isLogged, currentUser } = useContext(UserContext);
+export const Header = ({ categories }) => {
+  const { isLogged, userLogin } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
+  const [userForm, setUserForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState([]);
 
+ // console.log(isLogged)
 
-  const handleAccountClick = () => setAuthPanelVisible(prev=>!prev);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!userForm.email) {
+      setErrors(prev => [...prev,"To pole jest wymagane"]);
+      return;
+    }
+    if (!userForm.password) {
+      setErrors(prev => [...prev,"To pole jest wymagane"]);
+      return;
+    }
+    userLogin(userForm);
+
+  };
+
+  const handleChange = (e) => {
+    setUserForm({
+      ...userForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleAccountClick = () => setAuthPanelVisible((prev) => !prev);
 
   return (
     <Styled.Wrapper>
@@ -41,7 +66,7 @@ export const Header = ({categories}) => {
 
         <Styled.IconsBar>
           {isLogged ? (
-            <Link href="/account">
+            <Link href="/moje-konto">
               <a>
                 <FaRegUserCircle />
               </a>
@@ -49,63 +74,70 @@ export const Header = ({categories}) => {
           ) : (
             <>
               <button onClick={handleAccountClick}>
-                <FaRegUserCircle/>
+                <FaRegUserCircle />
               </button>
               {authPanelVisible ? (
-              <Styled.AuthPanel>
-                <form>
-                  <input type="text" placeholder="Email" name="email" />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                  />
-                  <button aria-label="Zaloguj się" type="submit">
-                    Zaloguj się
+                <Styled.AuthPanel>
+                  <form onSubmit={handleLogin}>
+                    <input
+                      onChange={handleChange}
+                      value={userForm.email}
+                      type="text"
+                      placeholder="Email"
+                      name="email"
+                    />
+                    <input
+                      onChange={handleChange}
+                      value={userForm.password}
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                    />
+                    <button aria-label="Zaloguj się" type="submit">
+                      Zaloguj się
+                    </button>
+                  </form>
+                  <button aria-label="Przypomnij hasło">
+                    Nie pamiętasz hasła?
                   </button>
-                </form>
-                <button aria-label="Przypomnij hasło">
-                  Nie pamiętasz hasła?
-                </button>
-                <div>
-                  <p>
-                    NIE MASZ KONTA?{" "}
-                    <Link href="/register">ZAREJESTRUJ SIĘ</Link>
-                  </p>
-                </div>
-                <ul>
-                  <li>
-                    <Link href="/">
-                      <a>
-                        <BiGitCompare /> PORÓWNAJ
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/">
-                      <a>
-                        <BsSuitHeart /> MOJA LISTA ŻYCZEŃ
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/">
-                      <a>
-                        <BiCalendar /> MOJE ZAMÓWIENIA
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/">
-                      <a>
-                        <AiOutlineMail /> SKONTAKTUJ SIĘ Z NAMI
-                      </a>
-                    </Link>
-                  </li>
-                </ul>
-              </Styled.AuthPanel>
-              ) : null
-}
+                  <div>
+                    <p>
+                      NIE MASZ KONTA?{" "}
+                      <Link href="/register">ZAREJESTRUJ SIĘ</Link>
+                    </p>
+                  </div>
+                  <ul>
+                    <li>
+                      <Link href="/">
+                        <a>
+                          <BiGitCompare /> PORÓWNAJ
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/">
+                        <a>
+                          <BsSuitHeart /> MOJA LISTA ŻYCZEŃ
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/">
+                        <a>
+                          <BiCalendar /> MOJE ZAMÓWIENIA
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/">
+                        <a>
+                          <AiOutlineMail /> SKONTAKTUJ SIĘ Z NAMI
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
+                </Styled.AuthPanel>
+              ) : null}
             </>
           )}
 

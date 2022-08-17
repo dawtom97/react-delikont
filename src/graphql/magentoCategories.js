@@ -1,4 +1,3 @@
-import axios from "axios";
 import { API_URL,headers } from "./config";
 
 export const magentoCategories = async () => {
