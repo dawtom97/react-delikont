@@ -4,6 +4,7 @@ export const Wrapper = styled.header`
 top:0;
 position: fixed;
 width: 100%;
+background-color: #fff;
 z-index: 100;
 `;
 

@@ -1,12 +1,15 @@
 import axios from "axios";
-import { API_URL,headers } from "./config";
+import { API_URL, headers, PRODUCTS_PER_PAGE } from "./config";
 
-export const magentoProducts = async () => {
-
+export const magentoProducts = async (page) => {
   const query = {
     operationName: "fetchProducts",
-    query: `query fetchProducts {
-        products(search: "") {
+    query: `query fetchProducts( $page:Int = ${page}) {
+        products(search: "",pageSize:${PRODUCTS_PER_PAGE},currentPage:$page) {
+            page_info{
+               total_pages
+               current_page
+            }
             items {
               id
               name
@@ -171,16 +174,16 @@ export const magentoProducts = async () => {
             }
           }
     }`,
-    variables:{}
-  }
+    variables: {},
+  };
 
   const options = {
     method: "post",
     headers,
-    body: JSON.stringify(query)
+    body: JSON.stringify(query),
   };
 
-  const response = await(await fetch(API_URL,options)).json();
-  return response.data
-
+  const response = await (await fetch(API_URL, options)).json();
+  console.log(response.data)
+  return response.data;
 };
