@@ -11,30 +11,41 @@ import { mainMenu } from "../../fakeData/fakeData";
 import { BiGitCompare, BiCalendar } from "react-icons/bi";
 import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
+import { ModalContext } from "../../context/ModalContext";
+import { ErrorMsg } from "../ErrorMsg";
 
 export const Header = ({ categories }) => {
+  const { showModal } = useContext(ModalContext);
   const { isLogged, userLogin } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
-  const [userForm, setUserForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
-
- // console.log(isLogged)
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (!userForm.email) {
-      setErrors(prev => [...prev,"To pole jest wymagane"]);
-      return;
+    const validationPass = validation(userForm);
+    if(validationPass.status) {
+      setErrors({})
+      userLogin(userForm);
+      showModal("Wiadomość logowania Header.js");
     }
-    if (!userForm.password) {
-      setErrors(prev => [...prev,"To pole jest wymagane"]);
-      return;
-    }
-    userLogin(userForm);
+    setErrors(validationPass.errors);
+  };
 
+  const validation = (data) => {
+    const errors = {};
+    if (data.email == "") errors.email = "To pole jest wymagane";
+    if (data.password == "") errors.password = "To pole jest wymagane"
+
+    if (!errors.email && !errors.password)
+      return {
+        status: true,
+        errors: null,
+      };
+    return {
+      status: false,
+      errors,
+    };
   };
 
   const handleChange = (e) => {
@@ -86,6 +97,7 @@ export const Header = ({ categories }) => {
                       placeholder="Email"
                       name="email"
                     />
+                     {errors && <ErrorMsg>{errors.email}</ErrorMsg>}
                     <input
                       onChange={handleChange}
                       value={userForm.password}
@@ -93,6 +105,7 @@ export const Header = ({ categories }) => {
                       placeholder="Password"
                       name="password"
                     />
+                      {errors && <ErrorMsg>{errors.password}</ErrorMsg>}
                     <button aria-label="Zaloguj się" type="submit">
                       Zaloguj się
                     </button>

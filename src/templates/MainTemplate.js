@@ -10,6 +10,7 @@ export const InnerWrapper = styled.main`
   margin-top: 160px;
   max-width: 1400px;
   margin: 160px auto 0;
+  padding: 0 20px;
 
   & > a {
     font-size: 12px;
@@ -20,6 +21,8 @@ export const MainTemplate = ({ children }) => {
   const [crumbs, setCrumbs] = useState();
   const [categories, setCategories] = useState();
   const router = useRouter();
+
+  const isValidPage = router.pathname !== "/rejestracja"
 
   useEffect(() => {
     const paths = router.asPath
@@ -51,11 +54,11 @@ export const MainTemplate = ({ children }) => {
     <div>
       <Header/>
       <InnerWrapper>
-        {crumbs?.map((crumb, index) => (
+        {isValidPage ? crumbs?.map((crumb, index) => (
           <Link key={index} href={crumb?.href}>
             {index !== crumbs.length - 1 ? crumb?.label + " > " : crumb?.label}
           </Link>
-        ))}
+        )) : null}
         {children}
       </InnerWrapper>
       <Footer />

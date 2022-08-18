@@ -1,10 +1,59 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
+import { ModalContext } from "../../context/ModalContext";
 import { UserContext } from "../../context/UserContext";
 import { magentoRegister } from "../../graphql/magentoRegister";
+import { Button } from "../Button";
+import { ErrorMsg } from "../ErrorMsg";
+import { Heading } from "../Heading";
+import { Input } from "../Input";
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  text-align: center;
+  margin-top:190px;
+
+  & a {
+    text-decoration: underline;
+  }
+
+  & input {
+    margin: 12px 0;
+  }
+`;
+
+export const AuthWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ebebeb;
+  min-width: 600px;
+  width: 50%;
+
+  & legend {
+    border-bottom: 1px solid #282828;
+    text-transform: uppercase;
+    padding-bottom:15px;
+    margin: 10px 0;
+    font-weight: 600;
+    width: 100%;
+  }
+  & input {
+    display: block;
+    width:100%;
+  }
+
+  & button {
+    margin:7px 0;
+  }
+  & a {
+    text-decoration: none;
+  }
+
+`;
 
 const initialState = {
   firstname: "",
@@ -15,11 +64,10 @@ const initialState = {
 };
 
 export const AuthForm = () => {
-  const {userLogin} = useContext(UserContext)
+  const { userLogin } = useContext(UserContext);
+  const {showModal} = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
-  const [errors, setErrors] = useState();
-  const [status, setStatus] = useState();
-  
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setNewAccount({
@@ -32,11 +80,11 @@ export const AuthForm = () => {
     e.preventDefault();
     const validationPass = validation(newAccount);
     if (validationPass.status) {
-       magentoRegister(newAccount).then((res) => {
-        setStatus(res);
-        userLogin({email:newAccount.email, password: newAccount.password});
-        status.errors ? console.log("KONTO JUZ ISTNEIEJ") : null
-       });
+      magentoRegister(newAccount).then((res) => {
+        setErrors({})
+        userLogin({ email: newAccount.email, password: newAccount.password });
+        res.status.message ? showModal("Istnieje już konto o podanym adresie email",true) : showModal("Założono nowe konto");
+      });
     } else {
       setErrors(validationPass.errors);
     }
@@ -76,51 +124,62 @@ export const AuthForm = () => {
 
   return (
     <Wrapper>
-      {errors && errors.email}
-      <form onSubmit={handleSubmit}>
-        <input
+      <Heading>UTWÓRZ NOWE KONTO KLIENTA</Heading>
+      <p>
+        Jeśli masz już konto <Link href="/">zaloguj się</Link>
+      </p>
+      <AuthWrapper onSubmit={handleSubmit}>
+        <legend>
+            <span>DANE DO LOGOWANIA</span>
+        </legend>
+        <Input
           value={newAccount.firstname}
           onChange={handleChange}
           type="text"
           placeholder="Imię"
           name="firstname"
         />
-        {errors && <p>{errors.firstname}</p>}
-        <input
+        {errors && <ErrorMsg>{errors.firstname}</ErrorMsg>}
+        <Input
           value={newAccount.lastname}
           onChange={handleChange}
           type="text"
           placeholder="Nazwisko"
           name="lastname"
         />
-        {errors && <p>{errors.lastname}</p>}
-        <input
+        {errors && <ErrorMsg>{errors.lastname}</ErrorMsg>}
+        <Input
           value={newAccount.email}
           onChange={handleChange}
           type="text"
           placeholder="E-mail"
           name="email"
         />
-        {errors && <p>{errors.email}</p>}
-        <input
+        {errors && <ErrorMsg>{errors.email}</ErrorMsg>}
+        <Input
           value={newAccount.password}
           onChange={handleChange}
           type="password"
           placeholder="Hasło"
           name="password"
         />
-        {errors && <p>{errors.password}</p>}
-        <input
+        {errors && <ErrorMsg>{errors.password}</ErrorMsg>}
+        <Input
           value={newAccount.repassword}
           onChange={handleChange}
           type="password"
           placeholder="Powtórz hasło"
           name="repassword"
         />
-        {errors && <p>{errors.passwordCheck}</p>}
+        {errors && <ErrorMsg>{errors.passwordCheck}</ErrorMsg>}
 
-        <button type="submit">Utwórz konto klienta</button>
-      </form>
+        <legend>
+            <span>DANE FIRMY</span>
+        </legend>
+
+        <Button isSecondary type="submit">UTWÓRZ KONTO KLIENTA</Button>
+        <Button><Link href="/"><a>POWRÓT</a></Link></Button>
+      </AuthWrapper>
     </Wrapper>
   );
 };

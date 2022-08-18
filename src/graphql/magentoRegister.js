@@ -32,8 +32,12 @@ export const magentoRegister = async (props) => {
 
   try {
     const response = await(await fetch(API_URL,options)).json();
-    console.log(response)
-    return response;
+  
+
+    return {
+      response,
+      status: response.errors ? response.errors[0] : 'success'
+    };
   } catch (error) {
     console.log(error)
   }
