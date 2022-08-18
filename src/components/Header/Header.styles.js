@@ -90,6 +90,10 @@ export const Nav = styled.nav`
       font-size: 15px;
       cursor: pointer;
 
+      @media screen and (max-width:1400px) {
+        font-size: 13px;
+      }
+
       &:hover div {
         opacity: 1;
         visibility: visible;
@@ -152,6 +156,7 @@ export const AuthPanel = styled.div`
   padding: 20px;
   position: absolute;
   background-color: #fff;
+  right: 1%;
   top: 100%;
   min-width: 300px;
   box-shadow: 8px 8px 10px -11px rgba(66, 68, 90, 1);

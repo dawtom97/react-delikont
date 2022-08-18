@@ -23,8 +23,10 @@ export const magentoLogin = async () => {
     }
     try {
         const response = await(await fetch(API_URL,options)).json();
-        console.log(response.data)
-        return response.data;
+        return {
+            response,
+            status: response.errors ? response.errors[0] : 'success'
+          };
     } catch (error) {
         console.log(error)
     }
