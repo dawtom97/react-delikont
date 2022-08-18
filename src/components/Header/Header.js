@@ -11,11 +11,9 @@ import { mainMenu } from "../../fakeData/fakeData";
 import { BiGitCompare, BiCalendar } from "react-icons/bi";
 import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
-import { ModalContext } from "../../context/ModalContext";
 import { ErrorMsg } from "../ErrorMsg";
 
 export const Header = ({ categories }) => {
-  const { showModal } = useContext(ModalContext);
   const { isLogged, userLogin } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
@@ -27,7 +25,6 @@ export const Header = ({ categories }) => {
     if(validationPass.status) {
       setErrors({})
       userLogin(userForm);
-      showModal("Wiadomość logowania Header.js");
     }
     setErrors(validationPass.errors);
   };

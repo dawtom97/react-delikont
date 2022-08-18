@@ -14,7 +14,9 @@ export const ModalContextProvider = ({children}) => {
     const hideModal = () => {
         setTimeout(()=>{
              setIsModalVisible(false)
-        },2000)
+             setModalMsg("")
+        },2000);
+      
     }
 
     const showModal = (msg, errorValue) => {

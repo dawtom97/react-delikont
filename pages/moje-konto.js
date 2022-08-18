@@ -5,8 +5,7 @@ import {MainTemplate} from '../src/templates/MainTemplate'
 
 const AccountPage = () => {
   const {currentUser,userLogout} = useContext(UserContext);
-  const {showModal} = useContext(ModalContext)
-
+  const {showModal} = useContext(ModalContext);
 
   const handleLogout = () => {
     showModal("Pomyślnie wylogowano");
