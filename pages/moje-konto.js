@@ -6,7 +6,7 @@ const AccountPage = () => {
   const {currentUser,userLogout} = useContext(UserContext);
 
   
- // console.log(currentUser,"USER");
+ console.log(currentUser,"USER");
 
   return (
     <MainTemplate>

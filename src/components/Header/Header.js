@@ -103,7 +103,7 @@ export const Header = ({ categories }) => {
                   <div>
                     <p>
                       NIE MASZ KONTA?{" "}
-                      <Link href="/register">ZAREJESTRUJ SIĘ</Link>
+                      <Link href="/rejestracja">ZAREJESTRUJ SIĘ</Link>
                     </p>
                   </div>
                   <ul>

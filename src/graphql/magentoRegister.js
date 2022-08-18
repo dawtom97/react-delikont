@@ -1,28 +1,41 @@
-import axios from "axios";
+import { API_URL,headers } from "./config";
 
-export const magentoRegister = (props) => {
-  axios({
-    url: API_URL,
-    method: "post",
-    data: {
-      mutation: `{
-            createCustomer(
-              input: {
-                firstname: ${props.name}
-                lastname: ${props.lastname}
-                email: ${props.email}
-                password: ${props.password}
-                is_subscribed: ${props.is_subscribed}
-              }
-            ) {
-              customer {
-                firstname
-                lastname
-                email
-                is_subscribed
-              }
-            }
-          }`,
-    },
-  });
+export const magentoRegister = async (props) => {
+
+  console.log(props)
+
+  const query = {
+    operationName:"registerUser",
+    query: ` mutation {
+      createCustomer(
+        input: {
+          firstname: "${props.firstname}"
+          lastname: "${props.lastname}"
+          email: "${props.email}"
+          password: "${props.password}"
+        }
+      ) {
+        customer {
+          firstname
+          lastname
+          email
+        }
+      }
+    }` ,
+    variables:{}
+  }
+  const options = {
+    method:"POST",
+    headers,
+    body:JSON.stringify(query)
+  }
+
+  try {
+    const response = await(await fetch(API_URL,options)).json();
+    console.log(response)
+    return response;
+  } catch (error) {
+    console.log(error)
+  }
+
 };
