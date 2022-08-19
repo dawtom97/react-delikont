@@ -27,7 +27,7 @@ export const MainTemplate = ({ children }) => {
   useEffect(() => {
     const paths = router.asPath
       ?.split("/")
-      .filter((item) => item !== "" && item !== "kategorie");
+      .filter((item) => item !== "" && item !== "kategorie" && item !== "produkt");
 
     const breadcrumbs = paths.map((path, index) => {
       const href = "/" + paths.slice(0, index + 1).join("/");

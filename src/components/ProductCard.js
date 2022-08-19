@@ -138,9 +138,14 @@ export const ProductCard =forwardRef (({ product },ref) => {
     product?.price_range?.minimum_price?.final_price.value
   ).split(".");
 
+  console.log(product);
+
+  const productDetailsUrl = `/produkt/${product.categories.map(product => [product.url_key]).join("/")}/${product.url_key}`
+  console.log(productDetailsUrl)
+
   return (
     <Card ref={ref}>
-      <Link href={`/${product.link}`}>
+      <Link href={productDetailsUrl}>
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

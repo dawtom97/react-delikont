@@ -11,7 +11,6 @@ export const magentoLogin = async () => {
                 email
             }
         }`,
-        variables:{}
     }
     const options = {
         method:"POST",

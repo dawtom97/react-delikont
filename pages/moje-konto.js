@@ -9,7 +9,7 @@ const AccountPage = () => {
 
   const handleLogout = () => {
     showModal("Pomyślnie wylogowano");
-    userLogout()
+    userLogout();
   }
 
   return (
