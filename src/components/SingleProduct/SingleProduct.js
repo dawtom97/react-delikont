@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Heading } from "../Heading";
 import { ProductPrice } from "../ProductPrice";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiFillHeart } from "react-icons/ai";
+import { magentoAddToWishlist } from "../../graphql/magentoAddToWishlist";
+import { ModalContext } from "../../context/ModalContext";
+import { UserContext } from "../../context/UserContext";
+import Link from "next/link";
+import { magentoRemoveFromWishlist } from "../../graphql/magentoRemoveFromWishlist";
 
 export const Wrapper = styled.div`
   margin-top: 50px;
 `;
 export const UpperInfo = styled.div`
   display: flex;
-  gap:30px;
+  gap: 30px;
 `;
 
 export const BottomInfo = styled.div`
@@ -23,23 +28,25 @@ export const ImageBox = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-
-  & > button {
-    position: absolute;
-    right:30px;
-    top:0;
-    cursor: pointer;
-    width:40px;
-    border-radius:50%;
-    border: 1px solid ${({theme})=>theme.colorPrimary};
-    color:${({theme})=>theme.colorPrimary};
-    background-color: transparent;
-    font-size: 20px;
-    text-align: center;
-    line-height: 44px;
-    height: 40px;
-  }
 `;
+
+export const HeartButton = styled.button`
+  position: absolute;
+  right: 30px;
+  top: 0;
+  cursor: pointer;
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid ${({ theme }) => theme.colorPrimary};
+  color: ${({ isFavorite }) => (isFavorite ? "#fff" : "#f57c00")};
+  font-size: 20px;
+  text-align: center;
+  line-height: 44px;
+  height: 40px;
+  background-color: ${({ isFavorite }) =>
+    isFavorite ? "#f57c00" : "transparent"};
+`;
+
 export const TextBox = styled.div`
   flex: 1;
   text-align: center;
@@ -84,7 +91,7 @@ export const SwitchSpan = styled.span`
     border-bottom: 3px solid #f57c00;
   }
 `;
-export const StockStatusMsg = styled.p`
+export const StatusMsg = styled.p`
   display: flex;
   align-items: center;
   font-size: 13px;
@@ -94,11 +101,28 @@ export const StockStatusMsg = styled.p`
     color: ${({ isOutOfStock }) => (isOutOfStock ? "#ff1515" : "#f57c00")};
   }
 
+  & a {
+    text-decoration: underline;
+  }
 `;
 
 export const SingleProduct = ({ product }) => {
   const [isActive, setIsActive] = useState(1);
   const [activeContent, setActiveContent] = useState(0);
+  const { showModal } = useContext(ModalContext);
+  const { currentUser } = useContext(UserContext);
+  const [isFavorite, setIsFavorite] = useState(null);
+
+
+
+  useEffect(() => {
+    const checkFavoriteStatus = currentUser && currentUser?.wishlist?.items.find(
+      (item) => item.product.id === product.id
+    );
+    setIsFavorite(checkFavoriteStatus);
+  }, [currentUser, product.id]);
+
+
 
   const infoChunks = [
     {
@@ -127,15 +151,40 @@ export const SingleProduct = ({ product }) => {
     setActiveContent(index);
   };
 
+  const handleAddToWishlist = (productId,wishlistId = 0,productSku = 0) => {
+
+    if(!currentUser.firstname) {
+      showModal("Zaloguj się, aby dodać do ulubionych");
+      return;
+    }
+
+    if(!isFavorite) {
+      magentoAddToWishlist(productSku);
+      showModal("Dodano do ulubionych");
+      // trzeba rozwiązać problem braku odswiezania 
+      setIsFavorite({});
+      console.log(isFavorite);
+    }
+    else {
+      magentoRemoveFromWishlist(productId, wishlistId);
+      showModal("Usunięto z ulubionych");
+      setIsFavorite(null);
+    }
+  
+  };
+
   return (
     <Wrapper>
       <UpperInfo>
         <ImageBox>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={product.image.url} alt={product.name} />
-          <button>
-            <AiFillHeart/>
-          </button>
+          <HeartButton
+            onClick={() => handleAddToWishlist(isFavorite?.id,currentUser?.wishlist?.id,product.sku)}
+            isFavorite={isFavorite}
+          >
+            <AiFillHeart />
+          </HeartButton>
         </ImageBox>
 
         <TextBox>
@@ -145,14 +194,23 @@ export const SingleProduct = ({ product }) => {
           <ProductPrice product={product} />
           <div>
             {product.stock_status === "IN_STOCK" ? (
-              <StockStatusMsg>
+              <StatusMsg>
                 <FaCheckCircle /> W MAGAZYNIE
-              </StockStatusMsg>
+              </StatusMsg>
             ) : (
-              <StockStatusMsg isOutOfStock>
+              <StatusMsg isOutOfStock>
                 <FaCheckCircle /> BRAK W MAGAZYNIE
-              </StockStatusMsg>
+              </StatusMsg>
             )}
+            {isFavorite ? (
+              <StatusMsg>
+                <AiFillHeart />
+                <span>
+                  NA <Link href="/konto/lista-zyczen">LIŚCIE ŻYCZEŃ</Link>
+                </span>
+              </StatusMsg>
+            ) : null}
+
             <p>
               <strong>SKU</strong> {product.sku}
             </p>

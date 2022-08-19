@@ -9,6 +9,23 @@ export const magentoLogin = async () => {
                 firstname
                 lastname
                 email
+                wishlist {
+                    id
+                    items_count
+                    sharing_code
+                    updated_at
+                    items {
+                      id
+                      qty
+                      description
+                      added_at
+                      product {
+                        sku
+                        name
+                        id
+                      }
+                    }
+                  }
             }
         }`,
     }

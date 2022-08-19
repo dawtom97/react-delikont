@@ -14,14 +14,15 @@ const ProductDetails = () => {
   const urlKey = product && product[product.length - 1];
 
   useEffect(() => {
+
     magentoSingleProduct(urlKey)
       .then((res) => setSingleProduct(res))
       .catch((err) => console.log(err));
   }, [urlKey]);
 
- // if (!singleProduct) return "Loading...";
 
-  console.log(singleProduct)
+
+
 
   return (
     <MainTemplate>

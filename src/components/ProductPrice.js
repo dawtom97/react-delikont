@@ -99,8 +99,6 @@ export const ProductPrice = ({ product }) => {
     product?.price_range?.minimum_price?.final_price.value
   ).split(".");
 
-  console.log(product.stock_status);
-
   return (
     <>
       <WeightBox>

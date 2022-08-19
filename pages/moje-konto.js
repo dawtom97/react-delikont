@@ -12,6 +12,8 @@ const AccountPage = () => {
     userLogout();
   }
 
+  console.log(currentUser)
+
   return (
     <MainTemplate>
        <h1>Zalogowano jako {currentUser?.firstname} {currentUser?.lastname}</h1>
