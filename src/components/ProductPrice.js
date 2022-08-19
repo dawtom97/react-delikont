@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import css from "styled-jsx/css";
 
 export const WeightBox = styled.div`
   display: flex;
@@ -79,64 +80,72 @@ export const Controls = styled.div`
 `;
 
 export const Button = styled.button`
-  border: 1px solid ${({ theme }) => theme.colorPrimary};
+  border: ${({isOutOfStock}) => isOutOfStock ? `1px solid #bcbcbc` : `1px solid #f57c00`};
   border-radius: 30px;
   background-color: transparent;
   height: 30px;
   text-align: center;
   width: auto;
   font-size: 11px;
-  color: ${({ theme }) => theme.colorPrimary};
+  color: ${({isOutOfStock}) => isOutOfStock ? `#bcbcbc` : `#f57c00`};
   font-weight: 700;
-  margin-top: 10px;
+  margin-top:${({isOutOfStock}) => isOutOfStock ? `103px` : `10px`};
   cursor: pointer;
-`;
 
+`;
 
 export const ProductPrice = ({ product }) => {
   const price = String(
     product?.price_range?.minimum_price?.final_price.value
   ).split(".");
 
+  console.log(product.stock_status);
+
   return (
-  <>
-    <WeightBox>
-      <span>
-        {product.weight}{" "}
-        {product?.categories[0].url_key == "napoje" ? "ml" : "g"}
-      </span>
-      <span>{product?.price_range?.minimum_price?.final_price.value} / kg</span>
-    </WeightBox>
-    <PriceBox>
-      <MainPrice>{price[0]}</MainPrice>
-      <div>
-        <Cent>{price[1] ? price[1] : "00"}</Cent>
-        <Tax>
-          z Vat {price[0]},{price[1] ? price[1] : "00"} zł
-        </Tax>
-      </div>
-    </PriceBox>
+    <>
+      <WeightBox>
+        <span>
+          {product.weight}{" "}
+          {product?.categories[0].url_key == "napoje" ? "ml" : "g"}
+        </span>
+        <span>
+          {product?.price_range?.minimum_price?.final_price.value} / kg
+        </span>
+      </WeightBox>
+      <PriceBox>
+        <MainPrice>{price[0]}</MainPrice>
+        <div>
+          <Cent>{price[1] ? price[1] : "00"}</Cent>
+          <Tax>
+            z Vat {price[0]},{price[1] ? price[1] : "00"} zł
+          </Tax>
+        </div>
+      </PriceBox>
 
-    <ButtonsBox>
-      <div>
-        <p>sztuk:</p>
-        <Controls>
-          <button>-</button>
-          <input type="number" name="qty" placeholder="1" />
-          <button>+</button>
-        </Controls>
-      </div>
-      <div>
-        <p>kartonów:</p>
-        <Controls>
-          <button>-</button>
-          <input type="number" name="qty" placeholder="1" />
-          <button>+</button>
-        </Controls>
-      </div>
-    </ButtonsBox>
+      {product.stock_status === "IN_STOCK" ? (
+        <>
+          <ButtonsBox>
+            <div>
+              <p>sztuk:</p>
+              <Controls>
+                <button>-</button>
+                <input type="number" name="qty" placeholder="1" />
+                <button>+</button>
+              </Controls>
+            </div>
+            <div>
+              <p>kartonów:</p>
+              <Controls>
+                <button>-</button>
+                <input type="number" name="qty" placeholder="1" />
+                <button>+</button>
+              </Controls>
+            </div>
+          </ButtonsBox>
 
-    <Button>DODAJ DO KOSZYKA</Button>
-  </>
-  )
+          <Button>DODAJ DO KOSZYKA</Button>
+        </>
+      ) : <Button isOutOfStock disabled>BRAK W MAGAZYNIE</Button>}
+    </>
+  );
 };

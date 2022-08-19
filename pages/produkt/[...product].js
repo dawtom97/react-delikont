@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { SingleProduct } from "../../src/components/SingleProduct/SingleProduct";
 import { magentoSingleProduct } from "../../src/graphql/magentoSingleProduct";
 import { MainTemplate } from "../../src/templates/MainTemplate";
+import {Loader} from '../../src/components/Loader'
 
 const ProductDetails = () => {
   const [singleProduct, setSingleProduct] = useState();
@@ -18,11 +19,13 @@ const ProductDetails = () => {
       .catch((err) => console.log(err));
   }, [urlKey]);
 
-  if (!singleProduct) return "Loading...";
+ // if (!singleProduct) return "Loading...";
+
+  console.log(singleProduct)
 
   return (
     <MainTemplate>
-      <SingleProduct product={singleProduct}/>
+      {singleProduct ? <SingleProduct product={singleProduct}/> : <Loader/>}
     </MainTemplate>
   );
 };
