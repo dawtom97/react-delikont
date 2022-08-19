@@ -1,4 +1,3 @@
-import axios from "axios";
 import { API_URL, headers, PRODUCTS_PER_PAGE } from "./config";
 
 export const magentoProducts = async (page) => {
@@ -12,6 +11,7 @@ export const magentoProducts = async (page) => {
             }
             items {
               id
+              url_key
               name
               sku
               stock_status
@@ -174,7 +174,6 @@ export const magentoProducts = async (page) => {
             }
           }
     }`,
-    variables: {},
   };
 
   const options = {

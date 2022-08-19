@@ -22,7 +22,6 @@ export const magentoRegister = async (props) => {
         }
       }
     }` ,
-    variables:{}
   }
   const options = {
     method:"POST",
