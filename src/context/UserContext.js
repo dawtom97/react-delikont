@@ -1,4 +1,4 @@
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { magentoAddToWishlist } from "../graphql/magentoAddToWishlist";
 import { magentoLogin } from "../graphql/magentoLogin";

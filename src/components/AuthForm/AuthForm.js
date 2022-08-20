@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useContext, useState } from "react";
-import styled from "styled-components";
+import * as Styled from './styles';
 import { ModalContext } from "../../context/ModalContext";
 import { UserContext } from "../../context/UserContext";
 import { magentoRegister } from "../../graphql/magentoRegister";
@@ -8,52 +8,6 @@ import { Button } from "../Button";
 import { ErrorMsg } from "../ErrorMsg";
 import { Heading } from "../Heading";
 import { Input } from "../Input";
-
-export const Wrapper = styled.div`
-  text-align: center;
-  margin-top:190px;
-
-  & a {
-    text-decoration: underline;
-  }
-
-  & input {
-    margin: 12px 0;
-  }
-`;
-
-export const AuthWrapper = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ebebeb;
-  min-width: 600px;
-  width: 50%;
-
-  & legend {
-    border-bottom: 1px solid #282828;
-    text-transform: uppercase;
-    padding-bottom:15px;
-    margin: 10px 0;
-    font-weight: 600;
-    width: 100%;
-  }
-  & input {
-    display: block;
-    width:100%;
-  }
-
-  & button {
-    margin:7px 0;
-  }
-  & a {
-    text-decoration: none;
-  }
-
-`;
 
 const initialState = {
   firstname: "",
@@ -63,10 +17,23 @@ const initialState = {
   repassword: "",
 };
 
+const addressInitialState = {
+  streetAndNumber:"",
+  city:"",
+  region:"",
+  postcode:"",
+  country: {
+    countryName:"",
+    countryCode:""
+  }
+}
+
+
 export const AuthForm = () => {
   const { userLogin } = useContext(UserContext);
   const {showModal} = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
+  const [newAddress, setNewAddress] = useState(addressInitialState);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -74,6 +41,12 @@ export const AuthForm = () => {
       ...newAccount,
       [e.target.name]: e.target.value,
     });
+    setNewAddress({
+      ...newAddress,
+      [e.target.name]:e.target.value
+    })
+
+    console.log(newAddress)
   };
 
   const handleSubmit = (e) => {
@@ -123,12 +96,12 @@ export const AuthForm = () => {
   };
 
   return (
-    <Wrapper>
+    <Styled.Wrapper>
       <Heading>UTWÓRZ NOWE KONTO KLIENTA</Heading>
       <p>
         Jeśli masz już konto <Link href="/">zaloguj się</Link>
       </p>
-      <AuthWrapper onSubmit={handleSubmit}>
+      <Styled.AuthWrapper onSubmit={handleSubmit}>
         <legend>
             <span>DANE DO LOGOWANIA</span>
         </legend>
@@ -177,9 +150,13 @@ export const AuthForm = () => {
             <span>DANE FIRMY</span>
         </legend>
 
+        <legend>
+            <span>DANE DOSTAWY</span>
+        </legend>
+
         <Button isSecondary type="submit">UTWÓRZ KONTO KLIENTA</Button>
         <Button><Link href="/"><a>POWRÓT</a></Link></Button>
-      </AuthWrapper>
-    </Wrapper>
+      </Styled.AuthWrapper>
+    </Styled.Wrapper>
   );
 };

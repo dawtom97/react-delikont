@@ -1,8 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { ModalContext } from '../context/ModalContext';
-
 
 export const Wrapper = styled.div`
     position: fixed;
@@ -25,13 +23,7 @@ export const Wrapper = styled.div`
 `
 
 export const Modal = ({msg, isError = false}) => {
-  const {isModalVisible,setIsModalVisible} = useContext(ModalContext)
-
   const element = document.getElementById('modal');
-
-  useEffect(()=>{
-    // setTimeout(() => setIsModalVisible(false) ,2000)
-  },[])
 
   return createPortal(
     <Wrapper isError={isError}>

@@ -52,8 +52,7 @@ export const SingleProduct = ({ product }) => {
   };
 
   const handleAddToWishlist = (favorite, productSku = 0) => {
-    
-    if (!currentUser.firstname) {
+    if (!currentUser?.firstname) {
       showModal("Zaloguj się, aby dodać do ulubionych");
       return;
     }

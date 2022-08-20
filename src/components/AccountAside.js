@@ -9,6 +9,7 @@ export const Wrapper = styled.aside`
   padding: 15px 10px;
   border: 1px solid #e1e1e1;
   min-width: 250px;
+  height: 350px;
 
   & a {
     border-bottom: 1px solid #ebebeb;
@@ -18,6 +19,9 @@ export const Wrapper = styled.aside`
       color: ${({ theme }) => theme.colorPrimary};
       transform: translateX(20px);
     }
+  }
+  & a:last-child {
+    border: none;
   }
 
   & span {

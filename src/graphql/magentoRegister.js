@@ -13,6 +13,7 @@ export const magentoRegister = async (props) => {
           lastname: "${props.lastname}"
           email: "${props.email}"
           password: "${props.password}"
+  
         }
       ) {
         customer {

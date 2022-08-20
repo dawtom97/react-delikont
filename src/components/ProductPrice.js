@@ -184,6 +184,7 @@ export const ProductPrice = ({ product, isAlternative }) => {
           {!isAlternative ? (
             <Button>DODAJ DO KOSZYKA</Button>
           ) : (
+            
             <WishlistButtonsBox>
               <button>
                 <BsCartCheck />
