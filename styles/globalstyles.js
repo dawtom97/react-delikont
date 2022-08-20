@@ -10,6 +10,7 @@ body {
 
 button,input, input::placeholder, textarea, textarea::placeholder {
   font-family: 'Roboto', sans-serif;
+  transition: 0.4s;
 }
 
 a {

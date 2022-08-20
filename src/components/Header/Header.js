@@ -1,6 +1,6 @@
 import logo from "../../../public/logo.png";
 import Image from "next/dist/client/image";
-import * as Styled from "./Header.styles";
+import * as Styled from "./styles";
 import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
 import { useContext, useState } from "react";
@@ -74,7 +74,7 @@ export const Header = ({ categories }) => {
 
         <Styled.IconsBar>
           {isLogged ? (
-            <Link href="/moje-konto">
+            <Link href="/konto/moje-konto">
               <a>
                 <FaRegUserCircle />
               </a>

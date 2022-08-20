@@ -35,7 +35,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;800&display=swap"
             rel="stylesheet"
           />
-          <link rel="icon" type="image/x-icon" href="/spaceman.png"></link>
+          <link rel="icon" type="image/x-icon" href="/logo.png"></link>
         </Head>
         <body>
           <Main />

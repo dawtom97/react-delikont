@@ -1,56 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
+import * as Styled from './styles';
 
-
-export const Wrapper = styled.footer`
-  border-top: 1px solid #f5f3ea;
-  margin-top:70px;
-`
-export const InnerWrapper = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 30px 10px;
-  display: flex;
-  align-items: flex-start;
-  gap:20px;
-
-  & > div {
-    flex:1;
-  }
-
-  & span {
-    font-weight: 600;
-    font-size: 14px;
-    color: #000;
-  }
-
-
-  & ul {
-    list-style: none;
-    padding: 0;
-  }
-  & li, & p {
-    color:#b1b1b1;
-    font-size:14px;
-    margin:10px 0;
-  }
-`
-export const BottomWrapper = styled.div`
-  background-color: #f2f8fd;
-    padding: 15px 0 15px;
-
-    & > div {
-      max-width: 1400px;
-  margin: 0 auto;
-  font-size: 12px;
-    }
-`
 
 export const Footer = () => {
 
   return (
-    <Wrapper>
-         <InnerWrapper>
+    <Styled.Wrapper>
+         <Styled.InnerWrapper>
             <div>
               <span>O nas</span>
               <p>Delikont.pl to internetowa hurtownia spożywcza. Naszym celem jest dostarczanie klientom konkurencyjnego cenowo asortymentu w prosty sposób!</p>
@@ -96,13 +52,13 @@ export const Footer = () => {
                 <li>Wody i napoje</li>
               </ul>
             </div>
-         </InnerWrapper>
-         <BottomWrapper>
+         </Styled.InnerWrapper>
+         <Styled.BottomWrapper>
                 <div>
                   <p>© {new Date().getFullYear()} Delikont Sp. z.o.o Delikont.pl Wszelkie prawa zastrzeżone.</p>
                 </div>
-         </BottomWrapper>
-    </Wrapper>
+         </Styled.BottomWrapper>
+    </Styled.Wrapper>
   )
 }
 
