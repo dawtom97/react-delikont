@@ -15,6 +15,10 @@ export const InnerWrapper = styled.main`
   & > div {
     display: flex;
     gap: 35px;
+
+    & > div {
+      flex:1;
+    }
   }
 
   & > a {
@@ -40,7 +44,10 @@ export const AccountTemplate = ({ children }) => {
         <Heading level="h1">{formatedTitle}</Heading>
         <div>
           <AccountAside />
-          {children}
+          <div>
+             {children}
+          </div>
+    
         </div>
       </InnerWrapper>
       <Footer />

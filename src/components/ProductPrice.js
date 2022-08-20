@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import css from "styled-jsx/css";
+import { AiOutlineClose } from "react-icons/ai";
+import { BsCartCheck } from "react-icons/bs";
+import { UserContext } from "../context/UserContext";
 
 export const WeightBox = styled.div`
   display: flex;
@@ -80,24 +82,62 @@ export const Controls = styled.div`
 `;
 
 export const Button = styled.button`
-  border: ${({isOutOfStock}) => isOutOfStock ? `1px solid #bcbcbc` : `1px solid #f57c00`};
+  border: ${({ isOutOfStock }) =>
+    isOutOfStock ? `1px solid #bcbcbc` : `1px solid #f57c00`};
   border-radius: 30px;
   background-color: transparent;
   height: 30px;
   text-align: center;
   width: auto;
   font-size: 11px;
-  color: ${({isOutOfStock}) => isOutOfStock ? `#bcbcbc` : `#f57c00`};
+  color: ${({ isOutOfStock }) => (isOutOfStock ? `#bcbcbc` : `#f57c00`)};
   font-weight: 700;
-  margin-top:${({isOutOfStock}) => isOutOfStock ? `103px` : `10px`};
+  margin-top: ${({ isOutOfStock }) => (isOutOfStock ? `103px` : `10px`)};
   cursor: pointer;
-
 `;
 
-export const ProductPrice = ({ product }) => {
+export const WishlistButtonsBox = styled.div`
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: ${({ isOutOfStock }) => (isOutOfStock ? `103px` : `10px`)};
+
+  & button:nth-child(1) {
+    border:${({isOutOfStock}) => isOutOfStock ? "1px solid #bcbcbc" : "1px solid #f57c00"};
+    color:${({isOutOfStock}) => isOutOfStock ? "#bcbcbc" : "#f57c00"};
+    pointer-events:${({isOutOfStock}) => isOutOfStock ? "none" : "initial"};;
+    
+  }
+
+  & button {
+    border-radius: 50%;
+    font-size: 18px;
+    line-height: 35px;
+    cursor: pointer;
+    text-align: center;
+    width: 35px;
+    background-color: transparent;
+    height: 35px;
+    border:1px solid #f57c00;
+  
+    color: ${({ theme }) => theme.colorPrimary};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colorPrimary};
+      color: white;
+    }
+  }
+`;
+
+export const ProductPrice = ({ product, isAlternative }) => {
+  const { removeFromWishlist } = useContext(UserContext);
+
   const price = String(
-    product?.price_range?.minimum_price?.final_price.value
+    product?.price_range?.minimum_price?.final_price?.value
   ).split(".");
+
+  if (!product) return;
 
   return (
     <>
@@ -141,9 +181,33 @@ export const ProductPrice = ({ product }) => {
             </div>
           </ButtonsBox>
 
-          <Button>DODAJ DO KOSZYKA</Button>
+          {!isAlternative ? (
+            <Button>DODAJ DO KOSZYKA</Button>
+          ) : (
+            <WishlistButtonsBox>
+              <button>
+                <BsCartCheck />
+              </button>
+              <button onClick={() => removeFromWishlist(product.id)}>
+                <AiOutlineClose />
+              </button>
+            </WishlistButtonsBox>
+          )}
         </>
-      ) : <Button isOutOfStock disabled>BRAK W MAGAZYNIE</Button>}
+      ) : !isAlternative ? (
+        <Button isOutOfStock disabled>
+          BRAK W MAGAZYNIE
+        </Button>
+      ) : (
+        <WishlistButtonsBox isOutOfStock>
+        <button disabled={true}>
+          <BsCartCheck />
+        </button>
+        <button onClick={() => removeFromWishlist(product.id)}>
+          <AiOutlineClose />
+        </button>
+      </WishlistButtonsBox>
+      )}
     </>
   );
 };

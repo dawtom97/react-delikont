@@ -4,27 +4,25 @@ import { Heading } from "../Heading";
 import { ProductPrice } from "../ProductPrice";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiFillHeart } from "react-icons/ai";
-import { magentoAddToWishlist } from "../../graphql/magentoAddToWishlist";
 import { ModalContext } from "../../context/ModalContext";
 import { UserContext } from "../../context/UserContext";
 import Link from "next/link";
-import { magentoRemoveFromWishlist } from "../../graphql/magentoRemoveFromWishlist";
 
 export const SingleProduct = ({ product }) => {
   const [isActive, setIsActive] = useState(1);
   const [activeContent, setActiveContent] = useState(0);
   const { showModal } = useContext(ModalContext);
-  const { currentUser } = useContext(UserContext);
+  const { wishlist,currentUser, removeFromWishlist, addToWishlist } = useContext(UserContext);
   const [isFavorite, setIsFavorite] = useState(null);
 
   useEffect(() => {
     const checkFavoriteStatus =
-      currentUser &&
-      currentUser?.wishlist?.items.find(
+      wishlist &&
+      wishlist?.items.find(
         (item) => item.product.id === product.id
       );
     setIsFavorite(checkFavoriteStatus);
-  }, [currentUser, product.id]);
+  }, [wishlist, product.id]);
 
   const infoChunks = [
     {
@@ -53,21 +51,17 @@ export const SingleProduct = ({ product }) => {
     setActiveContent(index);
   };
 
-  const handleAddToWishlist = (productId, wishlistId = 0, productSku = 0) => {
+  const handleAddToWishlist = (favorite, productSku = 0) => {
+    
     if (!currentUser.firstname) {
       showModal("Zaloguj się, aby dodać do ulubionych");
       return;
     }
-
     if (!isFavorite) {
-      magentoAddToWishlist(productSku);
-      showModal("Dodano do ulubionych");
-      // trzeba rozwiązać problem braku odswiezania
+      addToWishlist(productSku);
       setIsFavorite({});
-      console.log(isFavorite);
     } else {
-      magentoRemoveFromWishlist(productId, wishlistId);
-      showModal("Usunięto z ulubionych");
+      removeFromWishlist(favorite.id);
       setIsFavorite(null);
     }
   };
@@ -81,8 +75,7 @@ export const SingleProduct = ({ product }) => {
           <Styled.HeartButton
             onClick={() =>
               handleAddToWishlist(
-                isFavorite?.id,
-                currentUser?.wishlist?.id,
+                isFavorite,
                 product.sku
               )
             }

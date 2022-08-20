@@ -19,6 +19,10 @@ export const ImageBox = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+
+  & img {
+    width:80%;
+  }
 `;
 
 export const HeartButton = styled.button`

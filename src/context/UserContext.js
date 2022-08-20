@@ -1,6 +1,8 @@
 import Router, { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
+import { magentoAddToWishlist } from "../graphql/magentoAddToWishlist";
 import { magentoLogin } from "../graphql/magentoLogin";
+import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
 import { magentoUserToken } from "../graphql/magentoUserToken";
 import { ModalContext } from "./ModalContext";
 
@@ -11,6 +13,7 @@ export const UserContextProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const location = useRouter();
+  const [wishlist,setWishlist] = useState();
   const { showModal } = useContext(ModalContext);
 
   useEffect(() => {
@@ -23,6 +26,11 @@ export const UserContextProvider = ({ children }) => {
       setIsLogged(true);
     }
   }, [token]);
+
+  useEffect(()=>{
+    setWishlist(currentUser?.wishlist);
+
+  },[currentUser])
 
   const userLogout = () => {
     setIsLogged(false);
@@ -47,13 +55,31 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
+
+  const addToWishlist = (sku) => {
+    magentoAddToWishlist(sku).then(res => setWishlist(res.addProductsToWishlist.wishlist));
+    showModal("Dodano do ulubionych");
+  }
+
+  const removeFromWishlist = (id) => {
+    // do dopracowania, może być sytuacja ze id produktu wishlisty pokryje się z id produktu w sklepie!
+    const productStatus = wishlist && wishlist?.items.find((item) => item.id === id || item.product.id === id);
+    magentoRemoveFromWishlist(productStatus?.id, wishlist.id).then((res)=>{
+      setWishlist(res.removeProductsFromWishlist.wishlist)
+    });
+    showModal("Usunięto z ulubionych");
+  }
+
   const user = {
     token,
     isLogged,
     currentUser,
+    wishlist,
     userLogin,
     userLogout,
     setCurrentUser,
+    removeFromWishlist,
+    addToWishlist
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

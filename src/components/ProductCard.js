@@ -45,14 +45,11 @@ export const Card = styled.article`
 `;
 
 
-export const ProductCard =forwardRef (({ product },ref) => {
-  const price = String(
-    product?.price_range?.minimum_price?.final_price.value
-  ).split(".");
+export const ProductCard =forwardRef (({ product,isAlternative },ref) => {
 
+  const productDetailsUrl = `/produkt/${product.categories?.map(product => [product.url_key]).join("/")}/${product.url_key}`
 
-  const productDetailsUrl = `/produkt/${product.categories.map(product => [product.url_key]).join("/")}/${product.url_key}`
-
+  if(!product) return;
 
   return (
     <Card ref={ref}>
@@ -69,7 +66,7 @@ export const ProductCard =forwardRef (({ product },ref) => {
           </a>
         </div>
       </Link>
-      <ProductPrice product={product}/>
+      <ProductPrice product={product} isAlternative={isAlternative}/>
     </Card>
   );
   });
