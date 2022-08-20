@@ -40,7 +40,7 @@ export const UserContextProvider = ({ children }) => {
         showModal("Pomyślnie zalogowano");
       });
       setIsLogged(true);
-      location.push("/moje-konto");
+      location.push("/konto/moje-konto");
     } catch (error) {
       // Tymczasowe sprawdzenie lokalizacji bo wchodziły dwa modale, z kontekstu i auth w momencie rejestracji
      location.pathname === "/" && showModal("Niepoprawne hasło lub adres email", true);

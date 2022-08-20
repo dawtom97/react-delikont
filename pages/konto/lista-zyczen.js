@@ -1,11 +1,19 @@
-import React from 'react'
-import { MainTemplate } from '../../src/templates/MainTemplate'
+import React, { useContext } from 'react'
+import { Loader } from '../../src/components/Loader'
+import { WishlistProducts } from '../../src/components/WishlistProducts/WishlistProducts'
+import { UserContext } from '../../src/context/UserContext'
+import { AccountTemplate } from '../../src/templates/AccountTemplate'
+
 
 const Wishlist = () => {
+  const {currentUser:{wishlist}} = useContext(UserContext);
+
+  console.log(wishlist?.items)
+
   return (
-    <MainTemplate>
-        Wishlist
-    </MainTemplate>
+    <AccountTemplate>
+        {wishlist ? <WishlistProducts items={wishlist.items}/> : <Loader/>}
+    </AccountTemplate>
   )
 }
 

@@ -74,7 +74,7 @@ export const Header = ({ categories }) => {
 
         <Styled.IconsBar>
           {isLogged ? (
-            <Link href="/moje-konto">
+            <Link href="/konto/moje-konto">
               <a>
                 <FaRegUserCircle />
               </a>

@@ -20,10 +20,6 @@ const ProductDetails = () => {
       .catch((err) => console.log(err));
   }, [urlKey]);
 
-
-
-
-
   return (
     <MainTemplate>
       {singleProduct ? <SingleProduct product={singleProduct}/> : <Loader/>}

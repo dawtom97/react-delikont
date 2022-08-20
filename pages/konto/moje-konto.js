@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ModalContext } from '../src/context/ModalContext';
-import { UserContext } from '../src/context/UserContext'
-import {MainTemplate} from '../src/templates/MainTemplate'
+import { ModalContext } from '../../src/context/ModalContext';
+import { UserContext } from '../../src/context/UserContext'
+import { AccountTemplate } from '../../src/templates/AccountTemplate';
+import {MainTemplate} from '../../src/templates/MainTemplate'
 
 const AccountPage = () => {
   const {currentUser,userLogout} = useContext(UserContext);
@@ -15,11 +16,11 @@ const AccountPage = () => {
   console.log(currentUser)
 
   return (
-    <MainTemplate>
+    <AccountTemplate>
        <h1>Zalogowano jako {currentUser?.firstname} {currentUser?.lastname}</h1>
        <h2>Email: {currentUser?.email}</h2>
        <button onClick={handleLogout}>Wyloguj</button>
-    </MainTemplate>
+    </AccountTemplate>
   )
 }
 
