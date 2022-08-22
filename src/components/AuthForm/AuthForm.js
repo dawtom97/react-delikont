@@ -1,6 +1,6 @@
 import Link from "next/link";
-import React, { useContext, useState } from "react";
-import * as Styled from './styles';
+import React, { useContext, useEffect, useState } from "react";
+import * as Styled from "./styles";
 import { ModalContext } from "../../context/ModalContext";
 import { UserContext } from "../../context/UserContext";
 import { magentoRegister } from "../../graphql/magentoRegister";
@@ -8,6 +8,8 @@ import { Button } from "../Button";
 import { ErrorMsg } from "../ErrorMsg";
 import { Heading } from "../Heading";
 import { Input } from "../Input";
+import { magentoCreateCustomerAddress } from "../../graphql/magentoCreateCustomerAddress";
+import { magentoCountryQuery } from "../../graphql/magentoCountryQuery";
 
 const initialState = {
   firstname: "",
@@ -18,23 +20,32 @@ const initialState = {
 };
 
 const addressInitialState = {
-  streetAndNumber:"",
-  city:"",
-  region:"",
-  postcode:"",
-  country: {
-    countryName:"",
-    countryCode:""
-  }
-}
-
+  region: {
+    region: "",
+    region_id: ""
+  },
+  country_code: "",
+  street: [],
+  telephone: "",
+  postcode: "",
+  city: "",
+  firstname: "",
+  lastname: "",
+};
 
 export const AuthForm = () => {
   const { userLogin } = useContext(UserContext);
-  const {showModal} = useContext(ModalContext);
+  const { showModal } = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
   const [newAddress, setNewAddress] = useState(addressInitialState);
   const [errors, setErrors] = useState({});
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("PL")
+
+  useEffect(() => {
+    magentoCountryQuery(selectedCountry).then((res) => setCountries(res.country));
+  }, [selectedCountry]);
+
 
   const handleChange = (e) => {
     setNewAccount({
@@ -43,20 +54,26 @@ export const AuthForm = () => {
     });
     setNewAddress({
       ...newAddress,
-      [e.target.name]:e.target.value
-    })
+      [e.target.name]: e.target.value,
+    });
 
-    console.log(newAddress)
+     console.log(newAddress);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationPass = validation(newAccount);
     if (validationPass.status) {
-      magentoRegister(newAccount).then((res) => {
-        setErrors({})
-        userLogin({ email: newAccount.email, password: newAccount.password });
-        res.status.message ? showModal("Istnieje już konto o podanym adresie email",true) : showModal("Założono nowe konto");
+      await magentoRegister(newAccount).then(async (res) => {
+        setErrors({});
+        await userLogin({
+          email: newAccount.email,
+          password: newAccount.password,
+        });
+        await magentoCreateCustomerAddress().then((res) => console.log(res));
+        res.status.message
+          ? showModal("Istnieje już konto o podanym adresie email", true)
+          : showModal("Założono nowe konto");
       });
     } else {
       setErrors(validationPass.errors);
@@ -103,7 +120,7 @@ export const AuthForm = () => {
       </p>
       <Styled.AuthWrapper onSubmit={handleSubmit}>
         <legend>
-            <span>DANE DO LOGOWANIA</span>
+          <span>DANE DO LOGOWANIA</span>
         </legend>
         <Input
           value={newAccount.firstname}
@@ -147,15 +164,31 @@ export const AuthForm = () => {
         {errors && <ErrorMsg>{errors.passwordCheck}</ErrorMsg>}
 
         <legend>
-            <span>DANE FIRMY</span>
+          <span>DANE FIRMY</span>
         </legend>
 
         <legend>
-            <span>DANE DOSTAWY</span>
+          <span>DANE DOSTAWY</span>
         </legend>
 
-        <Button isSecondary type="submit">UTWÓRZ KONTO KLIENTA</Button>
-        <Button><Link href="/"><a>POWRÓT</a></Link></Button>
+        <select name="region" onChange={handleChange}>
+          {countries.available_regions?.map((region)=>(
+            <option key={region.id} value={region.name}>{region.name}</option>
+          ))}
+        </select>
+        <select name="country_code" onChange={handleChange}>
+          <option selected value="PL">Polska</option>
+          <option value="FR">Francja</option>
+        </select>
+
+        <Button isSecondary type="submit">
+          UTWÓRZ KONTO KLIENTA
+        </Button>
+        <Button>
+          <Link href="/">
+            <a>POWRÓT</a>
+          </Link>
+        </Button>
       </Styled.AuthWrapper>
     </Styled.Wrapper>
   );

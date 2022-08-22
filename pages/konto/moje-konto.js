@@ -13,7 +13,7 @@ const AccountPage = () => {
     userLogout();
   }
 
-  console.log(currentUser)
+ // console.log(currentUser)
 
   return (
     <AccountTemplate>
