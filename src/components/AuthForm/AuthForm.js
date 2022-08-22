@@ -10,6 +10,7 @@ import { Heading } from "../Heading";
 import { Input } from "../Input";
 import { magentoCreateCustomerAddress } from "../../graphql/magentoCreateCustomerAddress";
 import { magentoCountryQuery } from "../../graphql/magentoCountryQuery";
+import { Select } from "../Select";
 
 const initialState = {
   firstname: "",
@@ -22,10 +23,10 @@ const initialState = {
 const addressInitialState = {
   region: {
     region: "",
-    region_id: ""
+    region_id: "",
   },
   country_code: "",
-  street: [],
+  street: "",
   telephone: "",
   postcode: "",
   city: "",
@@ -40,12 +41,19 @@ export const AuthForm = () => {
   const [newAddress, setNewAddress] = useState(addressInitialState);
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState("PL")
+  const [selectedCountry, setSelectedCountry] = useState("PL");
+  const [selectedRegion, setSelectedRegion] = useState([
+    {
+      region: "",
+      region_id: "",
+    },
+  ]);
 
   useEffect(() => {
-    magentoCountryQuery(selectedCountry).then((res) => setCountries(res.country));
+    magentoCountryQuery(selectedCountry).then((res) =>
+      setCountries(res.country)
+    );
   }, [selectedCountry]);
-
 
   const handleChange = (e) => {
     setNewAccount({
@@ -54,15 +62,33 @@ export const AuthForm = () => {
     });
     setNewAddress({
       ...newAddress,
+      region: {
+        region: selectedRegion[0].name,
+        region_id: selectedRegion[0].id,
+      },
+      firstname: newAccount.firstname,
+      lastname: newAccount.lastname,
+      country_code: selectedCountry,
       [e.target.name]: e.target.value,
     });
+  };
 
-     console.log(newAddress);
+  console.log(newAddress);
+
+  const handleChangeRegion = (e) => {
+    const selected = countries.available_regions.filter(
+      (region) => region.name == e.target.value
+    );
+    setSelectedRegion(selected);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationPass = validation(newAccount);
+    const validationPass = validation(
+      newAccount,
+      newAddress,
+      selectedRegion[0].region
+    );
     if (validationPass.status) {
       await magentoRegister(newAccount).then(async (res) => {
         setErrors({});
@@ -70,7 +96,9 @@ export const AuthForm = () => {
           email: newAccount.email,
           password: newAccount.password,
         });
-        await magentoCreateCustomerAddress().then((res) => console.log(res));
+        await magentoCreateCustomerAddress(newAddress).then((res) =>
+          console.log(res)
+        );
         res.status.message
           ? showModal("Istnieje już konto o podanym adresie email", true)
           : showModal("Założono nowe konto");
@@ -80,7 +108,7 @@ export const AuthForm = () => {
     }
   };
 
-  const validation = (data) => {
+  const validation = (data, dataAddress, region) => {
     const passReg = new RegExp(
       "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
     );
@@ -94,18 +122,34 @@ export const AuthForm = () => {
     if (data.lastname == "") errors.lastname = "To pole jest wymagane";
     if (data.password !== data.repassword)
       errors.passwordCheck = "Hasła nie są identyczne";
+    if (dataAddress.city == "") errors.city = "To pole jest wymagane";
+    if (dataAddress.country_code == "")
+      errors.country_code = "To pole jest wymagane";
+    if (dataAddress.postcode == "") errors.postcode = "To pole jest wymagane";
+    if (dataAddress.telephone == "") errors.telephone = "To pole jest wymagane";
+    if (dataAddress.street == "") errors.street = "To pole jest wymagane";
+    if (region == "") errors.region = "To pole jest wymagane";
 
     if (
       !errors.email &&
       !errors.password &&
       !errors.passwordCheck &&
       !errors.firstname &&
-      !errors.lastname
+      !errors.lastname &&
+      !errors.city &&
+      !errors.country_code &&
+      !errors.postcode &&
+      !errors.telephone &&
+      !errors.street &&
+      !errors.region
     )
       return {
         status: true,
         errors: null,
       };
+
+    console.log(errors);
+
     return {
       status: false,
       errors,
@@ -166,20 +210,67 @@ export const AuthForm = () => {
         <legend>
           <span>DANE FIRMY</span>
         </legend>
+        <Input
+          value={newAddress.telephone}
+          onChange={handleChange}
+          type="text"
+          placeholder="Telefon"
+          name="telephone"
+        />
+        {errors && <ErrorMsg>{errors.telephone}</ErrorMsg>}
 
         <legend>
           <span>DANE DOSTAWY</span>
         </legend>
 
-        <select name="region" onChange={handleChange}>
-          {countries.available_regions?.map((region)=>(
-            <option key={region.id} value={region.name}>{region.name}</option>
+        <Input
+          value={newAddress.street}
+          name="street"
+          type="text"
+          placeholder="Ulica i numer"
+          onChange={handleChange}
+        />
+        {errors && <ErrorMsg>{errors.street}</ErrorMsg>}
+
+        <Input
+          value={newAddress.city}
+          name="city"
+          type="text"
+          placeholder="Miasto"
+          onChange={handleChange}
+        />
+        {errors && <ErrorMsg>{errors.city}</ErrorMsg>}
+
+        <Select onChange={handleChangeRegion}>
+          <option value="">Wybierz województwo lub region</option>
+          {countries.available_regions?.map((region) => (
+            <option key={region.id} value={region.name}>
+              {region.name}
+            </option>
           ))}
-        </select>
-        <select name="country_code" onChange={handleChange}>
-          <option selected value="PL">Polska</option>
+        </Select>
+        {errors.region && <ErrorMsg>{errors.region}</ErrorMsg>}
+
+        <Input
+          name="postcode"
+          value={newAddress.postcode}
+          type="text"
+          placeholder="Kod pocztowy"
+          onChange={handleChange}
+        />
+        {errors && <ErrorMsg>{errors.postcode}</ErrorMsg>}
+
+        <Select
+          name="country_code"
+          onChange={(e) => {
+            setSelectedCountry(e.target.value);
+            handleChange(e);
+          }}
+        >
+          <option value="PL">Polska</option>
           <option value="FR">Francja</option>
-        </select>
+        </Select>
+
 
         <Button isSecondary type="submit">
           UTWÓRZ KONTO KLIENTA

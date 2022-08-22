@@ -1,21 +1,22 @@
 import { API_URL, headers } from "./config";
 
-export const magentoCreateCustomerAddress = async () => {
+export const magentoCreateCustomerAddress = async (props) => {
+  console.log(props);
   const query = {
     operationName: "createCustomerAddress",
     query: `mutation {
             createCustomerAddress(input: {
               region: {
-                region: "Silesia"
-                region_id: 23
+                region: "${props.region.region}"
+                region_id: "${props.region.region_id}"
               }
-              country_code: PL
-              street: ["123 Main Street"]
-              telephone: "7777777777"
-              postcode: "77777"
-              city: "Phoenix"
-              firstname: "Bob"
-              lastname: "Loblaw"
+              country_code: ${props.country_code}
+              street: ["${props.street}"]
+              telephone: "${props.telephone}"
+              postcode: "${props.postcode}"
+              city: "${props.city}"
+              firstname: "${props.firstname}"
+              lastname: "${props.lastname}"
               default_shipping: true
               default_billing: false
 
@@ -47,7 +48,7 @@ export const magentoCreateCustomerAddress = async () => {
     body: JSON.stringify(query),
   };
 
-  console.log(options.headers.Authorization)
+  console.log(options.headers.Authorization);
 
   try {
     const response = await (await fetch(API_URL, options)).json();
