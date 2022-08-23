@@ -13,6 +13,8 @@ export default function Home() {
   const observer = useRef();
   const lastItemRef = useRef();
 
+  console.log(allProducts[0])
+
   useEffect(() => {
     magentoProducts(1).then((res) => {
       setAllProducts([...res.products.items]);

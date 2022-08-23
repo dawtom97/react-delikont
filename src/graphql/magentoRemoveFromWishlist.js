@@ -1,6 +1,7 @@
 import { API_URL, headers } from "./config";
 
 export const magentoRemoveFromWishlist = async (productId, wishlistId) => {
+  console.log(productId,wishlistId)
   const query = {
     operationName: "removeFromWishlist",
     query: `mutation ($productId:ID! = "${productId}", $wishlistId: ID! = "${wishlistId}"){
@@ -197,6 +198,7 @@ export const magentoRemoveFromWishlist = async (productId, wishlistId) => {
   };
 
   const response = await (await fetch(API_URL, options)).json();
+  console.log(response)
 
   return response.data;
 };

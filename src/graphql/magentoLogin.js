@@ -8,6 +8,19 @@ export const magentoLogin = async () => {
                 firstname
                 lastname
                 email
+                addresses {
+                  firstname
+                  lastname
+                  street
+                  city
+                  region {
+                    region_code
+                    region
+                  }
+                  postcode
+                  country_code
+                  telephone
+                }
                 wishlist {
                     id
                     items_count

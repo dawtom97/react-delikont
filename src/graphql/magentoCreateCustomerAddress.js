@@ -18,7 +18,7 @@ export const magentoCreateCustomerAddress = async (props) => {
               firstname: "${props.firstname}"
               lastname: "${props.lastname}"
               default_shipping: true
-              default_billing: false
+              default_billing: true
 
             }) {
               id

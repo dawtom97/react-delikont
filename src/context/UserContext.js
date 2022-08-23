@@ -37,6 +37,7 @@ export const UserContextProvider = ({ children }) => {
     localStorage.setItem("Bearer", "");
     setCurrentUser({});
     location.push("/");
+    showModal("Pomyślnie wylogowano");
   };
 
   const userLogin = async (data) => {
@@ -64,7 +65,7 @@ export const UserContextProvider = ({ children }) => {
   const removeFromWishlist = (id) => {
     // do dopracowania, może być sytuacja ze id produktu wishlisty pokryje się z id produktu w sklepie!
     const productStatus = wishlist && wishlist?.items.find((item) => item.id === id || item.product.id === id);
-    magentoRemoveFromWishlist(productStatus?.id, wishlist.id).then((res)=>{
+    magentoRemoveFromWishlist(productStatus?.id, wishlist?.id).then((res)=>{
       setWishlist(res.removeProductsFromWishlist.wishlist)
     });
     showModal("Usunięto z ulubionych");

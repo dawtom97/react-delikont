@@ -11,6 +11,8 @@ import { Input } from "../Input";
 import { magentoCreateCustomerAddress } from "../../graphql/magentoCreateCustomerAddress";
 import { magentoCountryQuery } from "../../graphql/magentoCountryQuery";
 import { Select } from "../Select";
+import { RegisterConsents } from "../RegisterConsents";
+import { magentoCreateCompany } from "../../graphql/magentoCreateCompany";
 
 const initialState = {
   firstname: "",
@@ -34,11 +36,24 @@ const addressInitialState = {
   lastname: "",
 };
 
+const companyInitialState = {
+  company_name: "",
+  company_email: "",
+  company_admin: "",
+  company_street: "",
+  company_city: "",
+  company_region_code: "",
+  company_postcode: "",
+  company_telephone: "",
+  company_country_code: "",
+};
+
 export const AuthForm = () => {
   const { userLogin } = useContext(UserContext);
   const { showModal } = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
   const [newAddress, setNewAddress] = useState(addressInitialState);
+  const [newCompany, setNewCompany] = useState(companyInitialState);
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("PL");
@@ -46,6 +61,7 @@ export const AuthForm = () => {
     {
       region: "",
       region_id: "",
+      region_code: "",
     },
   ]);
 
@@ -71,9 +87,13 @@ export const AuthForm = () => {
       country_code: selectedCountry,
       [e.target.name]: e.target.value,
     });
+    setNewCompany({
+      ...newCompany,
+      company_region_code: selectedRegion[0].code,
+      company_country_code: selectedCountry,
+      [e.target.name]: e.target.value,
+    });
   };
-
-  console.log(newAddress);
 
   const handleChangeRegion = (e) => {
     const selected = countries.available_regions.filter(
@@ -99,6 +119,7 @@ export const AuthForm = () => {
         await magentoCreateCustomerAddress(newAddress).then((res) =>
           console.log(res)
         );
+        // await magentoCreateCompany(newCompany).then(res => console.log(res, "NOWA FIREMKA"))
         res.status.message
           ? showModal("Istnieje już konto o podanym adresie email", true)
           : showModal("Założono nowe konto");
@@ -207,17 +228,67 @@ export const AuthForm = () => {
         />
         {errors && <ErrorMsg>{errors.passwordCheck}</ErrorMsg>}
 
-        <legend>
+        {/* <legend>
           <span>DANE FIRMY</span>
         </legend>
         <Input
-          value={newAddress.telephone}
+          value={newCompany.name}
+          onChange={handleChange}
+          type="text"
+          placeholder="Nazwa firmy"
+          name="company_name"
+        />
+        {errors && <ErrorMsg>{errors.company_name}</ErrorMsg>}
+        <Input
+          value={newCompany.company_street}
+          onChange={handleChange}
+          type="text"
+          placeholder="Ulica i numer"
+          name="company_street"
+        />
+        {errors && <ErrorMsg>{errors.company_street}</ErrorMsg>}
+        <Input
+          value={newCompany.company_postcode}
+          onChange={handleChange}
+          type="text"
+          placeholder="Kod pocztowy"
+          name="company_postcode"
+        />
+        {errors && <ErrorMsg>{errors.company_postcode}</ErrorMsg>}
+        <Input
+          value={newCompany.company_city}
+          onChange={handleChange}
+          type="text"
+          placeholder="Miasto"
+          name="company_city"
+        />
+        {errors && <ErrorMsg>{errors.company_city}</ErrorMsg>}
+        <Input
+          value={newCompany.company_admin}
+          onChange={handleChange}
+          type="text"
+          placeholder="Osoba kontaktowa"
+          name="company_admin"
+        />
+        {errors && <ErrorMsg>{errors.company_admin}</ErrorMsg>}
+        <Input
+          value={newCompany.company_telephone}
           onChange={handleChange}
           type="text"
           placeholder="Telefon"
-          name="telephone"
+          name="company_telephone"
         />
-        {errors && <ErrorMsg>{errors.telephone}</ErrorMsg>}
+        {errors && <ErrorMsg>{errors.company_telephone}</ErrorMsg>}
+        <Input
+          value={newCompany.company_email}
+          onChange={handleChange}
+          type="text"
+          placeholder="Adres email"
+          name="company_email"
+        />
+        {errors && <ErrorMsg>{errors.company_email}</ErrorMsg>} */}
+
+
 
         <legend>
           <span>DANE DOSTAWY</span>
@@ -240,6 +311,14 @@ export const AuthForm = () => {
           onChange={handleChange}
         />
         {errors && <ErrorMsg>{errors.city}</ErrorMsg>}
+
+        <Input
+          value={newAddress.telephone}
+          onChange={handleChange}
+          type="text"
+          placeholder="Telefon"
+          name="telephone"
+        />
 
         <Select onChange={handleChangeRegion}>
           <option value="">Wybierz województwo lub region</option>
@@ -271,6 +350,7 @@ export const AuthForm = () => {
           <option value="FR">Francja</option>
         </Select>
 
+        <RegisterConsents />
 
         <Button isSecondary type="submit">
           UTWÓRZ KONTO KLIENTA

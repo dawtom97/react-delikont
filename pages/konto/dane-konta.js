@@ -3,7 +3,9 @@ import { AccountTemplate } from '../../src/templates/AccountTemplate'
 
 const AccountInfoPage = () => {
   return (
-    <AccountTemplate></AccountTemplate>
+    <AccountTemplate>
+
+    </AccountTemplate>
   )
 }
 
