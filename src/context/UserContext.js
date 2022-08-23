@@ -55,7 +55,7 @@ export const UserContextProvider = ({ children }) => {
       .then(({ response }) => {
         setCurrentUser(response.data.customer);
         console.log(response.data.customer.addresses, "PRZY LOGINIE")
-        setAddresses([response.data.customer.addresses]);
+       // setAddresses([response.data.customer.addresses]);
         showModal("Pomyślnie zalogowano");
       })   
       ;
@@ -104,6 +104,7 @@ export const UserContextProvider = ({ children }) => {
     removeFromWishlist,
     addToWishlist,
     editAddress,
+    setAddresses
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

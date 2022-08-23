@@ -170,5 +170,4 @@ query fetchProducts( $page:Int! ) {
             }
           }
         }
-      }
-`;
+      }}`;

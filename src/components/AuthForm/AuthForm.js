@@ -12,7 +12,6 @@ import { magentoCreateCustomerAddress } from "../../graphql/magentoCreateCustome
 import { magentoCountryQuery } from "../../graphql/magentoCountryQuery";
 import { Select } from "../Select";
 import { RegisterConsents } from "../RegisterConsents";
-import { magentoCreateCompany } from "../../graphql/magentoCreateCompany";
 
 const initialState = {
   firstname: "",
@@ -36,20 +35,8 @@ const addressInitialState = {
   lastname: "",
 };
 
-const companyInitialState = {
-  company_name: "",
-  company_email: "",
-  company_admin: "",
-  company_street: "",
-  company_city: "",
-  company_region_code: "",
-  company_postcode: "",
-  company_telephone: "",
-  company_country_code: "",
-};
-
 export const AuthForm = () => {
-  const { userLogin } = useContext(UserContext);
+  const { userLogin, setAddresses } = useContext(UserContext);
   const { showModal } = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
   const [newAddress, setNewAddress] = useState(addressInitialState);
@@ -89,8 +76,8 @@ export const AuthForm = () => {
           email: newAccount.email,
           password: newAccount.password,
         });
-        await magentoCreateCustomerAddress(newAddress).then((res) =>
-          console.log(res)
+        await magentoCreateCustomerAddress(newAddress).then(({response}) =>
+          setAddresses([response.data.createCustomerAddress])
         );
         // await magentoCreateCompany(newCompany).then(res => console.log(res, "NOWA FIREMKA"))
         res.status.message
