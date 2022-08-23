@@ -53,17 +53,9 @@ export const AuthForm = () => {
   const { showModal } = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
   const [newAddress, setNewAddress] = useState(addressInitialState);
-  const [newCompany, setNewCompany] = useState(companyInitialState);
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("PL");
-  const [selectedRegion, setSelectedRegion] = useState([
-    {
-      region: "",
-      region_id: "",
-      region_code: "",
-    },
-  ]);
 
   useEffect(() => {
     magentoCountryQuery(selectedCountry).then((res) =>
@@ -78,28 +70,10 @@ export const AuthForm = () => {
     });
     setNewAddress({
       ...newAddress,
-      region: {
-        region: selectedRegion[0].name,
-        region_id: selectedRegion[0].id,
-      },
       firstname: newAccount.firstname,
       lastname: newAccount.lastname,
-      country_code: selectedCountry,
       [e.target.name]: e.target.value,
     });
-    setNewCompany({
-      ...newCompany,
-      company_region_code: selectedRegion[0].code,
-      company_country_code: selectedCountry,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleChangeRegion = (e) => {
-    const selected = countries.available_regions.filter(
-      (region) => region.name == e.target.value
-    );
-    setSelectedRegion(selected);
   };
 
   const handleSubmit = async (e) => {
@@ -107,7 +81,6 @@ export const AuthForm = () => {
     const validationPass = validation(
       newAccount,
       newAddress,
-      selectedRegion[0].region
     );
     if (validationPass.status) {
       await magentoRegister(newAccount).then(async (res) => {
@@ -228,68 +201,6 @@ export const AuthForm = () => {
         />
         {errors && <ErrorMsg>{errors.passwordCheck}</ErrorMsg>}
 
-        {/* <legend>
-          <span>DANE FIRMY</span>
-        </legend>
-        <Input
-          value={newCompany.name}
-          onChange={handleChange}
-          type="text"
-          placeholder="Nazwa firmy"
-          name="company_name"
-        />
-        {errors && <ErrorMsg>{errors.company_name}</ErrorMsg>}
-        <Input
-          value={newCompany.company_street}
-          onChange={handleChange}
-          type="text"
-          placeholder="Ulica i numer"
-          name="company_street"
-        />
-        {errors && <ErrorMsg>{errors.company_street}</ErrorMsg>}
-        <Input
-          value={newCompany.company_postcode}
-          onChange={handleChange}
-          type="text"
-          placeholder="Kod pocztowy"
-          name="company_postcode"
-        />
-        {errors && <ErrorMsg>{errors.company_postcode}</ErrorMsg>}
-        <Input
-          value={newCompany.company_city}
-          onChange={handleChange}
-          type="text"
-          placeholder="Miasto"
-          name="company_city"
-        />
-        {errors && <ErrorMsg>{errors.company_city}</ErrorMsg>}
-        <Input
-          value={newCompany.company_admin}
-          onChange={handleChange}
-          type="text"
-          placeholder="Osoba kontaktowa"
-          name="company_admin"
-        />
-        {errors && <ErrorMsg>{errors.company_admin}</ErrorMsg>}
-        <Input
-          value={newCompany.company_telephone}
-          onChange={handleChange}
-          type="text"
-          placeholder="Telefon"
-          name="company_telephone"
-        />
-        {errors && <ErrorMsg>{errors.company_telephone}</ErrorMsg>}
-        <Input
-          value={newCompany.company_email}
-          onChange={handleChange}
-          type="text"
-          placeholder="Adres email"
-          name="company_email"
-        />
-        {errors && <ErrorMsg>{errors.company_email}</ErrorMsg>} */}
-
-
-
         <legend>
           <span>DANE DOSTAWY</span>
         </legend>
@@ -320,7 +231,7 @@ export const AuthForm = () => {
           name="telephone"
         />
 
-        <Select onChange={handleChangeRegion}>
+        <Select name="region" onChange={handleChange}>
           <option value="">Wybierz województwo lub region</option>
           {countries.available_regions?.map((region) => (
             <option key={region.id} value={region.name}>
@@ -346,9 +257,10 @@ export const AuthForm = () => {
             handleChange(e);
           }}
         >
+          <option value="PL">Wybierz kraj</option>
           <option value="PL">Polska</option>
-          <option value="FR">Francja</option>
         </Select>
+        {errors.country_code && <ErrorMsg>{errors.country_code}</ErrorMsg>}
 
         <RegisterConsents />
 

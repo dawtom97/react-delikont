@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { magentoAddToWishlist } from "../graphql/magentoAddToWishlist";
+import { magentoEditCustomerAddress } from "../graphql/magentoEditUserAddress";
 import { magentoLogin } from "../graphql/magentoLogin";
 import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
 import { magentoUserToken } from "../graphql/magentoUserToken";
@@ -14,6 +15,7 @@ export const UserContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const location = useRouter();
   const [wishlist,setWishlist] = useState();
+  const [addresses, setAddresses] = useState();
   const { showModal } = useContext(ModalContext);
 
   useEffect(() => {
@@ -29,8 +31,12 @@ export const UserContextProvider = ({ children }) => {
 
   useEffect(()=>{
     setWishlist(currentUser?.wishlist);
+  },[currentUser]);
 
-  },[currentUser])
+  useEffect(()=>{
+    setAddresses(currentUser.addresses)
+    console.log("aktualizacja")
+  },[addresses, currentUser])
 
   const userLogout = () => {
     setIsLogged(false);
@@ -44,8 +50,10 @@ export const UserContextProvider = ({ children }) => {
     try {
       const getToken = await magentoUserToken(data.email, data.password);
       localStorage.setItem("Bearer", getToken.generateCustomerToken.token);
-      await magentoLogin().then(({ response }) => {
+      await magentoLogin()
+      .then(({ response }) => {
         setCurrentUser(response.data.customer);
+      //  setAddresses(response.data.addresses);
         showModal("Pomyślnie zalogowano");
       });
       setIsLogged(true);
@@ -57,8 +65,18 @@ export const UserContextProvider = ({ children }) => {
   };
 
 
+  const editAddress = (address) => {
+   magentoEditCustomerAddress(address).then(({response}) => {
+    console.log(response)
+    setAddresses(response.data.updateCustomerAddress)
+  })
+  }
+
   const addToWishlist = (sku) => {
-    magentoAddToWishlist(sku).then(res => setWishlist(res.addProductsToWishlist.wishlist));
+    magentoAddToWishlist(sku).then(res => {
+      console.log(res);
+      setWishlist(res.addProductsToWishlist.wishlist)
+    });
     showModal("Dodano do ulubionych");
   }
 
@@ -76,11 +94,13 @@ export const UserContextProvider = ({ children }) => {
     isLogged,
     currentUser,
     wishlist,
+    addresses,
     userLogin,
     userLogout,
     setCurrentUser,
     removeFromWishlist,
-    addToWishlist
+    addToWishlist,
+    editAddress
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

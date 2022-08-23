@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AccountInfo } from '../../src/components/AccountInfo/AccountInfo';
-import AddressInfo from '../../src/components/AddressInfo/AddressInfo';
-import { ModalContext } from '../../src/context/ModalContext';
+import {AddressInfo} from '../../src/components/AddressInfo/AddressInfo';
+import { Loader } from '../../src/components/Loader';
 import { UserContext } from '../../src/context/UserContext'
 import { AccountTemplate } from '../../src/templates/AccountTemplate';
 
 const AccountPage = () => {
-  const {currentUser} = useContext(UserContext);
+  const {currentUser, addresses} = useContext(UserContext);
 
-  console.log(currentUser)
+  console.log(addresses)
 
   return (
     <AccountTemplate>
-       <AccountInfo user={currentUser} wishlistCount={currentUser?.wishlist?.items_count}/>
-       <AddressInfo addresses={currentUser.addresses}/>
+       <AccountInfo user={currentUser}/>
+       {addresses ? <AddressInfo addresses={addresses}/> : <Loader/>}
     </AccountTemplate>
   )
 }

@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Heading } from "../Heading";
 import { FiEdit } from "react-icons/fi";
+import { magentoEditCustomerAddress } from "../../graphql/magentoEditUserAddress";
+import { AddressForm } from "../AddressForm/AddressForm";
+import { Loader } from "../Loader";
+import { UserContext } from "../../context/UserContext";
 
 export const Wrapper = styled.div`
   & h3 {
@@ -46,53 +50,57 @@ export const InnerWrapper = styled.div`
   }
 `;
 
-const AddressInfo = ({ addresses }) => {
-  const [deliveryAddress, setDeliveryAddress] = useState([]);
+export const AddressInfo = ({addresses}) => {
+  const [editMode, setEditMode] = useState(false);
 
-  useEffect(() => {
-    setDeliveryAddress(addresses);
-  }, [addresses]);
+  console.log(addresses[0])
 
   return (
     <Wrapper>
-      <Heading level="h3">KSIĄŻKA ADRESOWA</Heading>
-      {!deliveryAddress?.length ? (
-        <>
-          <p>Nie dodano adresów</p>
-          <button>
-            <FiEdit /> DODAJ
-          </button>
-        </>
+      {editMode ? (
+        <AddressForm onClose={()=>setEditMode(false)} address={addresses[0]} />
       ) : (
-        <InnerWrapper>
-          <div>
-            <p>ADRES DOSTAWY</p>
-            <InfoBox>
-              <p>
-                {deliveryAddress[0]?.firstname} {deliveryAddress[0]?.lastname}
-              </p>
-              <p>{deliveryAddress[0]?.telephone}</p>
-              <p>
-                {deliveryAddress[0]?.postcode} {deliveryAddress[0]?.city}
-              </p>
-              <p>
-                {deliveryAddress[0]?.region.region},{" "}
-                {deliveryAddress[0]?.country_code}
-              </p>
+        <>
+          <Heading level="h3">KSIĄŻKA ADRESOWA</Heading>
+          {!addresses.length ? (
+            <>
+              <p>Nie dodano adresów</p>
               <button>
-                <FiEdit /> EDYTUJ
+                <FiEdit /> DODAJ
               </button>
-            </InfoBox>
-          </div>
+            </>
+          ) : (
+            <InnerWrapper>
+              <div>
+                <p>ADRES DOSTAWY</p>
+                <InfoBox>
+                  <p>
+                    {addresses[0].firstname}{" "}
+                    {addresses[0]?.lastname}
+                  </p>
+                  <p>{addresses[0]?.telephone}</p>
+                  <p>
+                    {addresses[0]?.postcode} {addresses[0]?.city}
+                  </p>
+                  <p>
+                    {addresses[0]?.region.region},{" "}
+                    {addresses[0]?.country_code}
+                  </p>
+                  <button onClick={() => setEditMode((prev) => !prev)}>
+                    <FiEdit /> EDYTUJ
+                  </button>
+                </InfoBox>
+              </div>
 
-          <div>
-            <p>ADRES ROZLICZENIOWY</p>
-            <InfoBox></InfoBox>
-          </div>
-        </InnerWrapper>
+              <div>
+                <p>ADRES ROZLICZENIOWY</p>
+                <InfoBox></InfoBox>
+              </div>
+            </InnerWrapper>
+          )}
+        </>
       )}
     </Wrapper>
   );
 };
 
-export default AddressInfo;

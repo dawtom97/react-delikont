@@ -50,8 +50,6 @@ export const InnerWrapper = styled.div`
 `;
 
 export const AccountInfo = ({ user }) => {
-
-
   return (
     <Wrapper>
       <Heading level="h3">DANE KONTA</Heading>

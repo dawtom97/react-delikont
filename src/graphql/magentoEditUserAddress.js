@@ -1,24 +1,20 @@
 import { API_URL, headers } from "./config";
 
-export const magentoCreateCustomerAddress = async (props) => {
-  console.log(props);
+export const magentoEditCustomerAddress = async (props) => {
   const query = {
-    operationName: "createCustomerAddress",
+    operationName: "editCustomerAddress",
     query: `mutation {
-            createCustomerAddress(input: {
+            updateCustomerAddress(id:${props.id}, input: {
               region: {
-                region: "${props.region}"  
+                region: "${props.region}" 
               }
+              firstname: "${props.firstname}",
+              lastname:"${props.lastname}"
               country_code: ${props.country_code}
               street: ["${props.street}"]
               telephone: "${props.telephone}"
               postcode: "${props.postcode}"
               city: "${props.city}"
-              firstname: "${props.firstname}"
-              lastname: "${props.lastname}"
-              default_shipping: true
-              default_billing: true
-
             }) {
               id
               region {
@@ -36,7 +32,6 @@ export const magentoCreateCustomerAddress = async (props) => {
             }
           }`,
   };
-
   const options = {
     method: "POST",
     headers: {
@@ -45,12 +40,9 @@ export const magentoCreateCustomerAddress = async (props) => {
     },
     body: JSON.stringify(query),
   };
-
-  console.log(options.headers.Authorization);
-
   try {
     const response = await (await fetch(API_URL, options)).json();
-    console.log(response);
+    console.log(response.data.updateCustomerAddress);
     return {
       response,
       status: response.errors ? response.errors[0] : "success",
