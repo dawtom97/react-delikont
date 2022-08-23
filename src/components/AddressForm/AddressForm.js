@@ -15,9 +15,22 @@ export const Wrapper = styled.div`
   transform: translate(-50%, -50%); */
 `;
 
+
+const addressInitialState = {
+    region:"",
+    country_code: "",
+    street: "",
+    telephone: "",
+    postcode: "",
+    city: "",
+    firstname: "",
+    lastname: "",
+  };
+
+
 export const AddressForm = ({ address, onClose }) => {
   const {editAddress} = useContext(UserContext);
-  const [currentAddress, setCurrentAddress] = useState({});
+  const [currentAddress, setCurrentAddress] = useState(addressInitialState);
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("PL");
@@ -32,6 +45,7 @@ export const AddressForm = ({ address, onClose }) => {
   const handleEditAddress = (e) => {
     e.preventDefault();
     editAddress(currentAddress);
+    setCurrentAddress(addressInitialState);
     onClose();
   };
 
@@ -120,7 +134,7 @@ export const AddressForm = ({ address, onClose }) => {
         </Select>
 
         <button type="submit">Edytuj</button>
-        <button onClick={onClose} type="submit">Wróć</button>
+        <button type="button" onClick={onClose}>Wróć</button>
       </form>
     </Wrapper>
   );

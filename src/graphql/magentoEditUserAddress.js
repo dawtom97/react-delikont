@@ -36,13 +36,12 @@ export const magentoEditCustomerAddress = async (props) => {
     method: "POST",
     headers: {
       ...headers,
-      Authorization: "Bearer " + localStorage.getItem("Bearer"),
+      'Authorization': "Bearer " + localStorage.getItem("Bearer"),
     },
     body: JSON.stringify(query),
   };
   try {
     const response = await (await fetch(API_URL, options)).json();
-    console.log(response.data.updateCustomerAddress);
     return {
       response,
       status: response.errors ? response.errors[0] : "success",

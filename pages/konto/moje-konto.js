@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect} from 'react'
 import { AccountInfo } from '../../src/components/AccountInfo/AccountInfo';
 import {AddressInfo} from '../../src/components/AddressInfo/AddressInfo';
 import { Loader } from '../../src/components/Loader';
@@ -7,8 +7,6 @@ import { AccountTemplate } from '../../src/templates/AccountTemplate';
 
 const AccountPage = () => {
   const {currentUser, addresses} = useContext(UserContext);
-
-  console.log(addresses)
 
   return (
     <AccountTemplate>

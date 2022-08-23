@@ -50,10 +50,14 @@ export const InnerWrapper = styled.div`
   }
 `;
 
+
+
+
 export const AddressInfo = ({addresses}) => {
   const [editMode, setEditMode] = useState(false);
 
-  console.log(addresses[0])
+  console.log(addresses);
+  
 
   return (
     <Wrapper>
@@ -86,7 +90,7 @@ export const AddressInfo = ({addresses}) => {
                     {addresses[0]?.region.region},{" "}
                     {addresses[0]?.country_code}
                   </p>
-                  <button onClick={() => setEditMode((prev) => !prev)}>
+                  <button onClick={() => setEditMode(true)}>
                     <FiEdit /> EDYTUJ
                   </button>
                 </InfoBox>
