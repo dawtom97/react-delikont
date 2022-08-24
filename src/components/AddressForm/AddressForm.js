@@ -65,14 +65,13 @@ export const AddressForm = ({ address = {}, onClose, isNewAddress }) => {
     e.preventDefault();
     if(!isNewAddress) {
       editAddress(currentAddress);
-     
+      setCurrentAddress(addressInitialState);
     }
     else {
       createAddress(currentAddress);
       setCurrentAddress(addressInitialState);
       console.log("Utworzylem nowy adres");
     }
-
     onClose();
   };
 

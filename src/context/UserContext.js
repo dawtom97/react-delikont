@@ -2,9 +2,11 @@ import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { magentoAddToWishlist } from "../graphql/magentoAddToWishlist";
 import { magentoCreateCustomerAddress } from "../graphql/magentoCreateCustomerAddress";
+import { magentoDeleteAddress } from "../graphql/magentoDeleteAddress";
 import { magentoEditCustomerAddress } from "../graphql/magentoEditUserAddress";
 import { magentoLogin } from "../graphql/magentoLogin";
 import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
+import { magentoSetDefaultShipping } from "../graphql/magentoSetDefaultShipping";
 import { magentoUserToken } from "../graphql/magentoUserToken";
 import { ModalContext } from "./ModalContext";
 
@@ -24,9 +26,9 @@ export const UserContextProvider = ({ children }) => {
     if (token) {
       magentoLogin().then(({ response }) => {
         setCurrentUser(response.data.customer);
-        setAddresses(response.data.customer.addresses)
+        setAddresses(response.data.customer.addresses);
       });
-      console.log(token)
+      console.log(token);
 
       setIsLogged(true);
     }
@@ -52,13 +54,11 @@ export const UserContextProvider = ({ children }) => {
     try {
       const getToken = await magentoUserToken(data.email, data.password);
       localStorage.setItem("Bearer", getToken.generateCustomerToken.token);
-      await magentoLogin()
-      .then(({ response }) => {
+      await magentoLogin().then(({ response }) => {
         setCurrentUser(response.data.customer);
-       // setAddresses([response.data.customer.addresses]);
+        // setAddresses([response.data.customer.addresses]);
         showModal("Pomyślnie zalogowano");
-      })   
-      ;
+      });
       setIsLogged(true);
       location.push("/konto/moje-konto");
     } catch (error) {
@@ -69,18 +69,50 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const editAddress = (address) => {
-    magentoEditCustomerAddress(address).then(res=>{
-      setAddresses([...addresses.filter((ad) => ad.default_billing !== res.response.data.updateCustomerAddress.default_billing),res.response.data.updateCustomerAddress])
+    magentoEditCustomerAddress(address).then((res) => {
+      setAddresses((prev) => [
+        ...prev.filter(
+          (ad) =>
+            ad.default_billing !==
+              res.response.data.updateCustomerAddress.default_billing ||
+            ad.default_shipping == ad.default_billing
+        ),
+        res.response.data.updateCustomerAddress,
+      ]);
     });
     showModal("Zaktualizowano adres");
   };
 
   const createAddress = (address) => {
-    magentoCreateCustomerAddress(address).then(({response})=> {
-      setAddresses(prev=>[...prev,response.data.createCustomerAddress])
-    })
-    showModal("Dodano nowy adres")
-  }
+    magentoCreateCustomerAddress(address).then(({ response }) => {
+      setAddresses((prev) => [...prev, response.data.createCustomerAddress]);
+    });
+    showModal("Dodano nowy adres");
+  };
+
+  const deleteAddress = (id) => {
+    magentoDeleteAddress(id).then(({ response }) => {
+      setAddresses((prev) => [...prev.filter((address) => address.id !== id)]);
+    });
+    showModal("Usunięto adres");
+  };
+  const changeDefaultShippingAddress = (id) => {
+    magentoSetDefaultShipping(id).then(({ response }) => {
+      const previous = addresses.filter((ad)=>ad.default_shipping === true);
+      previous[0].default_shipping = false;
+      setAddresses((prev) => 
+      [
+        ...prev.filter(
+          (ad) =>
+            (ad.default_shipping == ad.default_billing && ad.id !==  response.data.updateCustomerAddress.id)
+            || ad.default_shipping !== ad.default_billing
+        ),
+        response.data.updateCustomerAddress,
+      ]);
+    });
+    
+    showModal("Zmieniono domyślny adres dostawy");
+  };
 
   const addToWishlist = (sku) => {
     magentoAddToWishlist(sku).then((res) => {
@@ -114,7 +146,9 @@ export const UserContextProvider = ({ children }) => {
     addToWishlist,
     editAddress,
     setAddresses,
-    createAddress
+    createAddress,
+    deleteAddress,
+    changeDefaultShippingAddress,
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
