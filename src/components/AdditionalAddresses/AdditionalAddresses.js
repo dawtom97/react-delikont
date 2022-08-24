@@ -67,6 +67,8 @@ export const AdditionalAddresses = ({ addresses }) => {
     useContext(UserContext);
   const [createMode, setCreateMode] = useState(false);
   const [additional, setAdditional] = useState();
+  const [editMode,setEditMode] = useState(false);
+  const [isEdit, setIsEdit] = useState()
 
   useEffect(() => {
     //  if(additional?.length && !createMode) return;
@@ -74,10 +76,10 @@ export const AdditionalAddresses = ({ addresses }) => {
       (address) => !address.default_billing && !address.default_shipping
     );
     setAdditional(filtered);
-    console.log(additional);
+
   }, [addresses]);
 
-  console.log(additional);
+
 
   if (!additional) return;
 
@@ -127,24 +129,28 @@ export const AdditionalAddresses = ({ addresses }) => {
                 <IoCheckmarkCircle />
                 DOMYŚLNY
               </Button>
+              <Button onClick={() => {
+                setIsEdit(address)
+                setEditMode(true)
+              }} isSecondary>
+                <IoTrashBin /> EDYTUJ
+              </Button>
             </div>
           </AdditionalAddresBox>
         ))
       )}
       {createMode ? (
         <AddressForm isNewAddress onClose={() => setCreateMode(false)} />
-      ) : (
-        <>
-          <ButtonsBox>
-            <Button onClick={() => setCreateMode(true)}>
-              DODAJ NOWY ADRES
-            </Button>
-            <Link href="/konto/moje-konto">
-              <Button isSecondary>POWRÓT</Button>
-            </Link>
-          </ButtonsBox>
-        </>
-      )}
+      ) : null}
+         {editMode ? (
+        <AddressForm isAdditional address={isEdit} onClose={() => setEditMode(false)} />
+      ) : null}
+      <ButtonsBox>
+        <Button onClick={() => setCreateMode(true)}>DODAJ NOWY ADRES</Button>
+        <Link href="/konto/moje-konto">
+          <Button isSecondary>POWRÓT</Button>
+        </Link>
+      </ButtonsBox>
     </Wrapper>
   );
 };

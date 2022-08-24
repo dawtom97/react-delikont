@@ -109,7 +109,7 @@ export const RegisterConsents = () => {
     <Wrapper>
       <div>
         {isShort ? <ShortDesc /> : <LongDesc />}
-        <button onClick={() => setIsShort((prev) => !prev)}>
+        <button type="button" onClick={() => setIsShort((prev) => !prev)}>
           {isShort ? "Więcej" : "Mniej"}
         </button>
       </div>

@@ -165,7 +165,7 @@ export const AuthForm = () => {
           placeholder="Nazwisko"
           name="lastname"
         />
-        {errors && <ErrorMsg>{errors.lastname}</ErrorMsg>}
+       
         <Input
           value={newAccount.email}
           onChange={handleChange}

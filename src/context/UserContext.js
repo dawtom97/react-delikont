@@ -28,7 +28,7 @@ export const UserContextProvider = ({ children }) => {
         setCurrentUser(response.data.customer);
         setAddresses(response.data.customer.addresses);
       });
-      console.log(token);
+    //  console.log(token);
 
       setIsLogged(true);
     }
@@ -82,6 +82,20 @@ export const UserContextProvider = ({ children }) => {
     });
     showModal("Zaktualizowano adres");
   };
+
+  const editAdditionalAddress = (address)=> {
+    magentoEditCustomerAddress(address).then(({response}) => {
+      setAddresses((prev) => [
+        ...prev.filter(
+          (ad) =>
+            (ad.default_shipping == ad.default_billing && ad.id !==  response.data.updateCustomerAddress.id)
+            || ad.default_shipping !== ad.default_billing
+        ),
+        response.data.updateCustomerAddress,
+      ]);
+    });
+    showModal("Zaktualizowano adres");
+  }
 
   const createAddress = (address) => {
     magentoCreateCustomerAddress(address).then(({ response }) => {
@@ -149,6 +163,7 @@ export const UserContextProvider = ({ children }) => {
     createAddress,
     deleteAddress,
     changeDefaultShippingAddress,
+    editAdditionalAddress
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

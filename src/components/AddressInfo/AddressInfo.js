@@ -22,11 +22,10 @@ export const Wrapper = styled.div`
 
     & > a {
       font-weight: 700;
-      color:${({theme})=>theme.colorPrimary};
+      color: ${({ theme }) => theme.colorPrimary};
       font-size: 12px;
     }
   }
-
 `;
 export const InfoBox = styled.div`
   & > p {
@@ -67,9 +66,7 @@ export const InnerWrapper = styled.div`
 
 export const AddressInfo = ({ addresses }) => {
   const [editMode, setEditMode] = useState(false);
-  const [isEdit,setIsEdit] = useState();
-
-
+  const [isEdit, setIsEdit] = useState();
 
   const defaultShipping = addresses.filter(
     (address) => address.default_shipping === true
@@ -78,12 +75,18 @@ export const AddressInfo = ({ addresses }) => {
     (address) => address.default_billing === true
   );
 
-  console.log(defaultBilling, defaultShipping);
+ // console.log(defaultBilling, defaultShipping);
 
   return (
     <Wrapper>
       <>
-        <div><Heading level="h3">KSIĄŻKA ADRESOWA </Heading> <Link href="/konto/adresy">ZARZĄDZAJ ADRESAMI</Link> </div>
+        {editMode ? (
+          <AddressForm onClose={() => setEditMode(false)} address={isEdit} />
+        ) : null}
+        <div>
+          <Heading level="h3">KSIĄŻKA ADRESOWA </Heading>{" "}
+          <Link href="/konto/adresy">ZARZĄDZAJ ADRESAMI</Link>{" "}
+        </div>
         {!addresses.length ? (
           <>
             <p>Nie dodano adresów</p>
@@ -92,8 +95,7 @@ export const AddressInfo = ({ addresses }) => {
             </button>
           </>
         ) : (
-          editMode ? <AddressForm onClose={()=>setEditMode(false)} address={isEdit}/> : (
-            <InnerWrapper>
+          <InnerWrapper>
             <div>
               <p>ADRES DOSTAWY</p>
               {defaultShipping.map((shipping, index) => (
@@ -108,10 +110,12 @@ export const AddressInfo = ({ addresses }) => {
                   <p>
                     {shipping?.region?.region}, {shipping?.country_code}
                   </p>
-                  <button onClick={() => {
-                    setEditMode(true);
-                    setIsEdit(shipping)
-                  }}>
+                  <button
+                    onClick={() => {
+                      setEditMode(true);
+                      setIsEdit(shipping);
+                    }}
+                  >
                     <FiEdit /> EDYTUJ
                   </button>
                 </InfoBox>
@@ -132,18 +136,18 @@ export const AddressInfo = ({ addresses }) => {
                   <p>
                     {billing?.region?.region}, {billing?.country_code}
                   </p>
-                  <button onClick={() => {
-                    setEditMode(true);
-                    setIsEdit(billing)
-                  }}>
+                  <button
+                    onClick={() => {
+                      setEditMode(true);
+                      setIsEdit(billing);
+                    }}
+                  >
                     <FiEdit /> EDYTUJ
                   </button>
                 </InfoBox>
               ))}
             </div>
           </InnerWrapper>
-          )
-    
         )}
       </>
     </Wrapper>
