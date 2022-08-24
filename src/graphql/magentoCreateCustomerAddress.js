@@ -46,7 +46,6 @@ export const magentoCreateCustomerAddress = async (props,isShipping = false, isB
     body: JSON.stringify(query),
   };
 
-  console.log(options.headers.Authorization);
 
   try {
     const response = await (await fetch(API_URL, options)).json();

@@ -2,34 +2,49 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../../context/UserContext";
 import { magentoCountryQuery } from "../../graphql/magentoCountryQuery";
-import { magentoEditCustomerAddress } from "../../graphql/magentoEditUserAddress";
 import { ErrorMsg } from "../ErrorMsg";
 import { Input } from "../Input";
 import { Select } from "../Select";
+import { Button } from "../Button";
 
 export const Wrapper = styled.div`
-  // position: fixed;
-
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
+  display: flex;
+  flex-direction: column;
+  & legend {
+    margin-bottom: 20px;
+  }
+  & span {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  & input,
+  select {
+    width: 100%;
+    margin: 5px 0;
+    display: block;
+    max-width: 500px;
+  }
+  & button {
+    width: 120px;
+    margin-top: 15px;
+    margin-right: 15px;
+  }
 `;
 
-
 const addressInitialState = {
-    region:"",
-    country_code: "",
-    street: "",
-    telephone: "",
-    postcode: "",
-    city: "",
-    firstname: "",
-    lastname: "",
-  };
+  region: "",
+  country_code: "",
+  street: "",
+  telephone: "",
+  postcode: "",
+  city: "",
+  firstname: "",
+  lastname: "",
+};
 
-
-export const AddressForm = ({ address, onClose }) => {
-  const {editAddress} = useContext(UserContext);
+export const AddressForm = ({ address = {}, onClose, isNewAddress }) => {
+  const { editAddress, createAddress } = useContext(UserContext);
   const [currentAddress, setCurrentAddress] = useState(addressInitialState);
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
@@ -37,16 +52,27 @@ export const AddressForm = ({ address, onClose }) => {
 
   useEffect(() => {
     setCurrentAddress(address);
+
     magentoCountryQuery(selectedCountry).then((res) =>
       setCountries(res.country)
     );
-  }, [selectedCountry, address]);
+  }, [selectedCountry]);
+
+  console.log(currentAddress)
 
   const handleEditAddress = (e) => {
-    console.log(currentAddress)
+    console.log(currentAddress);
     e.preventDefault();
-    editAddress(currentAddress);
-    setCurrentAddress(addressInitialState);
+    if(!isNewAddress) {
+      editAddress(currentAddress);
+     
+    }
+    else {
+      createAddress(currentAddress);
+      setCurrentAddress(addressInitialState);
+      console.log("Utworzylem nowy adres");
+    }
+
     onClose();
   };
 
@@ -61,7 +87,7 @@ export const AddressForm = ({ address, onClose }) => {
     <Wrapper>
       <form onSubmit={handleEditAddress}>
         <legend>
-          <span>EDYTUJ ADRES DOSTAWY</span>
+          <span>{isNewAddress ? "NOWY ADRES" : "EDYTUJ ADRES"}</span>
         </legend>
 
         <Input
@@ -105,7 +131,11 @@ export const AddressForm = ({ address, onClose }) => {
           name="telephone"
         />
 
-        <Select name="region" onChange={handleChange}>
+        <Select
+          value={currentAddress?.region?.region}
+          name="region"
+          onChange={handleChange}
+        >
           <option value="">Wybierz województwo lub region</option>
           {countries.available_regions?.map((region) => (
             <option key={region.id} value={region.name}>
@@ -131,11 +161,14 @@ export const AddressForm = ({ address, onClose }) => {
             handleChange(e);
           }}
         >
+          {isNewAddress ? <option value="PL">Wybierz kraj</option> : null}
           <option value="PL">Polska</option>
         </Select>
 
-        <button type="submit">Edytuj</button>
-        <button type="button" onClick={onClose}>Wróć</button>
+        <Button type="submit">Edytuj</Button>
+        <Button type="button" onClick={onClose} isSecondary>
+          Wróć
+        </Button>
       </form>
     </Wrapper>
   );

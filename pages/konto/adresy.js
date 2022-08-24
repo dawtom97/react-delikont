@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { AdditionalAddresses } from '../../src/components/AdditionalAddresses/AdditionalAddresses';
 import { AddressInfo } from '../../src/components/AddressInfo/AddressInfo';
 import { Loader } from '../../src/components/Loader';
 import { UserContext } from '../../src/context/UserContext';
@@ -10,6 +11,7 @@ const UserAddressPage = () => {
   return (
     <AccountTemplate>
         {addresses ? <AddressInfo addresses={addresses}/> : <Loader/>}
+        <AdditionalAddresses addresses={addresses}/>
     </AccountTemplate>
   )
 }

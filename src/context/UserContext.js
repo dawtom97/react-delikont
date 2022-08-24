@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { magentoAddToWishlist } from "../graphql/magentoAddToWishlist";
+import { magentoCreateCustomerAddress } from "../graphql/magentoCreateCustomerAddress";
 import { magentoEditCustomerAddress } from "../graphql/magentoEditUserAddress";
 import { magentoLogin } from "../graphql/magentoLogin";
 import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
@@ -74,6 +75,13 @@ export const UserContextProvider = ({ children }) => {
     showModal("Zaktualizowano adres");
   };
 
+  const createAddress = (address) => {
+    magentoCreateCustomerAddress(address).then(({response})=> {
+      setAddresses(prev=>[...prev,response.data.createCustomerAddress])
+    })
+    showModal("Dodano nowy adres")
+  }
+
   const addToWishlist = (sku) => {
     magentoAddToWishlist(sku).then((res) => {
       console.log(res);
@@ -105,7 +113,8 @@ export const UserContextProvider = ({ children }) => {
     removeFromWishlist,
     addToWishlist,
     editAddress,
-    setAddresses
+    setAddresses,
+    createAddress
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

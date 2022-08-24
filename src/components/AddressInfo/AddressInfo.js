@@ -6,13 +6,34 @@ import { magentoEditCustomerAddress } from "../../graphql/magentoEditUserAddress
 import { AddressForm } from "../AddressForm/AddressForm";
 import { Loader } from "../Loader";
 import { UserContext } from "../../context/UserContext";
+import Link from "next/link";
+import { Button } from "../Button";
 
 export const Wrapper = styled.div`
   & h3 {
     margin-top: 0;
     font-size: 20px;
   }
-  & button {
+
+  & > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    & > a {
+      font-weight: 700;
+      color:${({theme})=>theme.colorPrimary};
+      font-size: 12px;
+    }
+  }
+
+`;
+export const InfoBox = styled.div`
+  & > p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  & > button {
     background: none;
     border: none;
     cursor: pointer;
@@ -25,12 +46,6 @@ export const Wrapper = styled.div`
     & svg {
       color: ${({ theme }) => theme.colorPrimary};
     }
-  }
-`;
-export const InfoBox = styled.div`
-  & > p {
-    font-size: 14px;
-    margin: 5px 0;
   }
 `;
 
@@ -52,8 +67,9 @@ export const InnerWrapper = styled.div`
 
 export const AddressInfo = ({ addresses }) => {
   const [editMode, setEditMode] = useState(false);
+  const [isEdit,setIsEdit] = useState();
 
-  console.log(addresses);
+
 
   const defaultShipping = addresses.filter(
     (address) => address.default_shipping === true
@@ -67,7 +83,7 @@ export const AddressInfo = ({ addresses }) => {
   return (
     <Wrapper>
       <>
-        <Heading level="h3">KSIĄŻKA ADRESOWA</Heading>
+        <div><Heading level="h3">KSIĄŻKA ADRESOWA </Heading> <Link href="/konto/adresy">ZARZĄDZAJ ADRESAMI</Link> </div>
         {!addresses.length ? (
           <>
             <p>Nie dodano adresów</p>
@@ -76,7 +92,8 @@ export const AddressInfo = ({ addresses }) => {
             </button>
           </>
         ) : (
-          <InnerWrapper>
+          editMode ? <AddressForm onClose={()=>setEditMode(false)} address={isEdit}/> : (
+            <InnerWrapper>
             <div>
               <p>ADRES DOSTAWY</p>
               {defaultShipping.map((shipping, index) => (
@@ -91,14 +108,11 @@ export const AddressInfo = ({ addresses }) => {
                   <p>
                     {shipping?.region?.region}, {shipping?.country_code}
                   </p>
-                  <button onClick={() => setEditMode(true)}>
+                  <button onClick={() => {
+                    setEditMode(true);
+                    setIsEdit(shipping)
+                  }}>
                     <FiEdit /> EDYTUJ
-                    {editMode ? (
-                      <AddressForm
-                        onClose={() => setEditMode(false)}
-                        address={shipping}
-                      />
-                    ) : null}
                   </button>
                 </InfoBox>
               ))}
@@ -118,19 +132,18 @@ export const AddressInfo = ({ addresses }) => {
                   <p>
                     {billing?.region?.region}, {billing?.country_code}
                   </p>
-                  <button onClick={() => setEditMode(true)}>
+                  <button onClick={() => {
+                    setEditMode(true);
+                    setIsEdit(billing)
+                  }}>
                     <FiEdit /> EDYTUJ
-                    {editMode ? (
-                      <AddressForm
-                        onClose={() => setEditMode(false)}
-                        address={billing}
-                      />
-                    ) : null}
                   </button>
                 </InfoBox>
               ))}
             </div>
           </InnerWrapper>
+          )
+    
         )}
       </>
     </Wrapper>
