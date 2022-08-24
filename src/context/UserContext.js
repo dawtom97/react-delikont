@@ -23,9 +23,9 @@ export const UserContextProvider = ({ children }) => {
     if (token) {
       magentoLogin().then(({ response }) => {
         setCurrentUser(response.data.customer);
-        console.log(response.data.customer.addresses,"PRZY EFEKCIE")
         setAddresses(response.data.customer.addresses)
       });
+      console.log(token)
 
       setIsLogged(true);
     }
@@ -54,7 +54,6 @@ export const UserContextProvider = ({ children }) => {
       await magentoLogin()
       .then(({ response }) => {
         setCurrentUser(response.data.customer);
-        console.log(response.data.customer.addresses, "PRZY LOGINIE")
        // setAddresses([response.data.customer.addresses]);
         showModal("Pomyślnie zalogowano");
       })   
@@ -69,7 +68,9 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const editAddress = (address) => {
-    magentoEditCustomerAddress(address).then(res=>setAddresses([res.response.data.updateCustomerAddress]));
+    magentoEditCustomerAddress(address).then(res=>{
+      setAddresses([...addresses.filter((ad) => ad.default_billing !== res.response.data.updateCustomerAddress.default_billing),res.response.data.updateCustomerAddress])
+    });
     showModal("Zaktualizowano adres");
   };
 

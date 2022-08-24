@@ -1,6 +1,6 @@
 import { API_URL, headers } from "./config";
 
-export const magentoCreateCustomerAddress = async (props) => {
+export const magentoCreateCustomerAddress = async (props,isShipping = false, isBilling = false) => {
   console.log(props);
   const query = {
     operationName: "createCustomerAddress",
@@ -16,8 +16,8 @@ export const magentoCreateCustomerAddress = async (props) => {
               city: "${props.city}"
               firstname: "${props.firstname}"
               lastname: "${props.lastname}"
-              default_shipping: true
-              default_billing: true
+              default_shipping: ${isShipping}
+              default_billing: ${isBilling}
 
             }) {
               id

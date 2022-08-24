@@ -76,9 +76,12 @@ export const AuthForm = () => {
           email: newAccount.email,
           password: newAccount.password,
         });
-        await magentoCreateCustomerAddress(newAddress).then(({response}) =>
-          setAddresses([response.data.createCustomerAddress])
+        await magentoCreateCustomerAddress(newAddress,true,false).then(({response}) =>
+          setAddresses(prev=>[...prev,response.data.createCustomerAddress])
         );
+        await magentoCreateCustomerAddress(newAddress,false,true).then(({response}) =>
+        setAddresses(prev=>[...prev,response.data.createCustomerAddress])
+      );
         // await magentoCreateCompany(newCompany).then(res => console.log(res, "NOWA FIREMKA"))
         res.status.message
           ? showModal("Istnieje już konto o podanym adresie email", true)

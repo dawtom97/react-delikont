@@ -21,6 +21,8 @@ export const magentoLogin = async () => {
                   postcode
                   country_code
                   telephone
+                  default_shipping
+                  default_billing
                 }
                 wishlist {
                     id

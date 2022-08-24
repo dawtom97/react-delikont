@@ -5,8 +5,6 @@ import { Loader } from "../src/components/Loader";
 import Products from "../src/components/Products/Products";
 import { magentoProducts } from "../src/graphql/magentoProducts";
 import { MainTemplate } from "../src/templates/MainTemplate";
-import {useQuery} from '@apollo/client'
-import { ALL_PRODUCTS_QUERY } from "../src/graphql/ALL_PRODUCTS_QUERY";
 
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
@@ -14,13 +12,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const observer = useRef();
   const lastItemRef = useRef();
-
-  // const {loading,error,data} = useQuery(ALL_PRODUCTS_QUERY,{
-  //   variables:{
-  //     page:1
-  //   }
-  // });
-  // console.log(loading,error,data)
 
   useEffect(() => {
     magentoProducts(1).then((res) => {

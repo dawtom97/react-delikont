@@ -43,6 +43,7 @@ export const AddressForm = ({ address, onClose }) => {
   }, [selectedCountry, address]);
 
   const handleEditAddress = (e) => {
+    console.log(currentAddress)
     e.preventDefault();
     editAddress(currentAddress);
     setCurrentAddress(addressInitialState);
@@ -60,7 +61,7 @@ export const AddressForm = ({ address, onClose }) => {
     <Wrapper>
       <form onSubmit={handleEditAddress}>
         <legend>
-          <span>DANE DOSTAWY</span>
+          <span>EDYTUJ ADRES DOSTAWY</span>
         </legend>
 
         <Input

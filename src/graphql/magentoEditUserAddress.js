@@ -42,6 +42,7 @@ export const magentoEditCustomerAddress = async (props) => {
   };
   try {
     const response = await (await fetch(API_URL, options)).json();
+    console.log(response)
     return {
       response,
       status: response.errors ? response.errors[0] : "success",

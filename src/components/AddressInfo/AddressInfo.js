@@ -50,61 +50,89 @@ export const InnerWrapper = styled.div`
   }
 `;
 
-
-
-
-export const AddressInfo = ({addresses}) => {
+export const AddressInfo = ({ addresses }) => {
   const [editMode, setEditMode] = useState(false);
 
   console.log(addresses);
-  
+
+  const defaultShipping = addresses.filter(
+    (address) => address.default_shipping === true
+  );
+  const defaultBilling = addresses.filter(
+    (address) => address.default_billing === true
+  );
+
+  console.log(defaultBilling, defaultShipping);
 
   return (
     <Wrapper>
-      {editMode ? (
-        <AddressForm onClose={()=>setEditMode(false)} address={addresses[0]} />
-      ) : (
-        <>
-          <Heading level="h3">KSIĄŻKA ADRESOWA</Heading>
-          {!addresses.length ? (
-            <>
-              <p>Nie dodano adresów</p>
-              <button>
-                <FiEdit /> DODAJ
-              </button>
-            </>
-          ) : (
-            <InnerWrapper>
-              <div>
-                <p>ADRES DOSTAWY</p>
-                <InfoBox>
+      <>
+        <Heading level="h3">KSIĄŻKA ADRESOWA</Heading>
+        {!addresses.length ? (
+          <>
+            <p>Nie dodano adresów</p>
+            <button>
+              <FiEdit /> DODAJ
+            </button>
+          </>
+        ) : (
+          <InnerWrapper>
+            <div>
+              <p>ADRES DOSTAWY</p>
+              {defaultShipping.map((shipping, index) => (
+                <InfoBox key={index}>
                   <p>
-                    {addresses[0].firstname}{" "}
-                    {addresses[0]?.lastname}
+                    {shipping?.firstname} {shipping?.lastname}
                   </p>
-                  <p>{addresses[0]?.telephone}</p>
+                  <p>{shipping?.telephone}</p>
                   <p>
-                    {addresses[0]?.postcode} {addresses[0]?.city}
+                    {shipping?.postcode} {shipping?.city}
                   </p>
                   <p>
-                    {addresses[0]?.region.region},{" "}
-                    {addresses[0]?.country_code}
+                    {shipping?.region?.region}, {shipping?.country_code}
                   </p>
                   <button onClick={() => setEditMode(true)}>
                     <FiEdit /> EDYTUJ
+                    {editMode ? (
+                      <AddressForm
+                        onClose={() => setEditMode(false)}
+                        address={shipping}
+                      />
+                    ) : null}
                   </button>
                 </InfoBox>
-              </div>
+              ))}
+            </div>
 
-              <div>
-                <p>ADRES ROZLICZENIOWY</p>
-                <InfoBox></InfoBox>
-              </div>
-            </InnerWrapper>
-          )}
-        </>
-      )}
+            <div>
+              <p>ADRES ROZLICZENIOWY</p>
+              {defaultBilling.map((billing, index) => (
+                <InfoBox key={index}>
+                  <p>
+                    {billing?.firstname} {billing?.lastname}
+                  </p>
+                  <p>{billing?.telephone}</p>
+                  <p>
+                    {billing?.postcode} {billing?.city}
+                  </p>
+                  <p>
+                    {billing?.region?.region}, {billing?.country_code}
+                  </p>
+                  <button onClick={() => setEditMode(true)}>
+                    <FiEdit /> EDYTUJ
+                    {editMode ? (
+                      <AddressForm
+                        onClose={() => setEditMode(false)}
+                        address={billing}
+                      />
+                    ) : null}
+                  </button>
+                </InfoBox>
+              ))}
+            </div>
+          </InnerWrapper>
+        )}
+      </>
     </Wrapper>
   );
 };
-
