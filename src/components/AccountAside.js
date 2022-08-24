@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import {Button} from '../components/Button'
+import { UserContext } from "../context/UserContext";
 
 export const Wrapper = styled.aside`
   display: flex;
@@ -9,7 +11,7 @@ export const Wrapper = styled.aside`
   padding: 15px 10px;
   border: 1px solid #e1e1e1;
   min-width: 250px;
-  height: 350px;
+  height: 430px;
 
   & a {
     border-bottom: 1px solid #ebebeb;
@@ -30,6 +32,9 @@ export const Wrapper = styled.aside`
     transition: 0.4s;
     cursor: pointer;
   }
+  & button {
+    margin-top:30px;
+  }
 `;
 
 export const LinkText = styled.a`
@@ -40,6 +45,7 @@ export const LinkText = styled.a`
 
 export const AccountAside = () => {
   const router = useRouter();
+  const {userLogout} = useContext(UserContext)
 
   return (
     <Wrapper>
@@ -78,6 +84,7 @@ export const AccountAside = () => {
           <span>Dane firmy</span>
         </LinkText>
       </Link>
+      <Button onClick={userLogout}>Wyloguj</Button>
     </Wrapper>
   );
 };

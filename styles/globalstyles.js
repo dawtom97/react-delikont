@@ -8,9 +8,10 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-button,input, input::placeholder, textarea, textarea::placeholder {
+button,input, input::placeholder, textarea, textarea::placeholder, select, option {
   font-family: 'Roboto', sans-serif;
   transition: 0.4s;
+ 
 }
 
 a {
