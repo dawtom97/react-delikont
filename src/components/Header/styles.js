@@ -160,6 +160,12 @@ export const AuthPanel = styled.div`
   top: 100%;
   min-width: 300px;
   box-shadow: 8px 8px 10px -11px rgba(66, 68, 90, 1);
+  text-align: center;
+
+  &  > svg {
+    font-size:60px;
+    color:#ddd;
+  }
 
   & > form {
     display: flex;
