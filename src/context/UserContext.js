@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { magentoAddToWishlist } from "../graphql/magentoAddToWishlist";
+import { magentoChangeUserPassword } from "../graphql/magentoChangeUserPassword";
 import { magentoCreateCustomerAddress } from "../graphql/magentoCreateCustomerAddress";
 import { magentoDeleteAddress } from "../graphql/magentoDeleteAddress";
 import { magentoEditCustomerAddress } from "../graphql/magentoEditUserAddress";
@@ -29,7 +30,7 @@ export const UserContextProvider = ({ children }) => {
         setCurrentUser(response.data.customer);
         setAddresses(response.data.customer.addresses);
       });
-    //  console.log(token);
+      //  console.log(token);
 
       setIsLogged(true);
     }
@@ -52,11 +53,26 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const updateUserInfo = (user) => {
-    magentoUpdateUser(user).then(({response})=>setCurrentUser({addresses,wishlist, ...response.data.updateCustomer.customer}));
+    magentoUpdateUser(user).then(({ response }) =>
+      setCurrentUser({
+        addresses,
+        wishlist,
+        ...response.data.updateCustomer.customer,
+      })
+    );
     showModal("Zaktualizowano dane");
 
-    console.log(currentUser)
-  }
+    console.log(currentUser);
+  };
+  const changeUserPassword = (passwords) => {
+    magentoChangeUserPassword(passwords).then(({ response }) => {
+      if (response.errors) {
+        showModal("Podano błędne stare hasło");
+      } else {
+        showModal("Twoje hasło zostało zmienione");
+      }
+    });
+  };
 
   const userLogin = async (data) => {
     try {
@@ -91,19 +107,20 @@ export const UserContextProvider = ({ children }) => {
     showModal("Zaktualizowano adres");
   };
 
-  const editAdditionalAddress = (address)=> {
-    magentoEditCustomerAddress(address).then(({response}) => {
+  const editAdditionalAddress = (address) => {
+    magentoEditCustomerAddress(address).then(({ response }) => {
       setAddresses((prev) => [
         ...prev.filter(
           (ad) =>
-            (ad.default_shipping == ad.default_billing && ad.id !==  response.data.updateCustomerAddress.id)
-            || ad.default_shipping !== ad.default_billing
+            (ad.default_shipping == ad.default_billing &&
+              ad.id !== response.data.updateCustomerAddress.id) ||
+            ad.default_shipping !== ad.default_billing
         ),
         response.data.updateCustomerAddress,
       ]);
     });
     showModal("Zaktualizowano adres");
-  }
+  };
 
   const createAddress = (address) => {
     magentoCreateCustomerAddress(address).then(({ response }) => {
@@ -118,22 +135,22 @@ export const UserContextProvider = ({ children }) => {
     });
     showModal("Usunięto adres");
   };
-  
+
   const changeDefaultShippingAddress = (id) => {
     magentoSetDefaultShipping(id).then(({ response }) => {
-      const previous = addresses.filter((ad)=>ad.default_shipping === true);
+      const previous = addresses.filter((ad) => ad.default_shipping === true);
       previous[0].default_shipping = false;
-      setAddresses((prev) => 
-      [
+      setAddresses((prev) => [
         ...prev.filter(
           (ad) =>
-            (ad.default_shipping == ad.default_billing && ad.id !==  response.data.updateCustomerAddress.id)
-            || ad.default_shipping !== ad.default_billing
+            (ad.default_shipping == ad.default_billing &&
+              ad.id !== response.data.updateCustomerAddress.id) ||
+            ad.default_shipping !== ad.default_billing
         ),
         response.data.updateCustomerAddress,
       ]);
     });
-    
+
     showModal("Zmieniono domyślny adres dostawy");
   };
 
@@ -173,7 +190,8 @@ export const UserContextProvider = ({ children }) => {
     deleteAddress,
     changeDefaultShippingAddress,
     editAdditionalAddress,
-    updateUserInfo
+    updateUserInfo,
+    changeUserPassword,
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

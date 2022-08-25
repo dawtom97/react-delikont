@@ -1,22 +1,15 @@
-
 import { API_URL, headers } from "./config";
 
-export const magentoUpdateUser = async (props) => {
-//  console.log(props, "props")
+export const magentoChangeUserPassword = async (props) => {
   const query = {
-    operationName: "editCustomer",
+    operationName: "changePassword",
     query: `mutation {
-            updateCustomer(
-              input: {
-                firstname: "${props.firstname}"
-                lastname: "${props.lastname}"
-              }
+            changeCustomerPassword(
+              currentPassword: "${props.currentPassword}"
+              newPassword: "${props.newPassword}"
             ) {
-              customer {
-                firstname
-                lastname
-                email
-              }
+              id
+              email
             }
           }`,
   };
@@ -24,7 +17,7 @@ export const magentoUpdateUser = async (props) => {
     method: "POST",
     headers: {
       ...headers,
-      'Authorization': "Bearer " + localStorage.getItem("Bearer"),
+      Authorization: "Bearer " + localStorage.getItem("Bearer"),
     },
     body: JSON.stringify(query),
   };

@@ -4,6 +4,7 @@ import { Heading } from "../Heading";
 import { FiEdit } from "react-icons/fi";
 import { Loader } from "../Loader";
 import { EditUserForm } from "../EditUserForm/EditUserForm";
+import { EditPasswordForm } from "../EditPasswordForm/EditPasswordForm";
 
 export const Wrapper = styled.div`
   & h3 {
@@ -52,10 +53,12 @@ export const InnerWrapper = styled.div`
 `;
 
 export const AccountInfo = ({ user }) => {
-  const [editMode,setEditMode] = useState(false)
+  const [editMode,setEditMode] = useState(false);
+  const [changePasswordMode,setChangePasswordMode] = useState(false);
   return (
     <Wrapper>
       {editMode ? <EditUserForm user={user} onClose={()=>setEditMode(false)}/> : null}
+      {changePasswordMode ? <EditPasswordForm onClose={()=>setChangePasswordMode(false)}/>: null}
       <Heading level="h3">DANE KONTA</Heading>
       <InnerWrapper>
         <div>
@@ -69,7 +72,7 @@ export const AccountInfo = ({ user }) => {
               <button onClick={()=>setEditMode(true)}>
                 <FiEdit /> EDYTUJ
               </button>
-              <button>
+              <button onClick={()=>setChangePasswordMode(true)}>
                 <FiEdit /> ZMIEŃ HASŁO
               </button>
             </div>
