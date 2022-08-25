@@ -80,10 +80,7 @@ export const AddressForm = ({ address, onClose, isNewAddress, isAdditional }) =>
     );
   }, [selectedCountry]);
 
-  console.log(currentAddress);
-
   const validateAddress = (data) => {
-    console.log(data)
     const errObj = {};
     if (data.region == "") errObj.region = "To pole jest wymagane";
     if (data.country_code == "") errObj.country_code = "To pole jest wymagane";
@@ -119,8 +116,6 @@ export const AddressForm = ({ address, onClose, isNewAddress, isAdditional }) =>
     e.preventDefault();
 
     const isValid = validateAddress(currentAddress);
-
-    console.log(isValid, currentAddress)
 
     if (isValid.status) {
       if (!isNewAddress) {
@@ -234,9 +229,9 @@ export const AddressForm = ({ address, onClose, isNewAddress, isAdditional }) =>
           </Select>
           {errors && <ErrorMsg>{errors.country_code}</ErrorMsg>}
 
-          <Button type="submit">Edytuj</Button>
+          <Button type="submit">{isNewAddress ? "DODAJ" : "EDYTUJ"}</Button>
           <Button type="button" onClick={onClose} isSecondary>
-            Wróć
+            WRÓĆ
           </Button>
         </form>
       </Wrapper>

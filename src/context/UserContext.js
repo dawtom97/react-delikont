@@ -7,6 +7,7 @@ import { magentoEditCustomerAddress } from "../graphql/magentoEditUserAddress";
 import { magentoLogin } from "../graphql/magentoLogin";
 import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
 import { magentoSetDefaultShipping } from "../graphql/magentoSetDefaultShipping";
+import { magentoUpdateUser } from "../graphql/magentoUpdateUser";
 import { magentoUserToken } from "../graphql/magentoUserToken";
 import { ModalContext } from "./ModalContext";
 
@@ -49,6 +50,13 @@ export const UserContextProvider = ({ children }) => {
     location.push("/");
     showModal("Pomyślnie wylogowano");
   };
+
+  const updateUserInfo = (user) => {
+    magentoUpdateUser(user).then(({response})=>setCurrentUser({addresses,wishlist, ...response.data.updateCustomer.customer}));
+    showModal("Zaktualizowano dane");
+
+    console.log(currentUser)
+  }
 
   const userLogin = async (data) => {
     try {
@@ -110,6 +118,7 @@ export const UserContextProvider = ({ children }) => {
     });
     showModal("Usunięto adres");
   };
+  
   const changeDefaultShippingAddress = (id) => {
     magentoSetDefaultShipping(id).then(({ response }) => {
       const previous = addresses.filter((ad)=>ad.default_shipping === true);
@@ -163,7 +172,8 @@ export const UserContextProvider = ({ children }) => {
     createAddress,
     deleteAddress,
     changeDefaultShippingAddress,
-    editAdditionalAddress
+    editAdditionalAddress,
+    updateUserInfo
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
