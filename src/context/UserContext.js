@@ -11,6 +11,7 @@ import { magentoLogin } from "../graphql/magentoLogin";
 import { magentoRemoveFromCart } from "../graphql/magentoRemoveFromCart";
 import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
 import { magentoSetDefaultShipping } from "../graphql/magentoSetDefaultShipping";
+import { magentoUpdateCartQuantity } from "../graphql/magentoUpdateCartQuantity";
 import { magentoUpdateUser } from "../graphql/magentoUpdateUser";
 import { magentoUserToken } from "../graphql/magentoUserToken";
 import { ModalContext } from "./ModalContext";
@@ -52,6 +53,7 @@ export const UserContextProvider = ({ children }) => {
     setIsLogged(false);
     localStorage.setItem("Bearer", "");
     setCurrentUser({});
+    setCart();
     location.push("/");
     showModal("Pomyślnie wylogowano");
   };
@@ -188,6 +190,11 @@ export const UserContextProvider = ({ children }) => {
     magentoRemoveFromCart(cart.id,id).then(({response})=>setCart(response.data.removeItemFromCart.cart));
     showModal("Usunięto z koszyka");
   }
+  const updateCartQuantity = (uid,quantity) => {
+    console.log(cart.id)
+    magentoUpdateCartQuantity(cart.id, uid, quantity).then(({response})=>setCart(response.data.updateCartItems.cart));
+    showModal("Zaktualizowano koszyk")
+  }
 
 
   const user = {
@@ -211,7 +218,8 @@ export const UserContextProvider = ({ children }) => {
     updateUserInfo,
     changeUserPassword,
     addToCart,
-    removeFromCart
+    removeFromCart,
+    updateCartQuantity,
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

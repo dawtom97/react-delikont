@@ -20,6 +20,7 @@ export const Header = ({ categories }) => {
     userLogin,
     currentUser,
     userLogout,
+    cart
   } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
@@ -178,9 +179,15 @@ export const Header = ({ categories }) => {
           )}
 
           <Link href="/koszyk">
-            <a>
+            <Styled.CartIcon>
               <BsCartCheck />
-            </a>
+              {cart?.items.length ? (
+                <>
+                <Styled.CartItemsNum>{cart.items.length}</Styled.CartItemsNum>
+                {/* <Styled.CartItemsValue>{cart.prices.grand_total.value}zł</Styled.CartItemsValue> */}
+                </>
+              ) : null}
+            </Styled.CartIcon>
           </Link>
         </Styled.IconsBar>
       </Styled.InnerWrapper>

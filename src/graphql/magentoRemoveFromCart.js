@@ -15,12 +15,13 @@ export const magentoRemoveFromCart = async (cartId, itemId) => {
                 id
                 items {
                     id
+                    uid
                     product {
                       id
                       url_key
                       name
                       sku
-                    
+                      uid
                       stock_status
                       only_x_left_in_stock
                       meta_keyword

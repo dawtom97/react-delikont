@@ -7,14 +7,21 @@ export const magentoGetCart = async () => {
         query {
             customerCart {
               id
+              prices {
+                grand_total{
+                  value
+                  currency
+                }
+              }
               items {
                 id
+                uid
                 product {
                   id
                   url_key
                   name
                   sku
-                
+                  uid
                   stock_status
                   only_x_left_in_stock
                   meta_keyword
@@ -183,7 +190,7 @@ export const magentoGetCart = async () => {
     method: "POST",
     headers: {
       ...headers,
-      'Authorization': "Bearer " + localStorage.getItem("Bearer"),
+      Authorization: "Bearer " + localStorage.getItem("Bearer"),
     },
     body: JSON.stringify(query),
   };
