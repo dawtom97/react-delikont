@@ -12,9 +12,16 @@ import { BiGitCompare, BiCalendar } from "react-icons/bi";
 import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 import { ErrorMsg } from "../ErrorMsg";
+import { FaUserCircle } from "react-icons/fa";
 
 export const Header = ({ categories }) => {
-  const { isLogged, userLogin } = useContext(UserContext);
+  const {
+    isLogged,
+    userLogin,
+    currentUser,
+    userLogout,
+    cart
+  } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
@@ -22,8 +29,8 @@ export const Header = ({ categories }) => {
   const handleLogin = (e) => {
     e.preventDefault();
     const validationPass = validation(userForm);
-    if(validationPass.status) {
-      setErrors({})
+    if (validationPass.status) {
+      setErrors({});
       userLogin(userForm);
     }
     setErrors(validationPass.errors);
@@ -32,7 +39,7 @@ export const Header = ({ categories }) => {
   const validation = (data) => {
     const errors = {};
     if (data.email == "") errors.email = "To pole jest wymagane";
-    if (data.password == "") errors.password = "To pole jest wymagane"
+    if (data.password == "") errors.password = "To pole jest wymagane";
 
     if (!errors.email && !errors.password)
       return {
@@ -74,11 +81,52 @@ export const Header = ({ categories }) => {
 
         <Styled.IconsBar>
           {isLogged ? (
-            <Link href="/konto/moje-konto">
-              <a>
+            <>
+              <button onClick={handleAccountClick}>
                 <FaRegUserCircle />
-              </a>
-            </Link>
+              </button>
+              {authPanelVisible ? (
+                <Styled.AuthPanel>
+                  <FaUserCircle />
+                  <p>Cześć {currentUser?.firstname}!</p>
+
+                  <button aria-label="Wyloguj się" onClick={() => userLogout()}>
+                    Wyloguj się
+                  </button>
+
+                  <ul>
+                    <li>
+                      <Link href="/konto/moje-konto">
+                        <a>
+                          <BiGitCompare /> MOJE KONTO
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/konto/lista-zyczen">
+                        <a>
+                          <BsSuitHeart /> MOJA LISTA ŻYCZEŃ
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/">
+                        <a>
+                          <BiCalendar /> MOJE ZAMÓWIENIA
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/konto/adresy">
+                        <a>
+                          <AiOutlineMail /> MOJE ADRESY
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
+                </Styled.AuthPanel>
+              ) : null}
+            </>
           ) : (
             <>
               <button onClick={handleAccountClick}>
@@ -94,7 +142,7 @@ export const Header = ({ categories }) => {
                       placeholder="Email"
                       name="email"
                     />
-                     {errors && <ErrorMsg>{errors.email}</ErrorMsg>}
+                    {errors && <ErrorMsg>{errors.email}</ErrorMsg>}
                     <input
                       onChange={handleChange}
                       value={userForm.password}
@@ -102,7 +150,7 @@ export const Header = ({ categories }) => {
                       placeholder="Password"
                       name="password"
                     />
-                      {errors && <ErrorMsg>{errors.password}</ErrorMsg>}
+                    {errors && <ErrorMsg>{errors.password}</ErrorMsg>}
                     <button aria-label="Zaloguj się" type="submit">
                       Zaloguj się
                     </button>
@@ -118,28 +166,7 @@ export const Header = ({ categories }) => {
                   </div>
                   <ul>
                     <li>
-                      <Link href="/">
-                        <a>
-                          <BiGitCompare /> PORÓWNAJ
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/">
-                        <a>
-                          <BsSuitHeart /> MOJA LISTA ŻYCZEŃ
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/">
-                        <a>
-                          <BiCalendar /> MOJE ZAMÓWIENIA
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/">
+                      <Link href="/konto/moje-konto">
                         <a>
                           <AiOutlineMail /> SKONTAKTUJ SIĘ Z NAMI
                         </a>
@@ -151,10 +178,16 @@ export const Header = ({ categories }) => {
             </>
           )}
 
-          <Link href="/cart">
-            <a>
+          <Link href="/koszyk">
+            <Styled.CartIcon>
               <BsCartCheck />
-            </a>
+              {cart?.items.length ? (
+                <>
+                <Styled.CartItemsNum>{cart.items.length}</Styled.CartItemsNum>
+                {/* <Styled.CartItemsValue>{cart.prices.grand_total.value}zł</Styled.CartItemsValue> */}
+                </>
+              ) : null}
+            </Styled.CartIcon>
           </Link>
         </Styled.IconsBar>
       </Styled.InnerWrapper>

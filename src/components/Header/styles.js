@@ -160,6 +160,12 @@ export const AuthPanel = styled.div`
   top: 100%;
   min-width: 300px;
   box-shadow: 8px 8px 10px -11px rgba(66, 68, 90, 1);
+  text-align: center;
+
+  &  > svg {
+    font-size:60px;
+    color:#ddd;
+  }
 
   & > form {
     display: flex;
@@ -233,3 +239,30 @@ export const AuthPanel = styled.div`
     }
   }
 `;
+
+export const CartIcon = styled.a`
+  position: relative;
+  cursor: pointer;
+`
+
+export const CartItemsNum = styled.span`
+  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:20px;
+  font-size: 11px;
+  font-weight: 500;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  top:-10px;
+  right: -10px;
+  position: absolute;
+`
+
+export const CartItemsValue = styled.span`
+  position: absolute;
+  font-size: 12px;
+  bottom: 0;
+`

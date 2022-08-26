@@ -8,6 +8,7 @@ export const magentoLogin = async () => {
                 firstname
                 lastname
                 email
+
                 addresses {
                   id
                   firstname

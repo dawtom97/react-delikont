@@ -3,13 +3,22 @@ import styled from "styled-components";
 import { Heading } from "../Heading";
 import { FiEdit } from "react-icons/fi";
 import { Loader } from "../Loader";
+import { EditUserForm } from "../EditUserForm/EditUserForm";
+import { EditPasswordForm } from "../EditPasswordForm/EditPasswordForm";
 
 export const Wrapper = styled.div`
   & h3 {
     margin-top: 0;
     font-size: 20px;
   }
-  & button {
+
+`;
+export const InfoBox = styled.div`
+  & > p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  &  button {
     background: none;
     border: none;
     cursor: pointer;
@@ -22,12 +31,6 @@ export const Wrapper = styled.div`
     & svg {
       color: ${({ theme }) => theme.colorPrimary};
     }
-  }
-`;
-export const InfoBox = styled.div`
-  & > p {
-    font-size: 14px;
-    margin: 5px 0;
   }
 
 
@@ -50,8 +53,12 @@ export const InnerWrapper = styled.div`
 `;
 
 export const AccountInfo = ({ user }) => {
+  const [editMode,setEditMode] = useState(false);
+  const [changePasswordMode,setChangePasswordMode] = useState(false);
   return (
     <Wrapper>
+      {editMode ? <EditUserForm user={user} onClose={()=>setEditMode(false)}/> : null}
+      {changePasswordMode ? <EditPasswordForm onClose={()=>setChangePasswordMode(false)}/>: null}
       <Heading level="h3">DANE KONTA</Heading>
       <InnerWrapper>
         <div>
@@ -62,10 +69,10 @@ export const AccountInfo = ({ user }) => {
             </p>
             <p>{user?.email}</p>
             <div>
-              <button>
+              <button onClick={()=>setEditMode(true)}>
                 <FiEdit /> EDYTUJ
               </button>
-              <button>
+              <button onClick={()=>setChangePasswordMode(true)}>
                 <FiEdit /> ZMIEŃ HASŁO
               </button>
             </div>
