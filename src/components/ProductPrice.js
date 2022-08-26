@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
@@ -131,7 +131,11 @@ export const WishlistButtonsBox = styled.div`
 `;
 
 export const ProductPrice = ({ product, isAlternative }) => {
-  const { removeFromWishlist } = useContext(UserContext);
+  const { removeFromWishlist, addToCart } = useContext(UserContext);
+  const [choosenProducts, setChoosenProducts] = useState([]);
+
+  const [quantity,setQuantity] = useState(1);
+  
 
   const price = String(
     product?.price_range?.minimum_price?.final_price?.value
@@ -166,9 +170,9 @@ export const ProductPrice = ({ product, isAlternative }) => {
             <div>
               <p>sztuk:</p>
               <Controls>
-                <button>-</button>
-                <input type="number" name="qty" placeholder="1" />
-                <button>+</button>
+                <button onClick={()=>setQuantity(prev=>prev > 1 ? prev-1 : null)} >-</button>
+                <input type="number" value={quantity} name="qty" placeholder="1" />
+                <button onClick={()=>setQuantity(prev=>prev+1)} >+</button>
               </Controls>
             </div>
             <div>
@@ -182,11 +186,11 @@ export const ProductPrice = ({ product, isAlternative }) => {
           </ButtonsBox>
 
           {!isAlternative ? (
-            <Button>DODAJ DO KOSZYKA</Button>
+            <Button onClick={()=>addToCart(product.sku,quantity)}>DODAJ DO KOSZYKA</Button>
           ) : (
             
             <WishlistButtonsBox>
-              <button>
+              <button onClick={()=>addToCart(product.sku,quantity)}>
                 <BsCartCheck />
               </button>
               <button onClick={() => removeFromWishlist(product.id)}>

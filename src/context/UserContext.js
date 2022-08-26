@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
+import { magentoAddToCart } from "../graphql/magentoAddToCart";
 import { magentoAddToWishlist } from "../graphql/magentoAddToWishlist";
 import { magentoChangeUserPassword } from "../graphql/magentoChangeUserPassword";
 import { magentoCreateCustomerAddress } from "../graphql/magentoCreateCustomerAddress";
 import { magentoDeleteAddress } from "../graphql/magentoDeleteAddress";
 import { magentoEditCustomerAddress } from "../graphql/magentoEditUserAddress";
+import { magentoGetCart } from "../graphql/magentoGetCart";
 import { magentoLogin } from "../graphql/magentoLogin";
 import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
 import { magentoSetDefaultShipping } from "../graphql/magentoSetDefaultShipping";
@@ -21,6 +23,8 @@ export const UserContextProvider = ({ children }) => {
   const location = useRouter();
   const [wishlist, setWishlist] = useState();
   const [addresses, setAddresses] = useState();
+  const [cart, setCart] =useState();
+
   const { showModal } = useContext(ModalContext);
 
   useEffect(() => {
@@ -30,8 +34,7 @@ export const UserContextProvider = ({ children }) => {
         setCurrentUser(response.data.customer);
         setAddresses(response.data.customer.addresses);
       });
-      //  console.log(token);
-
+      magentoGetCart().then(({response})=>setCart(response.data.customerCart));
       setIsLogged(true);
     }
   }, [token]);
@@ -83,6 +86,9 @@ export const UserContextProvider = ({ children }) => {
         // setAddresses([response.data.customer.addresses]);
         showModal("Pomyślnie zalogowano");
       });
+
+      await magentoGetCart().then(({response})=>setCart(response.data.customerCart));
+
       setIsLogged(true);
       location.push("/konto/moje-konto");
     } catch (error) {
@@ -91,6 +97,8 @@ export const UserContextProvider = ({ children }) => {
         showModal("Niepoprawne hasło lub adres email", true);
     }
   };
+
+  console.log(cart)
 
   const editAddress = (address) => {
     magentoEditCustomerAddress(address).then((res) => {
@@ -173,12 +181,19 @@ export const UserContextProvider = ({ children }) => {
     showModal("Usunięto z ulubionych");
   };
 
+  const addToCart = (sku,quantity) => {
+    magentoAddToCart(cart.id, sku,quantity).then(({response})=>console.log(response));
+    showModal("Dodano do koszyka");
+  }
+
+
   const user = {
     token,
     isLogged,
     currentUser,
     wishlist,
     addresses,
+    cart,
     userLogin,
     userLogout,
     setCurrentUser,
@@ -192,6 +207,7 @@ export const UserContextProvider = ({ children }) => {
     editAdditionalAddress,
     updateUserInfo,
     changeUserPassword,
+    addToCart
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

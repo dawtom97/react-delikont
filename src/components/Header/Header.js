@@ -18,7 +18,7 @@ export const Header = ({ categories }) => {
   const {
     isLogged,
     userLogin,
-    currentUser: { firstname },
+    currentUser,
     userLogout,
   } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
@@ -87,7 +87,7 @@ export const Header = ({ categories }) => {
               {authPanelVisible ? (
                 <Styled.AuthPanel>
                   <FaUserCircle />
-                  <p>Cześć {firstname}!</p>
+                  <p>Cześć {currentUser?.firstname}!</p>
 
                   <button aria-label="Wyloguj się" onClick={() => userLogout()}>
                     Wyloguj się
@@ -177,7 +177,7 @@ export const Header = ({ categories }) => {
             </>
           )}
 
-          <Link href="/cart">
+          <Link href="/koszyk">
             <a>
               <BsCartCheck />
             </a>

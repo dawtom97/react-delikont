@@ -14,6 +14,7 @@ export const magentoProducts = async (page) => {
               url_key
               name
               sku
+            
               stock_status
               only_x_left_in_stock
               meta_keyword
