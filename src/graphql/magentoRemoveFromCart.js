@@ -1,27 +1,19 @@
 import { API_URL, headers } from "./config";
 
-export const magentoAddToCart = async (cartId, sku, quantity) => {
+export const magentoRemoveFromCart = async (cartId, itemId) => {
   const query = {
-    operationName: "addToCart",
+    operationName: "removeFromCart",
     query: `mutation {
-            addProductsToCart(
-              cartId: "${cartId}"
-              cartItems: [
-                {
-                  quantity: ${quantity}
-                  sku: "${sku}"
-                }
-              ]
-            ) {
-              cart {
+            removeItemFromCart(
+              input: {
+                cart_id: "${cartId}",
+                cart_item_id: ${itemId}
+              }
+            )
+           {
+            cart {
                 id
-                prices {
-                    grand_total{
-                      value
-                      currency
-                    }
-                  }
-                  items {
+                items {
                     id
                     product {
                       id
@@ -189,15 +181,16 @@ export const magentoAddToCart = async (cartId, sku, quantity) => {
                     }
                     quantity
                   }
-              }
-              user_errors {
-                code
-                message
+              prices {
+                grand_total{
+                  value
+                  currency
+                }
               }
             }
+           }
           }`,
   };
-
   const options = {
     method: "POST",
     headers: {

@@ -8,6 +8,7 @@ import { magentoDeleteAddress } from "../graphql/magentoDeleteAddress";
 import { magentoEditCustomerAddress } from "../graphql/magentoEditUserAddress";
 import { magentoGetCart } from "../graphql/magentoGetCart";
 import { magentoLogin } from "../graphql/magentoLogin";
+import { magentoRemoveFromCart } from "../graphql/magentoRemoveFromCart";
 import { magentoRemoveFromWishlist } from "../graphql/magentoRemoveFromWishlist";
 import { magentoSetDefaultShipping } from "../graphql/magentoSetDefaultShipping";
 import { magentoUpdateUser } from "../graphql/magentoUpdateUser";
@@ -65,7 +66,6 @@ export const UserContextProvider = ({ children }) => {
     );
     showModal("Zaktualizowano dane");
 
-    console.log(currentUser);
   };
   const changeUserPassword = (passwords) => {
     magentoChangeUserPassword(passwords).then(({ response }) => {
@@ -98,7 +98,6 @@ export const UserContextProvider = ({ children }) => {
     }
   };
 
-  console.log(cart)
 
   const editAddress = (address) => {
     magentoEditCustomerAddress(address).then((res) => {
@@ -182,8 +181,12 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const addToCart = (sku,quantity) => {
-    magentoAddToCart(cart.id, sku,quantity).then(({response})=>console.log(response));
+    magentoAddToCart(cart.id, sku,quantity).then(({response})=>setCart(response.data.addProductsToCart.cart));
     showModal("Dodano do koszyka");
+  }
+  const removeFromCart = (id) => {
+    magentoRemoveFromCart(cart.id,id).then(({response})=>setCart(response.data.removeItemFromCart.cart));
+    showModal("Usunięto z koszyka");
   }
 
 
@@ -207,7 +210,8 @@ export const UserContextProvider = ({ children }) => {
     editAdditionalAddress,
     updateUserInfo,
     changeUserPassword,
-    addToCart
+    addToCart,
+    removeFromCart
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

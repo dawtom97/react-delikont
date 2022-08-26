@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import {AiOutlineClose} from 'react-icons/ai'
+import { UserContext } from '../../context/UserContext';
 
 
 export const Wrapper = styled.div`
@@ -29,13 +30,14 @@ export const Wrapper = styled.div`
 `
 
 export const CartItem = ({item}) => {
+    const {removeFromCart} = useContext(UserContext);
     console.log(item)
   return (
     <Wrapper>
         <img src={item.product.small_image.url} alt={item.product.name}/>
         <p>{item.product.name} {item.product.weight}g</p>
         <div>
-        <button>
+        <button onClick={()=>removeFromCart(item.id)}>
           <AiOutlineClose />
         </button>
         </div>
