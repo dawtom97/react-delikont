@@ -21,13 +21,15 @@ export const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [token, setToken] = useState("");
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
   const location = useRouter();
   const [wishlist, setWishlist] = useState();
   const [addresses, setAddresses] = useState();
   const [cart, setCart] =useState();
 
   const { showModal } = useContext(ModalContext);
+
+  console.log(currentUser)
 
   useEffect(() => {
     setToken(localStorage.getItem("Bearer"));
@@ -51,7 +53,7 @@ export const UserContextProvider = ({ children }) => {
 
   const userLogout = () => {
     setIsLogged(false);
-    localStorage.setItem("Bearer", "");
+    localStorage.removeItem("Bearer");
     setCurrentUser({});
     setCart();
     location.push("/");
@@ -183,9 +185,16 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const addToCart = (sku,quantity) => {
-    magentoAddToCart(cart.id, sku,quantity).then(({response})=>setCart(response.data.addProductsToCart.cart));
-    showModal("Dodano do koszyka");
+    console.log(currentUser)
+    if(currentUser) {
+      magentoAddToCart(cart.id, sku,quantity).then(({response})=>setCart(response.data.addProductsToCart.cart));
+      showModal("Dodano do koszyka");
+    }
+    else {
+      showModal("Zaloguj się aby dodać do koszyka")
+    } 
   }
+  
   const removeFromCart = (id) => {
     magentoRemoveFromCart(cart.id,id).then(({response})=>setCart(response.data.removeItemFromCart.cart));
     showModal("Usunięto z koszyka");

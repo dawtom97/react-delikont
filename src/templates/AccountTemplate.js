@@ -43,14 +43,14 @@ export const AccountTemplate = ({ children }) => {
       .replace("zamowienia", "zamówienia");
 
 
-    useEffect(()=>{
-      if (!currentUser.email) {
-        console.log(currentUser);
-        path.push("/rejestracja");
-        showModal("Zaloguj się, aby przejść do panelu użytkownika")
-        return;
-      }
-    },[])
+    // useEffect(()=>{
+    //   if (!currentUser.email) {
+    //     console.log(currentUser);
+    //     path.push("/rejestracja");
+    //     showModal("Zaloguj się, aby przejść do panelu użytkownika")
+    //     return;
+    //   }
+    // },[])
 
 
   return (
