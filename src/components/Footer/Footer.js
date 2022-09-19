@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import * as Styled from './styles';
 
@@ -14,7 +15,7 @@ export const Footer = () => {
             <div>
               <span>Delikont.pl</span>
               <ul>
-                <li>Polityka prywatności</li>
+                <li><Link href="/polityka-prywatnosci">Polityka prywatności</Link></li>
                 <li>Dane adresowe</li>
                 <li>Moje zamówienia</li>
                 <li>Ulubione produkty</li>
