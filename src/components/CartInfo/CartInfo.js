@@ -121,7 +121,7 @@ export const CartInfo = ({ cart }) => {
               <strong>Do zapłaty</strong>{" "}
               <strong>{cart.prices.grand_total.value}zł</strong>
             </p>
-            <Button isSecondary>PRZEJDŹ DO KASY</Button>
+            <Button isSecondary><Link href="/podsumowanie/dostawa">PRZEJDŹ DO KASY</Link></Button>
           </SubmitBox>
         </div>
       )}

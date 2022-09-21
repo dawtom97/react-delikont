@@ -7,9 +7,10 @@ import { OrderCheckoutShipping } from "../../src/components/OrderCheckoutShippin
 
 const Wrapper = styled.div`
   display: flex;
+  gap:30px;
 
-  & > div {
-    width: 50%;
+  & > div:first-of-type {
+    width: 70%;
   }
 `;
 
@@ -21,7 +22,7 @@ const Shipping = () => {
   return (
     <MainTemplate>
       <Wrapper>
-        <OrderCheckoutShipping addresses={addresses}/>
+        <OrderCheckoutShipping cart={cart} addresses={addresses}/>
         <OrderCheckoutItems cart={cart} />
       </Wrapper>
     </MainTemplate>

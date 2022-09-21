@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const Wrapper = styled.aside`
   border:1px solid #ebebeb;
   padding: 20px;
+  width: 40%;
 
   & h3 {
     font-size: 20px;
@@ -28,7 +29,7 @@ export const Accordeon = styled.div`
 
 export const Item = styled.div`
   display: flex;
-  width: 30%;
+  width: 100%;
   min-width: 320px;
   margin:10px 0;
   
@@ -41,7 +42,7 @@ export const Item = styled.div`
 
   & p {
     font-size: 14px;
-    width: 200px;
+
     margin-right: 20px;
     overflow-wrap: break-word ;
   }
