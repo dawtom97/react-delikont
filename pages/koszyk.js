@@ -4,6 +4,7 @@ import {MainTemplate} from '../src/templates/MainTemplate';
 import {Loader} from '../src/components/Loader'
 import { CartInfo } from '../src/components/CartInfo/CartInfo';
 import { Heading } from '../src/components/Heading';
+import Head from 'next/head';
 
 const Cart = () => {
   const {cart} = useContext(UserContext);
@@ -11,6 +12,8 @@ const Cart = () => {
 
   if(!cart) return (
     <MainTemplate>
+
+
         <Heading>Koszyk</Heading>
         <p>Zaloguj się, aby zobaczyć swój koszyk</p>
     </MainTemplate>
