@@ -2,12 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Heading } from "../Heading";
 import { FiEdit } from "react-icons/fi";
-import { magentoEditCustomerAddress } from "../../graphql/magentoEditUserAddress";
 import { AddressForm } from "../AddressForm/AddressForm";
-import { Loader } from "../Loader";
-import { UserContext } from "../../context/UserContext";
 import Link from "next/link";
-import { Button } from "../Button";
 
 export const Wrapper = styled.div`
   & h3 {

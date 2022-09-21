@@ -171,7 +171,7 @@ export const ProductPrice = ({ product, isAlternative }) => {
               <p>sztuk:</p>
               <Controls>
                 <button onClick={()=>setQuantity(prev=>prev > 1 ? prev-1 :prev)} >-</button>
-                <input type="number" value={quantity} name="qty" placeholder="1" />
+                <input  onChange={()=>console.log("change")} type="number" value={quantity} name="qty" placeholder="1" />
                 <button onClick={()=>setQuantity(prev=>prev+1)} >+</button>
               </Controls>
             </div>
@@ -179,7 +179,7 @@ export const ProductPrice = ({ product, isAlternative }) => {
               <p>kartonów:</p>
               <Controls>
                 <button>-</button>
-                <input type="number" name="qty" placeholder="1" />
+                <input onChange={()=>console.log("change")} type="number" name="qty" placeholder="1" />
                 <button>+</button>
               </Controls>
             </div>

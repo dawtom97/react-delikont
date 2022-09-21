@@ -29,18 +29,26 @@ export const UserContextProvider = ({ children }) => {
 
   const { showModal } = useContext(ModalContext);
 
-  console.log(currentUser)
-
   useEffect(() => {
     setToken(localStorage.getItem("Bearer"));
     if (token) {
       magentoLogin().then(({ response }) => {
+        console.log(response,currentUser)
         setCurrentUser(response.data.customer);
-        setAddresses(response.data.customer.addresses);
-      });
-      magentoGetCart().then(({response})=>setCart(response.data.customerCart));
+        setAddresses(response.data.customer?.addresses);
+      })
+      .catch(er => {
+          console.log(er,"CATCHED")       
+      }) 
+      ;
+      magentoGetCart().then(({response})=>setCart(response.data?.customerCart));
       setIsLogged(true);
+    } 
+    else {
+    //  userLogout()
     }
+
+    console.log("Jest token",token)
   }, [token]);
 
   useEffect(() => {
@@ -60,6 +68,7 @@ export const UserContextProvider = ({ children }) => {
     showModal("Pomyślnie wylogowano");
   };
 
+  
   const updateUserInfo = (user) => {
     magentoUpdateUser(user).then(({ response }) =>
       setCurrentUser({
@@ -205,6 +214,9 @@ export const UserContextProvider = ({ children }) => {
     showModal("Zaktualizowano koszyk")
   }
 
+  const removeCart = () => setCart({})
+  
+
 
   const user = {
     token,
@@ -214,6 +226,7 @@ export const UserContextProvider = ({ children }) => {
     addresses,
     cart,
     userLogin,
+    removeCart,
     userLogout,
     setCurrentUser,
     removeFromWishlist,

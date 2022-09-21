@@ -4,9 +4,12 @@ import { SingleProduct } from "../../src/components/SingleProduct/SingleProduct"
 import { magentoSingleProduct } from "../../src/graphql/magentoSingleProduct";
 import { MainTemplate } from "../../src/templates/MainTemplate";
 import {Loader} from '../../src/components/Loader'
+import Head from "next/head";
 
 const ProductDetails = () => {
   const [singleProduct, setSingleProduct] = useState();
+
+  console.log(singleProduct)
 
   const {
     query: { product },
@@ -22,6 +25,10 @@ const ProductDetails = () => {
 
   return (
     <MainTemplate>
+      
+      <Head>
+        <title>{singleProduct?.name}</title>
+      </Head>
       {singleProduct ? <SingleProduct product={singleProduct}/> : <Loader/>}
     </MainTemplate>
   );

@@ -181,7 +181,7 @@ export const Header = ({ categories }) => {
           <Link href="/koszyk">
             <Styled.CartIcon>
               <BsCartCheck />
-              {cart?.items.length ? (
+              {cart?.items?.length ? (
                 <>
                 <Styled.CartItemsNum>{cart.items.length}</Styled.CartItemsNum>
                 {/* <Styled.CartItemsValue>{cart.prices.grand_total.value}zł</Styled.CartItemsValue> */}
