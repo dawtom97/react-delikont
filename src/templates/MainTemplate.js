@@ -22,7 +22,7 @@ export const MainTemplate = ({ children }) => {
   const [categories, setCategories] = useState();
   const router = useRouter();
 
-  const isValidPage = router.pathname !== "/rejestracja"
+  const isValidPage = router.pathname !== "/rejestracja" && !router.pathname.includes("/podsumowanie")
 
   useEffect(() => {
     const paths = router.asPath
@@ -44,11 +44,6 @@ export const MainTemplate = ({ children }) => {
   useEffect(() => {
     magentoCategories().then(res=>setCategories(res));
   }, []);
-
- // console.log(categories);
-
-
- // console.log(crumbs);
 
   return (
     <div>

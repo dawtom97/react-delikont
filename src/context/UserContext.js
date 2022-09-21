@@ -44,6 +44,10 @@ export const UserContextProvider = ({ children }) => {
       magentoGetCart().then(({response})=>setCart(response.data?.customerCart));
       setIsLogged(true);
     } 
+    else {
+    //  userLogout()
+    }
+
     console.log("Jest token",token)
   }, [token]);
 

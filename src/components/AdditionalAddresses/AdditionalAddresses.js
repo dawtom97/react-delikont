@@ -62,13 +62,13 @@ export const AdditionalAddresBox = styled.div`
   }
 `;
 
-export const AdditionalAddresses = ({ addresses }) => {
+export const AdditionalAddresses = ({ addresses, isCheckout }) => {
   const { deleteAddress, changeDefaultShippingAddress } =
     useContext(UserContext);
   const [createMode, setCreateMode] = useState(false);
   const [additional, setAdditional] = useState();
-  const [editMode,setEditMode] = useState(false);
-  const [isEdit, setIsEdit] = useState()
+  const [editMode, setEditMode] = useState(false);
+  const [isEdit, setIsEdit] = useState();
 
   useEffect(() => {
     //  if(additional?.length && !createMode) return;
@@ -76,10 +76,7 @@ export const AdditionalAddresses = ({ addresses }) => {
       (address) => !address.default_billing && !address.default_shipping
     );
     setAdditional(filtered);
-
   }, [addresses]);
-
-
 
   if (!additional) return;
 
@@ -93,7 +90,7 @@ export const AdditionalAddresses = ({ addresses }) => {
 
   return (
     <Wrapper>
-      <Heading level="h3">DODATKOWE ADRESY DOSTAWY</Heading>
+      <Heading level="h3">{!isCheckout ? "DODATKOWE ADRESY DOSTAWY": "WYBIERZ INNY ADRES"}</Heading>
       {!additional.length ? (
         <p>Nie masz innych adresów w swojej książce adresowej</p>
       ) : (
@@ -122,17 +119,23 @@ export const AdditionalAddresses = ({ addresses }) => {
               </p>
             </div>
             <div>
-              <Button onClick={() => handleDelete(address?.id)} isSecondary>
-                <IoTrashBin /> USUŃ
-              </Button>
+              {!isCheckout ? (
+                <Button onClick={() => handleDelete(address?.id)} isSecondary>
+                  <IoTrashBin /> USUŃ
+                </Button>
+              ) : null}
+
               <Button onClick={() => handleSetDefault(address?.id)}>
                 <IoCheckmarkCircle />
-                DOMYŚLNY
+                {!isCheckout ? "DOMYŚLNY" : "WYBIERZ"}
               </Button>
-              <Button onClick={() => {
-                setIsEdit(address)
-                setEditMode(true)
-              }} isSecondary>
+              <Button
+                onClick={() => {
+                  setIsEdit(address);
+                  setEditMode(true);
+                }}
+                isSecondary
+              >
                 <IoTrashBin /> EDYTUJ
               </Button>
             </div>
@@ -142,13 +145,17 @@ export const AdditionalAddresses = ({ addresses }) => {
       {createMode ? (
         <AddressForm isNewAddress onClose={() => setCreateMode(false)} />
       ) : null}
-         {editMode ? (
-        <AddressForm isAdditional address={isEdit} onClose={() => setEditMode(false)} />
+      {editMode ? (
+        <AddressForm
+          isAdditional
+          address={isEdit}
+          onClose={() => setEditMode(false)}
+        />
       ) : null}
       <ButtonsBox>
         <Button onClick={() => setCreateMode(true)}>DODAJ NOWY ADRES</Button>
         <Link href="/konto/moje-konto">
-          <Button isSecondary>POWRÓT</Button>
+          <Button isSecondary>{!isCheckout ? "POWRÓT" : "KSIĄŻKA ADRESOWA"}</Button>
         </Link>
       </ButtonsBox>
     </Wrapper>
