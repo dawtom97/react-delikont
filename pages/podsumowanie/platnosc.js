@@ -22,8 +22,8 @@ const Payment = () => {
   return (
     <MainTemplate>
       <Wrapper>
-         <OrderCheckoutPayment user={user} addresses={addresses}/>
-        <OrderCheckoutItems cart={cart} />
+         <OrderCheckoutPayment cart={cart} user={user} addresses={addresses}/>
+         <OrderCheckoutItems isPayment cart={cart} />
       </Wrapper>
     </MainTemplate>
   )

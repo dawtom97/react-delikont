@@ -27,7 +27,7 @@ const ProductDetails = () => {
     <MainTemplate>
       
       <Head>
-        <title>{singleProduct.name}</title>
+        <title>{singleProduct?.name}</title>
       </Head>
       {singleProduct ? <SingleProduct product={singleProduct}/> : <Loader/>}
     </MainTemplate>

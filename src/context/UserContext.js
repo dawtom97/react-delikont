@@ -214,6 +214,9 @@ export const UserContextProvider = ({ children }) => {
     showModal("Zaktualizowano koszyk")
   }
 
+  const removeCart = () => setCart({})
+  
+
 
   const user = {
     token,
@@ -223,6 +226,7 @@ export const UserContextProvider = ({ children }) => {
     addresses,
     cart,
     userLogin,
+    removeCart,
     userLogout,
     setCurrentUser,
     removeFromWishlist,
