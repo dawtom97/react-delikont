@@ -27,13 +27,13 @@ export const OrderCheckoutItems = ({ cart, isPayment }) => {
 
 
       {isPayment && id ? (
-        <div>
+        <Styled.SubmitBox>
            <p>Suma <span>{finalInfo?.cart.prices.subtotal_excluding_tax.value} zł</span></p>
            <p>Dostawa <span>{shippingPrice} zł</span></p>
-           <p>{shippingMethod}</p>
+           {/* <p>{shippingMethod}</p> */}
            <p>Podatek <span>0,00 zł</span></p>
            <p><strong>Łącznie <span>{(finalInfo?.cart.prices.subtotal_including_tax.value + shippingPrice).toFixed(2)} zł</span></strong></p>
-        </div>
+        </Styled.SubmitBox>
       ) : null}
 
       <Styled.Accordeon>

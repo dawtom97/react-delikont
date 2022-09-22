@@ -8,6 +8,7 @@ export const Wrapper = styled.aside`
 
   & h3 {
     font-size: 20px;
+
   }
 `
 
@@ -52,4 +53,15 @@ export const Item = styled.div`
     color:${({theme})=>theme.colorGray}
   }
 
+`
+
+export const SubmitBox = styled.div`
+  margin-bottom: 40px;
+
+`
+
+export const ButtonsBox = styled.div `
+  margin-top:20px;
+  display: flex;
+  justify-content: space-between;
 `

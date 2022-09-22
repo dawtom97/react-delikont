@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Footer } from "../components/Footer/Footer";
 import { Header } from "../components/Header/Header";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { magentoCategories } from "../graphql/magentoCategories";
+import { UserContext } from "../context/UserContext";
 
 export const InnerWrapper = styled.main`
   margin-top: 160px;
@@ -22,9 +23,14 @@ export const MainTemplate = ({ children }) => {
   const [categories, setCategories] = useState();
   const router = useRouter();
 
-  const isValidPage = router.pathname !== "/rejestracja" && !router.pathname.includes("/podsumowanie")
+
+  const isValidPage = router.pathname !== "/rejestracja" && !router.pathname.includes("/podsumowanie");
+
+
 
   useEffect(() => {
+
+
     const paths = router.asPath
       ?.split("/")
       .filter((item) => item !== "" && item !== "kategorie" && item !== "produkt");
@@ -36,6 +42,8 @@ export const MainTemplate = ({ children }) => {
         label:
           path.charAt(0).toUpperCase() + path.slice(1).replaceAll("-", " "),
       };
+
+  
     });
 
     setCrumbs([{ href: "/", label: "Strona główna" }, ...breadcrumbs]);
