@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
-import { OrderContext } from "../../context/OrderContext";
+import { ModalContext } from "../../context/ModalContext";
 import { UserContext } from "../../context/UserContext";
-import { magentoFinalCartInfo } from "../../graphql/magentoFinalCartInfo";
 import { magentoPlaceOrder } from "../../graphql/magentoPlaceOrder";
+import { magentoSetBillingAddressOnCart } from "../../graphql/magentoSetBillingAddressOnCart";
 import { magentoSetPaymentMethod } from "../../graphql/magentoSetPaymentMethod";
 import { magentoSetShippingMethodOnCart } from "../../graphql/magentoSetShippingMethodOnCart";
 import { AddressForm } from "../AddressForm/AddressForm";
@@ -16,16 +16,11 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
   const [billing, setBilling] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const { id } = cart;
-  const {orderShippingMethod} = useContext(OrderContext);
   const {removeCart} = useContext(UserContext);
   const router = useRouter();
-  //const [finalInfo, setFinalInfo] = useState();
-
-  console.log(orderShippingMethod,id)
+  const {showModal} = useContext(ModalContext)
 
   useEffect(() => {
-
-   // magentoFinalCartInfo(id).then(({response})=>setFinalInfo(response.data.cart))
 
     const filtered = addresses?.filter(
       (address) => address.default_billing === true
@@ -34,12 +29,19 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
   }, [editMode, addresses, id]);
 
   const handlePlaceOrder = async () => {
-    await magentoSetShippingMethodOnCart(cart.id).then((res)=>console.log(res));
-    await magentoSetPaymentMethod(id).then(res=>console.log(res))
-    await magentoPlaceOrder(id).then(res=>console.log(res));
-    router.push("/konto/moje-konto");
-  //  router.reload();
-   // removeCart();
+    try {
+      await magentoSetBillingAddressOnCart(id,billing[0]).then((res)=>console.log(res))
+      await magentoSetShippingMethodOnCart(cart.id).then((res)=>console.log(res));
+      await magentoSetPaymentMethod(id).then(res=>console.log(res))
+      await magentoPlaceOrder(id).then(res=>console.log(res));
+      await router.push("/podsumowanie/zakupiono");
+      router.reload();
+      showModal("Złożono zamówienie")
+     // removeCart();
+    } catch (error) {
+      showModal("Wystąpił błąd")
+    }
+
   }
 
 

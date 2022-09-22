@@ -1,6 +1,7 @@
 import { API_URL, headers } from "./config";
 
 export const magentoSetBillingAddressOnCart = async (id, address) => {
+    console.log("tuta",address)
   const query = {
     operationName: "setBillingAddressOnCart",
     query: `
@@ -14,8 +15,7 @@ export const magentoSetBillingAddressOnCart = async (id, address) => {
                     lastname: "${address.lastname}"
                     street: ["${address.street}"]
                     city: "${address.city}"
-                  region:"${address.region.region}"
-
+                  region: "${address.region.region}"
                   telephone: "${address.telephone}"
                   postcode: "${address.postcode}"
                   country_code: ${address.country_code}

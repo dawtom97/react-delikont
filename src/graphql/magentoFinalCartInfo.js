@@ -97,6 +97,18 @@ export const magentoFinalCartInfo = async(id) => {
                   value
                   currency
                 }
+                subtotal_excluding_tax {
+                  value
+                }
+                subtotal_including_tax {
+                  value
+                }
+                applied_taxes {
+                  label
+                  amount {
+                    value
+                  }
+                }
               }
             }
           }`

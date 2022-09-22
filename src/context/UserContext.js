@@ -214,7 +214,7 @@ export const UserContextProvider = ({ children }) => {
     showModal("Zaktualizowano koszyk")
   }
 
-  const removeCart = () => setCart({})
+  const removeCart = () => setCart()
   
 
 
