@@ -13,6 +13,7 @@ export const OrderContextProvider = ({children}) => {
     const [orderPaymentMethod, setOrderPaymentMethod] = useState();
     const [orderMoney, setOrderMoney] = useState();
     const [orderShippingMethod, setOrderShippingMethod] = useState();
+    const [finalInfo, setFinalInfo] = useState();
 
     const value = {
         setOrderShippingMethod,
@@ -24,7 +25,9 @@ export const OrderContextProvider = ({children}) => {
         orderAddress,
         orderBilling,
         orderPaymentMethod,
-        orderMoney
+        orderMoney,
+        finalInfo,
+        setFinalInfo
     }
      
     return (

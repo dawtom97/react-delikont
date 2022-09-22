@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { OrderContext } from "../../context/OrderContext";
 import { UserContext } from "../../context/UserContext";
+import { magentoFinalCartInfo } from "../../graphql/magentoFinalCartInfo";
 import { magentoPlaceOrder } from "../../graphql/magentoPlaceOrder";
 import { magentoSetPaymentMethod } from "../../graphql/magentoSetPaymentMethod";
 import { magentoSetShippingMethodOnCart } from "../../graphql/magentoSetShippingMethodOnCart";
@@ -17,11 +18,15 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
   const { id } = cart;
   const {orderShippingMethod} = useContext(OrderContext);
   const {removeCart} = useContext(UserContext);
-  const router = useRouter()
+  const router = useRouter();
+  //const [finalInfo, setFinalInfo] = useState();
 
   console.log(orderShippingMethod,id)
 
   useEffect(() => {
+
+   // magentoFinalCartInfo(id).then(({response})=>setFinalInfo(response.data.cart))
+
     const filtered = addresses?.filter(
       (address) => address.default_billing === true
     );

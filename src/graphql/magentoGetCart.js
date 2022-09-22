@@ -13,6 +13,7 @@ export const magentoGetCart = async () => {
                   currency
                 }
               }
+        
               items {
                 id
                 uid

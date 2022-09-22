@@ -1,16 +1,15 @@
 import { API_URL, headers } from "./config";
 
-export const magentoSetShippingAddressOnCart = async (id, address) => {
-
+export const magentoSetBillingAddressOnCart = async (id, address) => {
   const query = {
-    operationName: "setShippingAddressOnCart",
-    query: `mutation {
-        setShippingAddressesOnCart(
-          input: {
-            cart_id: "${id}"
-            shipping_addresses: [
-              {
-                address: {
+    operationName: "setBillingAddressOnCart",
+    query: `
+        mutation {
+            setBillingAddressOnCart(
+              input: {
+                cart_id: "${id}"
+                billing_address: {
+                  address: {
                     firstname: "${address.firstname}"
                     lastname: "${address.lastname}"
                     street: ["${address.street}"]
@@ -21,31 +20,34 @@ export const magentoSetShippingAddressOnCart = async (id, address) => {
                   postcode: "${address.postcode}"
                   country_code: ${address.country_code}
                   save_in_address_book: false
-                },
+                  }
+                  same_as_shipping: false
+                }
               }
-            ]
-          }
-        ) {
-          cart {
-            shipping_addresses {
-              firstname
-              lastname
-              street
-              city
-              region {
-                code
-                label
-              }
-              postcode
-              telephone
-              country {
-                code
-                label
+            ) {
+              cart {
+                billing_address {
+                  firstname
+                  lastname
+                  company
+                  street
+                  city
+                  region{
+                    code
+                    label
+                  }
+                  postcode
+                  telephone
+                  country{
+                    code
+                    label
+                  }
+                }
               }
             }
           }
-        }
-      }`,
+        
+        `,
   };
   const options = {
     method: "POST",

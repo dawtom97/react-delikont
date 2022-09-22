@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Heading } from "../Heading";
 import * as Styled from "./styles";
 import { AdditionalAddresses } from "../AdditionalAddresses/AdditionalAddresses";
@@ -9,18 +9,35 @@ import Link from "next/link";
 import { OrderContext } from "../../context/OrderContext";
 
 export const OrderCheckoutShipping = ({ addresses, cart }) => {
-  const { setOrderShippingMethod, setOrderAddress } = useContext(OrderContext);
+  const { setOrderShippingMethod, setOrderAddress, orderShippingMethod } =
+    useContext(OrderContext);
+
+  useEffect(() => {
+        shippingInfo()
+  }, [cart.id, defaultShipping, setOrderAddress, setOrderShippingMethod]);
+
+  const shippingInfo = async () => {
+    await magentoSetShippingAddressOnCart(cart.id, defaultShipping[0]).then(
+      ({ response }) =>
+        setOrderAddress(
+          response.data.setShippingAddressesOnCart.cart.shipping_addresses[0]
+        )
+    );
+    await magentoSetShippingMethodOnCart(cart.id).then(({ response }) =>
+      setOrderShippingMethod(
+        response.data.setShippingMethodsOnCart.cart.shipping_addresses[0]
+      )
+    );
+
+  }
 
   const defaultShipping = addresses.filter(
     (address) => address.default_shipping === true
   );
 
+  //console.log(orderShippingMethod?.selected_shipping_method.carrier_title);
+
   const handleShippingSubmit = () => {
-    magentoSetShippingMethodOnCart(cart.id).then(({ response }) =>
-      setOrderShippingMethod(
-        response.data.setShippingMethodsOnCart.cart.shipping_addresses[0]
-      )
-    );
     magentoSetShippingAddressOnCart(cart.id, defaultShipping[0]).then(
       ({ response }) =>
         setOrderAddress(
@@ -55,7 +72,9 @@ export const OrderCheckoutShipping = ({ addresses, cart }) => {
       <div>
         <Heading level="h3">DOSTĘPNE METODY WYSYŁKI</Heading>
         <label>
-          <input type="radio" /> 20,00zł Przesyłka kurierska
+          <input onChange={()=>console.log("s")} checked type="radio" />{" "}
+          {orderShippingMethod?.selected_shipping_method.amount.value} zł{" "}
+          {orderShippingMethod?.selected_shipping_method.carrier_title}
         </label>
         <div>
           <label>Data dostawy</label>
