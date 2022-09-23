@@ -10,7 +10,7 @@ export const magentoLogin = async () => {
                 email
 
                 orders(
-                  pageSize: 20
+                  pageSize: 1000
                 ) {
                   items {
                     id

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { translateStatus } from "../../utils/translateStatus";
 import { Heading } from "../Heading";
+import { Select } from "../Select";
 import * as Styled from "./styles";
 
 export const UserOrders = ({ orders }) => {
   const [items, setItems] = useState();
   const [sorted, setSorted] = useState();
-
 
   useEffect(() => {
     if (!orders) return;
@@ -14,14 +15,6 @@ export const UserOrders = ({ orders }) => {
   }, [orders, sorted]);
   console.log(items);
 
-  const translateStatus = (value) => {
-    switch (value) {
-      case "Pending":
-        return "Oczekujące";
-      default:
-        return value;
-    }
-  };
 
   const sortItems = (mode) => {
     console.log(mode);
@@ -38,11 +31,27 @@ export const UserOrders = ({ orders }) => {
         break;
       case "price-desc":
         sorted = [...items].sort((a, b) => {
-            if (a.total.grand_total.value > b.total.grand_total.value) return -1;
-            if (a.total.grand_total.value < b.total.grand_total.value) return 1;
-            return 0;
-          });
-          setItems(sorted);
+          if (a.total.grand_total.value > b.total.grand_total.value) return -1;
+          if (a.total.grand_total.value < b.total.grand_total.value) return 1;
+          return 0;
+        });
+        setItems(sorted);
+        break;
+      case "date-asc":
+        sorted = [...items].sort((a, b) => {
+          if (a.order_date > b.order_date) return -1;
+          if (a.order_date < b.order_date) return 1;
+          return 0;
+        });
+        setItems(sorted);
+        break;
+      case "date-desc":
+        sorted = [...items].sort((a, b) => {
+          if (a.order_date > b.order_date) return 1;
+          if (a.order_date < b.order_date) return -1;
+          return 0;
+        });
+        setItems(sorted);
         break;
       default:
         setItems(orders.items);
@@ -51,16 +60,16 @@ export const UserOrders = ({ orders }) => {
 
   return (
     <Styled.Wrapper>
-      <Heading level="h3">Zamówienia</Heading>
+      <Heading level="h3">Moje zamówienia</Heading>
       {items?.length ? (
         <>
-          <select onChange={(e) => sortItems(e.target.value)}>
-            <option value="">Sortuj zamówienia</option>
-            <option value="price-asc">Od najtańszych</option>
+          <label>Sortuj zamówienia</label>
+          <Select onChange={(e) => sortItems(e.target.value)}>
+            <option value="date-desc">Od najstarszych</option>
+            <option value="date-asc">Od najnowszych</option>
             <option value="price-desc">Od najdroższych</option>
-            <option>Od najnowszych</option>
-            <option>Od najstarszych</option>
-          </select>
+            <option value="price-asc">Od najtańszych</option>
+          </Select>
 
           <Styled.OrdersTable>
             <thead>
@@ -72,8 +81,9 @@ export const UserOrders = ({ orders }) => {
               </tr>
             </thead>
             <tbody>
-              {items ? items.map((item) => (
-                    <Link key={item.id} href="/">
+              {items
+                ? items.map((item) => (
+                    <Link key={item.id} href={`/konto/moje-zamowienia/${item.number}`}>
                       <tr>
                         <Styled.NumberRow>
                           <span>{item.number}</span>
@@ -85,7 +95,8 @@ export const UserOrders = ({ orders }) => {
                         <td>{item.total.grand_total.value} zł</td>
                       </tr>
                     </Link>
-                  )): null}
+                  ))
+                : null}
             </tbody>
           </Styled.OrdersTable>
         </>

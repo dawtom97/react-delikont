@@ -35,7 +35,7 @@ export const UserContextProvider = ({ children }) => {
       (router.pathname.includes("/konto") && !isLogged);
 
     if (isBlockedPage) {
-      router.push("/");
+      //router.push("/");
     }
   }, [isLogged, router]);
 

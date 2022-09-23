@@ -124,7 +124,7 @@ export const CartInfo = ({ cart }) => {
               <p>
                 <span>Suma częściowa</span>{" "}
                 <span>
-                  {finalInfo?.cart.prices.subtotal_excluding_tax.value} zł
+                  {finalInfo?.cart?.prices.subtotal_excluding_tax.value} zł
                 </span>
               </p>
               <p>

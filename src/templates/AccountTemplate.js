@@ -9,9 +9,8 @@ import { UserContext } from "../context/UserContext";
 import { ModalContext } from "../context/ModalContext";
 
 export const InnerWrapper = styled.main`
-  margin-top: 160px;
   max-width: 1400px;
-  margin: 160px auto 0;
+  margin: 175px auto 0;
   padding: 0 20px;
 
   & > div {
@@ -57,7 +56,7 @@ export const AccountTemplate = ({ children }) => {
     <div>
       <Header />
       <InnerWrapper>
-        <Heading level="h1">{formatedTitle}</Heading>
+        {/* <Heading level="h1">{formatedTitle}</Heading> */}
         <div>
           <AccountAside />
           <div>{children}</div>
