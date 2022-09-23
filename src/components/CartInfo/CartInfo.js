@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { CartItem } from "../CartItem/CartItem";
 import { Heading } from "../Heading";
@@ -6,6 +6,8 @@ import { Button } from "../Button";
 import { AiOutlineLeft } from "react-icons/ai";
 import Link from "next/link";
 import { UserContext } from "../../context/UserContext";
+import { OrderContext } from "../../context/OrderContext";
+import { magentoFinalCartInfo } from "../../graphql/magentoFinalCartInfo";
 
 export const Wrapper = styled.div`
   & > div {
@@ -65,9 +67,19 @@ export const ButtonsWrapper = styled.div`
 `;
 
 export const CartInfo = ({ cart }) => {
+  const { orderShippingMethod, finalInfo, setFinalInfo } =
+    useContext(OrderContext);
 
-  if (!cart) return "Loading...";
-  console.log(cart);
+  useEffect(() => {
+    magentoFinalCartInfo(cart.id)
+      .then(({ response }) => setFinalInfo(response.data))
+      .catch((er) => console.log(er));
+  }, [cart, setFinalInfo]);
+
+  console.log(orderShippingMethod, finalInfo);
+
+  if (!cart && orderShippingMethod) return "Loading...";
+
   return (
     <Wrapper>
       <Heading level="h1">Koszyk</Heading>
@@ -106,23 +118,33 @@ export const CartInfo = ({ cart }) => {
               </Link>
             </ButtonsWrapper>
           </ItemsBox>
-          <SubmitBox>
-            <Heading level="h3">PODSUMOWANIE</Heading>
-            <p>
-              <span>Suma częściowa</span> <span>0,00zł</span>
-            </p>
-            <p>
-              <span>Dostawa</span> <span>0,00zł</span>
-            </p>
-            <p>
-              <span>Podatek</span> <span>0,00zł</span>
-            </p>
-            <p>
-              <strong>Do zapłaty</strong>{" "}
-              <strong>{cart.prices.grand_total.value}zł</strong>
-            </p>
-            <Button isSecondary><Link href="/podsumowanie/dostawa">PRZEJDŹ DO KASY</Link></Button>
-          </SubmitBox>
+
+            <SubmitBox>
+              <Heading level="h3">PODSUMOWANIE</Heading>
+              <p>
+                <span>Suma częściowa</span>{" "}
+                <span>
+                  {finalInfo?.cart?.prices.subtotal_excluding_tax.value} zł
+                </span>
+              </p>
+              <p>
+                <span>Dostawa</span> <span>19.99 zł</span>
+              </p>
+              <p>
+                <span>Podatek</span> <span>0,00zł</span>
+              </p>
+              <p>
+                <strong>Do zapłaty</strong>{" "}
+                <strong>
+                {(finalInfo?.cart.prices.subtotal_including_tax.value + 19.99).toFixed(2)}
+                  zł
+                </strong>
+              </p>
+              <Button isSecondary>
+                <Link href="/podsumowanie/dostawa">PRZEJDŹ DO KASY</Link>
+              </Button>
+            </SubmitBox>
+         
         </div>
       )}
     </Wrapper>

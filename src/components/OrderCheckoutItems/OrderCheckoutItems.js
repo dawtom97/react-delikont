@@ -1,17 +1,23 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Heading } from "../Heading";
 import * as Styled from "./styles";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { OrderContext } from "../../context/OrderContext";
+import { magentoFinalCartInfo } from "../../graphql/magentoFinalCartInfo";
 
 export const OrderCheckoutItems = ({ cart, isPayment }) => {
   const { id, items, prices } = cart;
   const [itemsVisible, setItemsVisible] = useState(isPayment ? false : true);
-  const {orderShippingMethod, orderAddress} = useContext(OrderContext);
+  const {orderShippingMethod,finalInfo, setFinalInfo} = useContext(OrderContext);
 
-  const shippingMethod = orderShippingMethod?.selected_shipping_method.carrier_title || ""
+  useEffect(() => {
+    magentoFinalCartInfo(id).then(({response})=>setFinalInfo(response.data))
+  },[cart.id, id, setFinalInfo])
 
-  console.log(prices)
+  const shippingMethod = orderShippingMethod?.selected_shipping_method.carrier_title || "";
+  const shippingPrice = orderShippingMethod?.selected_shipping_method.amount.value || 19.99;
+
+  console.log(finalInfo)
 
   const handleClick = () => setItemsVisible((prev) => !prev);
   return (
@@ -21,17 +27,17 @@ export const OrderCheckoutItems = ({ cart, isPayment }) => {
 
 
       {isPayment && id ? (
-        <div>
-           <p>Suma <span>{prices.grand_total.value}</span></p>
-           <p>Dostawa <span>0,00 zł</span></p>
-           <p>{shippingMethod}</p>
+        <Styled.SubmitBox>
+           <p>Suma <span>{finalInfo?.cart.prices.subtotal_excluding_tax.value} zł</span></p>
+           <p>Dostawa <span>{shippingPrice} zł</span></p>
+           {/* <p>{shippingMethod}</p> */}
            <p>Podatek <span>0,00 zł</span></p>
-           <p><strong>Łącznie <span>{prices.grand_total.value} zł</span></strong></p>
-        </div>
+           <p><strong>Łącznie <span>{(finalInfo?.cart.prices.subtotal_including_tax.value + shippingPrice).toFixed(2)} zł</span></strong></p>
+        </Styled.SubmitBox>
       ) : null}
 
       <Styled.Accordeon>
-        {items.length} {items.length === 1 ? "Produkt" : "Produkty"} w koszyku{" "}
+        {items?.length} {items?.length === 1 ? "Produkt" : "Produkty"} w koszyku{" "}
         <button onClick={handleClick}>
           {itemsVisible ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
         </button>{" "}
@@ -68,10 +74,10 @@ export const OrderCheckoutItems = ({ cart, isPayment }) => {
         <div>
               <Heading level="h3">WYSYŁKA DO</Heading>
               <div>
-                <p>{orderAddress?.firstname} {orderAddress?.lastname}</p>
-                <p>{orderAddress?.street[0]}</p>
-                <p>{orderAddress?.postcode}, {orderAddress?.city}</p>
-                <p>{orderAddress?.region.label}, {orderAddress?.country.label === "PL" ? "Polska" : "NN"}</p>
+                <p>{finalInfo?.cart.shipping_addresses[0]?.firstname} {finalInfo?.cart.shipping_addresses[0]?.lastname}</p>
+                <p>{finalInfo?.cart.shipping_addresses[0]?.street[0]}</p>
+                <p>{finalInfo?.cart.shipping_addresses[0]?.postcode}, {finalInfo?.cart.shipping_addresses[0]?.city}</p>
+                <p>{finalInfo?.cart.shipping_addresses[0]?.region.label}, {finalInfo?.cart.shipping_addresses[0]?.country.label === "PL" ? "Polska" : "NN"}</p>
               </div>
         </div>
 
@@ -82,7 +88,7 @@ export const OrderCheckoutItems = ({ cart, isPayment }) => {
         <div>
               <Heading level="h3">METODA WYSYŁKI</Heading>
               <div>
-              <p>{shippingMethod}</p>
+              <p>{finalInfo?.cart.shipping_addresses[0]?.available_shipping_methods[0].carrier_title}</p>
               </div>
         </div>
 

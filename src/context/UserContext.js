@@ -25,30 +25,43 @@ export const UserContextProvider = ({ children }) => {
   const location = useRouter();
   const [wishlist, setWishlist] = useState();
   const [addresses, setAddresses] = useState();
-  const [cart, setCart] =useState();
+  const [cart, setCart] = useState();
+  const [orders,setOrders] = useState();
+  const router = useRouter();
+
+  useEffect(() => {
+    const isBlockedPage =
+     // (router.pathname.includes("/podsumowanie") && !isLogged) ||
+      (router.pathname.includes("/konto") && !isLogged);
+
+    if (isBlockedPage) {
+      //router.push("/");
+    }
+  }, [isLogged, router]);
 
   const { showModal } = useContext(ModalContext);
 
   useEffect(() => {
     setToken(localStorage.getItem("Bearer"));
     if (token) {
-      magentoLogin().then(({ response }) => {
-        console.log(response,currentUser)
-        setCurrentUser(response.data.customer);
-        setAddresses(response.data.customer?.addresses);
-      })
-      .catch(er => {
-          console.log(er,"CATCHED")       
-      }) 
-      ;
-      magentoGetCart().then(({response})=>setCart(response.data?.customerCart));
+      magentoLogin()
+        .then(({ response }) => {
+          console.log(response, currentUser);
+          setCurrentUser(response.data.customer);
+          setAddresses(response.data.customer?.addresses);
+        })
+        .catch((er) => {
+          console.log(er, "CATCHED");
+        });
+      magentoGetCart().then(({ response }) =>
+        setCart(response.data?.customerCart)
+      );
       setIsLogged(true);
-    } 
-    else {
-    //  userLogout()
+    } else {
+      //  userLogout()
     }
 
-    console.log("Jest token",token)
+    console.log("Jest token", token);
   }, [token]);
 
   useEffect(() => {
@@ -59,6 +72,10 @@ export const UserContextProvider = ({ children }) => {
     setAddresses(currentUser?.addresses);
   }, [currentUser]);
 
+  useEffect(()=>{
+    setOrders(currentUser?.orders)
+  }, [currentUser])
+
   const userLogout = () => {
     setIsLogged(false);
     localStorage.removeItem("Bearer");
@@ -68,7 +85,6 @@ export const UserContextProvider = ({ children }) => {
     showModal("Pomyślnie wylogowano");
   };
 
-  
   const updateUserInfo = (user) => {
     magentoUpdateUser(user).then(({ response }) =>
       setCurrentUser({
@@ -78,7 +94,6 @@ export const UserContextProvider = ({ children }) => {
       })
     );
     showModal("Zaktualizowano dane");
-
   };
   const changeUserPassword = (passwords) => {
     magentoChangeUserPassword(passwords).then(({ response }) => {
@@ -100,7 +115,9 @@ export const UserContextProvider = ({ children }) => {
         showModal("Pomyślnie zalogowano");
       });
 
-      await magentoGetCart().then(({response})=>setCart(response.data.customerCart));
+      await magentoGetCart().then(({ response }) =>
+        setCart(response.data.customerCart)
+      );
 
       setIsLogged(true);
       location.push("/konto/moje-konto");
@@ -110,7 +127,6 @@ export const UserContextProvider = ({ children }) => {
         showModal("Niepoprawne hasło lub adres email", true);
     }
   };
-
 
   const editAddress = (address) => {
     magentoEditCustomerAddress(address).then((res) => {
@@ -193,30 +209,33 @@ export const UserContextProvider = ({ children }) => {
     showModal("Usunięto z ulubionych");
   };
 
-  const addToCart = (sku,quantity) => {
-    console.log(currentUser)
-    if(currentUser) {
-      magentoAddToCart(cart.id, sku,quantity).then(({response})=>setCart(response.data.addProductsToCart.cart));
+  const addToCart = (sku, quantity) => {
+    console.log(currentUser);
+    if (currentUser) {
+      magentoAddToCart(cart.id, sku, quantity).then(({ response }) =>
+        setCart(response.data.addProductsToCart.cart)
+      );
       showModal("Dodano do koszyka");
+    } else {
+      showModal("Zaloguj się aby dodać do koszyka");
     }
-    else {
-      showModal("Zaloguj się aby dodać do koszyka")
-    } 
-  }
-  
+  };
+
   const removeFromCart = (id) => {
-    magentoRemoveFromCart(cart.id,id).then(({response})=>setCart(response.data.removeItemFromCart.cart));
+    magentoRemoveFromCart(cart.id, id).then(({ response }) =>
+      setCart(response.data.removeItemFromCart.cart)
+    );
     showModal("Usunięto z koszyka");
-  }
-  const updateCartQuantity = (uid,quantity) => {
-    console.log(cart.id)
-    magentoUpdateCartQuantity(cart.id, uid, quantity).then(({response})=>setCart(response.data.updateCartItems.cart));
-    showModal("Zaktualizowano koszyk")
-  }
+  };
+  const updateCartQuantity = (uid, quantity) => {
+    console.log(cart.id);
+    magentoUpdateCartQuantity(cart.id, uid, quantity).then(({ response }) =>
+      setCart(response.data.updateCartItems.cart)
+    );
+    showModal("Zaktualizowano koszyk");
+  };
 
-  const removeCart = () => setCart({})
-  
-
+  const removeCart = () => setCart();
 
   const user = {
     token,
@@ -225,6 +244,7 @@ export const UserContextProvider = ({ children }) => {
     wishlist,
     addresses,
     cart,
+    orders,
     userLogin,
     removeCart,
     userLogout,

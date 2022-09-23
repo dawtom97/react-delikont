@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Heading } from "../Heading";
 import * as Styled from "./styles";
 import { AdditionalAddresses } from "../AdditionalAddresses/AdditionalAddresses";
@@ -7,20 +7,39 @@ import { magentoSetShippingMethodOnCart } from "../../graphql/magentoSetShipping
 import { magentoSetShippingAddressOnCart } from "../../graphql/magentoSetShippingAddressOnCart";
 import Link from "next/link";
 import { OrderContext } from "../../context/OrderContext";
+import { Input } from "../Input";
+import { Button } from "../Button";
+import {TbTruckDelivery} from 'react-icons/tb'
 
 export const OrderCheckoutShipping = ({ addresses, cart }) => {
-  const { setOrderShippingMethod, setOrderAddress } = useContext(OrderContext);
+  const { setOrderShippingMethod, setOrderAddress, orderShippingMethod } =
+    useContext(OrderContext);
+
+  useEffect(() => {
+    shippingInfo();
+  }, [cart.id, defaultShipping, setOrderAddress, setOrderShippingMethod]);
+
+  const shippingInfo = async () => {
+    await magentoSetShippingAddressOnCart(cart.id, defaultShipping[0]).then(
+      ({ response }) =>
+        setOrderAddress(
+          response.data.setShippingAddressesOnCart.cart.shipping_addresses[0]
+        )
+    );
+    await magentoSetShippingMethodOnCart(cart.id).then(({ response }) =>
+      setOrderShippingMethod(
+        response.data.setShippingMethodsOnCart.cart.shipping_addresses[0]
+      )
+    );
+  };
 
   const defaultShipping = addresses.filter(
     (address) => address.default_shipping === true
   );
 
+  //console.log(orderShippingMethod?.selected_shipping_method.carrier_title);
+
   const handleShippingSubmit = () => {
-    magentoSetShippingMethodOnCart(cart.id).then(({ response }) =>
-      setOrderShippingMethod(
-        response.data.setShippingMethodsOnCart.cart.shipping_addresses[0]
-      )
-    );
     magentoSetShippingAddressOnCart(cart.id, defaultShipping[0]).then(
       ({ response }) =>
         setOrderAddress(
@@ -52,26 +71,41 @@ export const OrderCheckoutShipping = ({ addresses, cart }) => {
 
       <AdditionalAddresses isCheckout addresses={addresses} />
 
-      <div>
+      <Styled.ShippingMethodsBox>
         <Heading level="h3">DOSTĘPNE METODY WYSYŁKI</Heading>
-        <label>
-          <input type="radio" /> 20,00zł Przesyłka kurierska
-        </label>
+
+        <Styled.RadioBox>
+          <Styled.ShippingMethodBox>
+            <TbTruckDelivery/>
+          </Styled.ShippingMethodBox>
+          <div>
+            {/* <input onChange={() => console.log("s")} checked type="radio" />{" "} */}
+           <span>{orderShippingMethod?.selected_shipping_method.amount.value} zł</span>
+            <br></br>
+           {orderShippingMethod?.selected_shipping_method.carrier_title}
+          </div>
+        </Styled.RadioBox>
+
         <div>
-          <label>Data dostawy</label>
+          <label>Data dostawy *</label>
           <br />
-          <input type="date" />
+          <Input type="date" />
         </div>
+
         <div>
           <label>Komentarz</label>
           <br />
-          <textarea />
+          <textarea placeholder="Wpisz wiadomość..." row="5" cols="50" />
         </div>
-
-        <button onClick={handleShippingSubmit}>
-          <Link href="/podsumowanie/platnosc">DALEJ</Link>
-        </button>
-      </div>
+        <Styled.ButtonsBox>
+          <Button isSecondary>
+            <Link href="/koszyk">KOSZYK</Link>
+          </Button>
+          <Button onClick={handleShippingSubmit}>
+            <Link href="/podsumowanie/platnosc">DALEJ</Link>
+          </Button>
+        </Styled.ButtonsBox>
+      </Styled.ShippingMethodsBox>
     </Styled.Wrapper>
   );
 };

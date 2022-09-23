@@ -12,10 +12,15 @@ export const magentoGetCart = async () => {
                   value
                   currency
                 }
+             
+        
               }
+              
+        
               items {
                 id
                 uid
+              
                 product {
                   id
                   url_key

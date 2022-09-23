@@ -110,7 +110,7 @@ export const Header = ({ categories }) => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/">
+                      <Link href="/konto/moje-zamowienia">
                         <a>
                           <BiCalendar /> MOJE ZAMÓWIENIA
                         </a>

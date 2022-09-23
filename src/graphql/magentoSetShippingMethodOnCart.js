@@ -9,8 +9,8 @@ export const magentoSetShippingMethodOnCart = async (id) => {
                 cart_id: "${id}",
                 shipping_methods: [
                   {
-                    carrier_code: "freeshipping"
-                    method_code: "freeshipping"
+                    carrier_code: "flatrate"
+                    method_code: "flatrate"
                   }
                 ]
               }

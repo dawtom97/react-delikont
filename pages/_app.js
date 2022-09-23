@@ -7,11 +7,17 @@ import { ModalContextProvider } from "../src/context/ModalContext";
 import { OrderContextProvider } from "../src/context/OrderContext";
 
 function MyApp({ Component, pageProps }) {
+
+
+
+
+
   return (
     <ThemeProvider theme={theme}>
       <OrderContextProvider>
         <ModalContextProvider>
           <UserContextProvider>
+            
             <GlobalStyles />
             <Component {...pageProps} />
           </UserContextProvider>
