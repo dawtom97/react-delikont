@@ -26,6 +26,7 @@ export const UserContextProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState();
   const [addresses, setAddresses] = useState();
   const [cart, setCart] = useState();
+  const [orders,setOrders] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -70,6 +71,10 @@ export const UserContextProvider = ({ children }) => {
   useEffect(() => {
     setAddresses(currentUser?.addresses);
   }, [currentUser]);
+
+  useEffect(()=>{
+    setOrders(currentUser?.orders)
+  }, [currentUser])
 
   const userLogout = () => {
     setIsLogged(false);
@@ -239,6 +244,7 @@ export const UserContextProvider = ({ children }) => {
     wishlist,
     addresses,
     cart,
+    orders,
     userLogin,
     removeCart,
     userLogout,

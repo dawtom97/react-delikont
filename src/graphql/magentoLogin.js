@@ -9,6 +9,23 @@ export const magentoLogin = async () => {
                 lastname
                 email
 
+                orders(
+                  pageSize: 20
+                ) {
+                  items {
+                    id
+                    order_date
+                    number
+                    total {
+                      grand_total {
+                        value
+                        currency
+                      }
+                    }
+                    status
+                  }
+                }
+
                 addresses {
                   id
                   firstname

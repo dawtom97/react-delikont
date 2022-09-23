@@ -24,7 +24,8 @@ export const MainTemplate = ({ children }) => {
   const router = useRouter();
 
 
-  const isValidPage = router.pathname !== "/rejestracja" && !router.pathname.includes("/podsumowanie");
+  const isValidPage = router.pathname !== "/rejestracja" 
+  //&& !router.pathname.includes("/podsumowanie");
 
 
 
