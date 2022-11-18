@@ -10,23 +10,27 @@ export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [sortMethod, setSortMethod] = useState({
+    type: "relevance",
+    mode: "ASC",
+  });
   const observer = useRef();
   const lastItemRef = useRef();
 
   useEffect(() => {
-    magentoProducts(1).then((res) => {
+    magentoProducts(1, sortMethod).then((res) => {
       setAllProducts([...res.products.items]);
       setPage(res.products.page_info);
     });
-  }, []);
+  }, [sortMethod]);
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
     setIsLoading(true);
 
-    magentoProducts(page.current_page + 1).then((res) => {
+    magentoProducts(page.current_page + 1, sortMethod).then((res) => {
       setPage(res.products.page_info);
-      setAllProducts(prev=>[...prev, ...res.products.items]);
+      setAllProducts((prev) => [...prev, ...res.products.items]);
       setIsLoading(false);
     });
   }, [page, isLoading]);
@@ -52,18 +56,24 @@ export default function Home() {
     };
   }, [getMoreProducts]);
 
-  
+  const handleChangeSortMethod = (e) => {
+    const sortMode = e.target.value.split(",");
+    setSortMethod({
+      type: sortMode[0],
+      mode: sortMode[1],
+    });
+  };
 
   return (
     <MainTemplate>
       <Heading level="h1">Strona główna</Heading>
-      <Filters />
+      <Filters onChange={handleChangeSortMethod} />
       {!allProducts.length ? (
-        <Loader/>
+        <Loader />
       ) : (
         <Products products={allProducts} lastItem={lastItemRef} />
       )}
-      {isLoading && <Loader/>}
+      {isLoading && <Loader />}
     </MainTemplate>
   );
 }

@@ -14,19 +14,19 @@ export const Wrapper = styled.div`
     gap: 10px;
 
     & > label {
-        font-size: 12px;
+      font-size: 12px;
     }
     & > select {
-        color: #9c9c9c;
-        height: 30px;
-    border-color: #e1e1e1;
-    background: transparent;
-    font-size: 12px;
+      color: #9c9c9c;
+      height: 30px;
+      border-color: #e1e1e1;
+      background: transparent;
+      font-size: 12px;
     }
   }
 `;
 
-export const Filters = () => {
+export const Filters = ({ onChange }) => {
   return (
     <Wrapper>
       <div>
@@ -37,9 +37,11 @@ export const Filters = () => {
       </div>
       <div>
         <label>Sortuj</label>
-        <select>
-          <option>Cena za kg rosnąco</option>
-          <option>Cena za kg malejąco</option>
+        <select onChange={onChange}>
+          <option value="name,ASC">Nazwa produktu A-Z</option>
+          <option value="name,DESC">Nazwa produktu Z-A</option>
+          <option value="price,ASC">Cena rosnąco</option>
+          <option value="price,DESC">Cena malejąco</option>
         </select>
       </div>
     </Wrapper>
