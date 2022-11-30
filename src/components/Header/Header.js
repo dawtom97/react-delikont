@@ -13,6 +13,7 @@ import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 import { ErrorMsg } from "../ErrorMsg";
 import { FaUserCircle } from "react-icons/fa";
+import {IoMenu} from 'react-icons/io5';
 
 export const Header = ({ categories }) => {
   const {
@@ -193,6 +194,9 @@ export const Header = ({ categories }) => {
       </Styled.InnerWrapper>
 
       <Styled.Nav>
+        <Styled.Hamburger>
+          <IoMenu/>
+        </Styled.Hamburger>
         <ul>
           {mainMenu.map((category) => (
             <Link key={category.name} href={category.url}>

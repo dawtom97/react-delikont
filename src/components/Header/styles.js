@@ -18,6 +18,9 @@ export const InnerWrapper = styled.div`
 export const SearchBox = styled.div`
   display: flex;
   width: 37.5%;
+  @media (max-width:992px) {
+    display: none;
+  }
 
   & > button {
     display: flex;
@@ -37,6 +40,7 @@ export const SearchBox = styled.div`
     }
   }
   & > input {
+  
     padding: 10px 0;
     border-radius: 20px 0 0 20px;
     width: 91%;
@@ -51,6 +55,7 @@ export const SearchBox = styled.div`
 
 export const Logo = styled.div`
   width: 25%;
+  min-width: 150px;
 `;
 
 export const IconsBar = styled.div`
@@ -72,7 +77,20 @@ export const IconsBar = styled.div`
 export const Nav = styled.nav`
   background-color: ${({ theme }) => theme.colorPrimary};
 
+  @media (max-width:992px) {
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+
+
   & > ul {
+
+    @media (max-width:992px) {
+    display: none;
+    }
+
     list-style: none;
     display: flex;
     max-width: 1400px;
@@ -265,4 +283,20 @@ export const CartItemsValue = styled.span`
   position: absolute;
   font-size: 12px;
   bottom: 0;
+`
+
+
+export const Hamburger = styled.button`
+    display: none;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 2rem;
+
+    @media (max-width:992px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 `
