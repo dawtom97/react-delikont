@@ -13,6 +13,9 @@ export const Wrapper = styled.div`
   & > div {
     display: flex;
     gap: 30px;
+    @media (max-width:992px) {
+      flex-direction: column;
+    }
   }
 
   & td,
@@ -57,6 +60,7 @@ export const ButtonsWrapper = styled.div`
   justify-content: space-between;
   padding-top: 20px;
   border-top: 1px solid #efefef;
+  gap: 10px;
 
   & button {
     display: flex;

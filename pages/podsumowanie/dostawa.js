@@ -8,9 +8,15 @@ import { OrderCheckoutShipping } from "../../src/components/OrderCheckoutShippin
 const Wrapper = styled.div`
   display: flex;
   gap:30px;
+  @media (max-width:992px) {
+      flex-direction: column-reverse;
+    }
 
   & > div:first-of-type {
     width: 70%;
+    @media (max-width:768px) {
+      width: 100%;
+    }
   }
 `;
 

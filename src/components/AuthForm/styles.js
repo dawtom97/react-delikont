@@ -24,6 +24,11 @@ export const AuthWrapper = styled.form`
   min-width: 600px;
   width: 50%;
 
+  @media (max-width:768px) {
+    width: 100%;
+    min-width: 300px;
+  }
+
   & legend {
     border-bottom: 1px solid #282828;
     text-transform: uppercase;

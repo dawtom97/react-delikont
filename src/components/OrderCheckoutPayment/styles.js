@@ -16,6 +16,9 @@ export const ButtonsBox = styled.div `
   margin-top:20px;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 992px) {
+    gap: 10px;
+  }
 
   & a {
     display: flex;

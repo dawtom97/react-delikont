@@ -8,9 +8,15 @@ import { MainTemplate } from '../../src/templates/MainTemplate'
 const Wrapper = styled.div`
   display: flex;
   gap:30px;
+  @media (max-width:992px) {
+      flex-direction:column-reverse
+    }
 
   & > div:first-of-type {
     width: 70%;
+    @media (max-width:992px) {
+      width: 100%;
+    }
   }
 `;
 
