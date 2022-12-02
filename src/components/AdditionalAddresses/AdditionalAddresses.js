@@ -32,6 +32,10 @@ export const AdditionalAddresBox = styled.div`
   margin: 15px 0;
   align-items: center;
   padding: 3px 12px;
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   & > div {
     flex: 1;
@@ -90,7 +94,9 @@ export const AdditionalAddresses = ({ addresses, isCheckout }) => {
 
   return (
     <Wrapper>
-      <Heading level="h3">{!isCheckout ? "DODATKOWE ADRESY DOSTAWY": "WYBIERZ INNY ADRES"}</Heading>
+      <Heading level="h3">
+        {!isCheckout ? "DODATKOWE ADRESY DOSTAWY" : "WYBIERZ INNY ADRES"}
+      </Heading>
       {!additional.length ? (
         <p>Nie masz innych adresów w swojej książce adresowej</p>
       ) : (
@@ -155,7 +161,9 @@ export const AdditionalAddresses = ({ addresses, isCheckout }) => {
       <ButtonsBox>
         <Button onClick={() => setCreateMode(true)}>DODAJ NOWY ADRES</Button>
         <Link href="/konto/moje-konto">
-          <Button isSecondary>{!isCheckout ? "POWRÓT" : "KSIĄŻKA ADRESOWA"}</Button>
+          <Button isSecondary>
+            {!isCheckout ? "POWRÓT" : "KSIĄŻKA ADRESOWA"}
+          </Button>
         </Link>
       </ButtonsBox>
     </Wrapper>

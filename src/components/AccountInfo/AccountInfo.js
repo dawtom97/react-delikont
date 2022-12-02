@@ -42,6 +42,10 @@ export const InnerWrapper = styled.div`
   padding-bottom: 30px;
   margin-bottom: 15px;
   border-bottom: 1px solid #ebebeb;
+  @media (max-width:768px) {
+    flex-direction: column;
+    gap: 30px;
+  }
   & > div {
     flex: 1;
   }

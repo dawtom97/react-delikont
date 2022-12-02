@@ -44,6 +44,15 @@ export const OrdersTable = styled.table`
     border-left:1px solid #e1e1e1;
     border-right:1px solid #e1e1e1;
     padding: 20px;
+    @media (max-width:768px) {
+      padding: 20px 10px;
+    }
+  }
+
+  & td:nth-child(2) {
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
 

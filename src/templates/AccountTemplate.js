@@ -16,6 +16,9 @@ export const InnerWrapper = styled.main`
   & > div {
     display: flex;
     gap: 35px;
+    @media (max-width:992px) {
+      flex-direction: column;
+    }
 
     & > div {
       flex: 1;

@@ -15,6 +15,10 @@ export const Wrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 30px;
+    }
 
     & > a {
       font-weight: 700;
@@ -71,7 +75,7 @@ export const AddressInfo = ({ addresses }) => {
     (address) => address.default_billing === true
   );
 
- // console.log(defaultBilling, defaultShipping);
+  // console.log(defaultBilling, defaultShipping);
 
   return (
     <Wrapper>

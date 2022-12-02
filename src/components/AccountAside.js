@@ -34,6 +34,9 @@ export const Wrapper = styled.aside`
   }
   & button {
     margin-top:30px;
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 `;
 
