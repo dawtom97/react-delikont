@@ -36,7 +36,7 @@ const addressInitialState = {
 };
 
 export const AuthForm = () => {
-  const { userLogin, setAddresses } = useContext(UserContext);
+  const { userLogin, setAddresses, addresses } = useContext(UserContext);
   const { showModal } = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
   const [newAddress, setNewAddress] = useState(addressInitialState);
@@ -65,27 +65,39 @@ export const AuthForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationPass = validation(
-      newAccount,
-      newAddress,
-    );
+    const validationPass = validation(newAccount, newAddress);
+    console.log(validationPass);
+
     if (validationPass.status) {
       await magentoRegister(newAccount).then(async (res) => {
         setErrors({});
+        if (res.status.message) {
+          showModal("Użytkownik o podanym adresie email już istnieje",true)
+          return;
+        }
         await userLogin({
           email: newAccount.email,
           password: newAccount.password,
         });
-        await magentoCreateCustomerAddress(newAddress,true,false).then(({response}) =>
-          setAddresses(prev=>[...prev,response.data.createCustomerAddress])
+        await magentoCreateCustomerAddress(newAddress, true, false).then(
+          ({ response }) => {
+            console.log("To jest adres ", addresses);
+            setAddresses((prev) => [
+              ...prev,
+              response.data.createCustomerAddress,
+            ]);
+          }
         );
-        await magentoCreateCustomerAddress(newAddress,false,true).then(({response}) =>
-        setAddresses(prev=>[...prev,response.data.createCustomerAddress])
-      );
+        await magentoCreateCustomerAddress(newAddress, false, true).then(
+          ({ response }) =>
+            setAddresses((prev) => [
+              ...prev,
+              response.data.createCustomerAddress,
+            ])
+        );
+
         // await magentoCreateCompany(newCompany).then(res => console.log(res, "NOWA FIREMKA"))
-        res.status.message
-          ? showModal("Istnieje już konto o podanym adresie email", true)
-          : showModal("Założono nowe konto");
+         showModal("Założono nowe konto");
       });
     } else {
       setErrors(validationPass.errors);
@@ -93,15 +105,15 @@ export const AuthForm = () => {
   };
 
   const validation = (data, dataAddress, region) => {
-    const passReg = new RegExp(
-      "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
-    );
+    const passReg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     const errors = {};
     if (!data.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i))
       errors.email = "Niepoprawny adres email";
-    if (!data.password.match(passReg))
+    if (!data.password.match(passReg)) {
+      console.log(data.password);
       errors.password =
         "Wymagane co najmniej 6 znaków, w tym jedna duża litera i cyfra";
+    }
     if (data.firstname == "") errors.firstname = "To pole jest wymagane";
     if (data.lastname == "") errors.lastname = "To pole jest wymagane";
     if (data.password !== data.repassword)
@@ -165,7 +177,7 @@ export const AuthForm = () => {
           placeholder="Nazwisko"
           name="lastname"
         />
-       
+
         <Input
           value={newAccount.email}
           onChange={handleChange}

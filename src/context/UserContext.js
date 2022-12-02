@@ -24,7 +24,7 @@ export const UserContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const location = useRouter();
   const [wishlist, setWishlist] = useState();
-  const [addresses, setAddresses] = useState();
+  const [addresses, setAddresses] = useState([]);
   const [cart, setCart] = useState();
   const [orders,setOrders] = useState();
   const router = useRouter();
@@ -48,7 +48,7 @@ export const UserContextProvider = ({ children }) => {
         .then(({ response }) => {
           console.log(response, currentUser);
           setCurrentUser(response.data.customer);
-          setAddresses(response.data.customer?.addresses);
+          setAddresses(response.data.customer.addresses);
         })
         .catch((er) => {
           console.log(er, "CATCHED");
@@ -69,6 +69,7 @@ export const UserContextProvider = ({ children }) => {
   }, [currentUser]);
 
   useEffect(() => {
+    console.log(currentUser, "KURENT USER")
     setAddresses(currentUser?.addresses);
   }, [currentUser]);
 
