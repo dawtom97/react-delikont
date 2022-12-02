@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 11px;
+  justify-content: space-between;
 `;
 
 const Products = ({ products,lastItem }) => {

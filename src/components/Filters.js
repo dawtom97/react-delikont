@@ -8,6 +8,9 @@ export const Wrapper = styled.div`
   margin-bottom: 20px;
   padding: 10px 10px;
   border: 1px solid #e1e1e1;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
   & > div {
     display: flex;
     align-items: center;
@@ -15,6 +18,9 @@ export const Wrapper = styled.div`
 
     & > label {
       font-size: 12px;
+      @media (max-width: 768px) {
+        flex:1
+      }
     }
     & > select {
       color: #9c9c9c;
@@ -22,6 +28,9 @@ export const Wrapper = styled.div`
       border-color: #e1e1e1;
       background: transparent;
       font-size: 12px;
+      @media (max-width: 768px) {
+        flex:3
+      }
     }
   }
 `;

@@ -4,27 +4,29 @@ import styled from "styled-components";
 import { ProductPrice } from "./ProductPrice";
 
 export const Card = styled.article`
-  width: calc(15% - 20px);
+  width: calc(15% - 10px);
   border: 1px solid #ebebeb;
   padding: 10px;
   font-size: 14px;
   min-height: 460px;
+  min-width: 180px;
+  flex: 1;
   text-align: center;
 
   @media screen and (max-width:1440px) {
-    width:calc(17% - 20px)
+    width:calc(17% - 10px)
   }
   @media screen and (max-width:1440px) {
-    width:calc(20% - 20px)
+    width:calc(20% - 10px)
   }
   @media screen and (max-width:992px) {
-    width:calc(25% - 20px)
+    width:calc(25% - 10px)
   }
   @media screen and (max-width:768px) {
-    width:calc(33% - 20px)
+    width:calc(33% - 10px)
   }
   @media screen and (max-width:576px) {
-    width:calc(50% - 20px)
+    width:calc(50% - 10px)
   }
 
   & img {

@@ -15,6 +15,9 @@ const Wrapper = styled.div`
   transform: translate(-50%,-50%);
   overflow-y: scroll;
   max-height: 70%;
+  @media (max-width:768px) {
+    width: 100%;
+  }
 
   & img:last-child {
     width: 500px;
@@ -39,22 +42,25 @@ const DevInfo = ({onClick}) => {
     <Wrapper>
         <button onClick={onClick}><AiOutlineClose/></button>
         <img src="/logo.png" alt="logooo"/>
-        <h3>Wersja testowa III</h3>
+        <h3>Wersja testowa IV</h3>
 
         <p><strong>Nowości:</strong></p>
+        <p>- Podstawowe widoki mobilne</p>
+        <p>- Sortowanie produktów po cenie i nazwie (malejąco lub rosnąco)</p>
+
+        <hr/>
+        <p><strong>Poprzednie:</strong></p>
         <p>- złożenie zamówienia (podsumowanie, wybór sposobu dostawy, adresu i płatności)</p>
         <p>- lista zamówień w panelu użytkownika</p>
         <p>- filtry w liście zamówień</p>
         <p>- strona ze szczegółami zamówienia po kliknięciu na zamówienie w panelu użytkownika</p>
         <p>- pobieranie treści ze stron w panelu admina (jako przykład strona polityki prywatności - link w stopce)</p>
-        <hr/>
-        <p><strong>Poprzednie:</strong></p>
-        <p>- logowanie / rejestracja</p>
+        {/* <p>- logowanie / rejestracja</p>
         <p>- ulubione produkty i ich lista (panel użytkownika)</p>
         <p>- dodawanie do koszyka, usuwanie z koszyka</p>
         <p>- adresy, dodawanie/edytowanie i usuwanie adresów dostawy i rozliczeń</p>
         <p>- doładowywanie produktów na stronie głównej po przewinięciu na dół strony</p>
-        <p>- edycja danych użytkownika</p>
+        <p>- edycja danych użytkownika</p> */}
         <hr/>
         <p><strong>Znane błędy:</strong></p>
         <p>Możliwe jest chwilowa utrata części danych z konta użytkownika. Mogą pojawić się wtedy błędy związane z koszykiem/listą zamówień itd.
