@@ -35,14 +35,22 @@ const addressInitialState = {
   lastname: "",
 };
 
+const initialUserState = {
+  email: "",
+  password: "",
+};
+
 export const AuthForm = () => {
   const { userLogin, setAddresses, addresses } = useContext(UserContext);
   const { showModal } = useContext(ModalContext);
   const [newAccount, setNewAccount] = useState(initialState);
   const [newAddress, setNewAddress] = useState(addressInitialState);
   const [errors, setErrors] = useState({});
+  const [errorsLogin, setErrorsLogin] = useState({});
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("PL");
+  const [isRegister, setIsRegister] = useState(true);
+  const [userForm, setUserForm] = useState(initialUserState);
 
   useEffect(() => {
     magentoCountryQuery(selectedCountry).then((res) =>
@@ -63,6 +71,14 @@ export const AuthForm = () => {
     });
   };
 
+  const handleLoginChange = (e) => {
+    console.log(userForm);
+    setUserForm({
+      ...userForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationPass = validation(newAccount, newAddress);
@@ -71,8 +87,9 @@ export const AuthForm = () => {
     if (validationPass.status) {
       await magentoRegister(newAccount).then(async (res) => {
         setErrors({});
+        console.log(res.status)
         if (res.status.message) {
-          showModal("Użytkownik o podanym adresie email już istnieje",true)
+          showModal("Użytkownik o podanym adresie email już istnieje", true);
           return;
         }
         await userLogin({
@@ -97,11 +114,38 @@ export const AuthForm = () => {
         );
 
         // await magentoCreateCompany(newCompany).then(res => console.log(res, "NOWA FIREMKA"))
-         showModal("Założono nowe konto");
+        showModal("Założono nowe konto");
       });
     } else {
       setErrors(validationPass.errors);
     }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const validationPass = validationLogin(userForm);
+    if (validationPass.status) {
+      setErrorsLogin({});
+      console.log(userForm);
+      userLogin(userForm);
+    }
+    setErrorsLogin(validationPass.errorsLogin);
+  };
+
+  const validationLogin = (data) => {
+    const errorsLogin = {};
+    if (data.email == "") errorsLogin.email = "To pole jest wymagane";
+    if (data.password == "") errorsLogin.password = "To pole jest wymagane";
+
+    if (!errorsLogin.email && !errorsLogin.password)
+      return {
+        status: true,
+        errorsLogin: null,
+      };
+    return {
+      status: false,
+      errorsLogin,
+    };
   };
 
   const validation = (data, dataAddress, region) => {
@@ -154,127 +198,165 @@ export const AuthForm = () => {
 
   return (
     <Styled.Wrapper>
-      <Heading>UTWÓRZ NOWE KONTO KLIENTA</Heading>
+      <Heading>
+        {isRegister ? "UTWÓRZ NOWE KONTO KLIENTA" : "ZALOGUJ SIĘ"}
+      </Heading>
       <p>
-        Jeśli masz już konto <Link href="/">zaloguj się</Link>
+        {isRegister ? "Masz już konto?" : "Nie masz konta?"}{" "}
+        <Styled.AuthLink onClick={() => setIsRegister(!isRegister)}>
+          {" "}
+          {isRegister ? "Zaloguj się" : "Zarejestruj się"}
+        </Styled.AuthLink>
       </p>
-      <Styled.AuthWrapper onSubmit={handleSubmit}>
-        <legend>
-          <span>DANE DO LOGOWANIA</span>
-        </legend>
-        <Input
-          value={newAccount.firstname}
-          onChange={handleChange}
-          type="text"
-          placeholder="Imię"
-          name="firstname"
-        />
-        {errors && <ErrorMsg>{errors.firstname}</ErrorMsg>}
-        <Input
-          value={newAccount.lastname}
-          onChange={handleChange}
-          type="text"
-          placeholder="Nazwisko"
-          name="lastname"
-        />
+      {isRegister ? (
+        <Styled.AuthWrapper onSubmit={handleSubmit}>
+          <legend>
+            <span>DANE DO LOGOWANIA</span>
+          </legend>
+          <Input
+            value={newAccount.firstname}
+            onChange={handleChange}
+            type="text"
+            placeholder="Imię"
+            name="firstname"
+          />
+          {errors && <ErrorMsg>{errors?.firstname}</ErrorMsg>}
+          <Input
+            value={newAccount.lastname}
+            onChange={handleChange}
+            type="text"
+            placeholder="Nazwisko"
+            name="lastname"
+          />
 
-        <Input
-          value={newAccount.email}
-          onChange={handleChange}
-          type="text"
-          placeholder="E-mail"
-          name="email"
-        />
-        {errors && <ErrorMsg>{errors.email}</ErrorMsg>}
-        <Input
-          value={newAccount.password}
-          onChange={handleChange}
-          type="password"
-          placeholder="Hasło"
-          name="password"
-        />
-        {errors && <ErrorMsg>{errors.password}</ErrorMsg>}
-        <Input
-          value={newAccount.repassword}
-          onChange={handleChange}
-          type="password"
-          placeholder="Powtórz hasło"
-          name="repassword"
-        />
-        {errors && <ErrorMsg>{errors.passwordCheck}</ErrorMsg>}
+          <Input
+            value={newAccount.email}
+            onChange={handleChange}
+            type="text"
+            placeholder="E-mail"
+            name="email"
+          />
+          {errors && <ErrorMsg>{errors.email}</ErrorMsg>}
+          <Input
+            value={newAccount.password}
+            onChange={handleChange}
+            type="password"
+            placeholder="Hasło"
+            name="password"
+          />
+          {errors && <ErrorMsg>{errors.password}</ErrorMsg>}
+          <Input
+            value={newAccount.repassword}
+            onChange={handleChange}
+            type="password"
+            placeholder="Powtórz hasło"
+            name="repassword"
+          />
+          {errors && <ErrorMsg>{errors.passwordCheck}</ErrorMsg>}
 
-        <legend>
-          <span>DANE DOSTAWY</span>
-        </legend>
+          <legend>
+            <span>DANE DOSTAWY</span>
+          </legend>
 
-        <Input
-          value={newAddress.street}
-          name="street"
-          type="text"
-          placeholder="Ulica i numer"
-          onChange={handleChange}
-        />
-        {errors && <ErrorMsg>{errors.street}</ErrorMsg>}
+          <Input
+            value={newAddress.street}
+            name="street"
+            type="text"
+            placeholder="Ulica i numer"
+            onChange={handleChange}
+          />
+          {errors && <ErrorMsg>{errors.street}</ErrorMsg>}
 
-        <Input
-          value={newAddress.city}
-          name="city"
-          type="text"
-          placeholder="Miasto"
-          onChange={handleChange}
-        />
-        {errors && <ErrorMsg>{errors.city}</ErrorMsg>}
+          <Input
+            value={newAddress.city}
+            name="city"
+            type="text"
+            placeholder="Miasto"
+            onChange={handleChange}
+          />
+          {errors && <ErrorMsg>{errors.city}</ErrorMsg>}
 
-        <Input
-          value={newAddress.telephone}
-          onChange={handleChange}
-          type="text"
-          placeholder="Telefon"
-          name="telephone"
-        />
+          <Input
+            value={newAddress.telephone}
+            onChange={handleChange}
+            type="text"
+            placeholder="Telefon"
+            name="telephone"
+          />
 
-        <Select name="region" onChange={handleChange}>
-          <option value="">Wybierz województwo lub region</option>
-          {countries.available_regions?.map((region) => (
-            <option key={region.id} value={region.name}>
-              {region.name}
-            </option>
-          ))}
-        </Select>
-        {errors.region && <ErrorMsg>{errors.region}</ErrorMsg>}
+          <Select name="region" onChange={handleChange}>
+            <option value="">Wybierz województwo lub region</option>
+            {countries.available_regions?.map((region) => (
+              <option key={region.id} value={region.name}>
+                {region.name}
+              </option>
+            ))}
+          </Select>
+          {errors?.region && <ErrorMsg>{errors.region}</ErrorMsg>}
 
-        <Input
-          name="postcode"
-          value={newAddress.postcode}
-          type="text"
-          placeholder="Kod pocztowy"
-          onChange={handleChange}
-        />
-        {errors && <ErrorMsg>{errors.postcode}</ErrorMsg>}
+          <Input
+            name="postcode"
+            value={newAddress.postcode}
+            type="text"
+            placeholder="Kod pocztowy"
+            onChange={handleChange}
+          />
+          {errors && <ErrorMsg>{errors.postcode}</ErrorMsg>}
 
-        <Select
-          name="country_code"
-          onChange={(e) => {
-            setSelectedCountry(e.target.value);
-            handleChange(e);
-          }}
-        >
-          <option value="PL">Wybierz kraj</option>
-          <option value="PL">Polska</option>
-        </Select>
-        {errors.country_code && <ErrorMsg>{errors.country_code}</ErrorMsg>}
+          <Select
+            name="country_code"
+            onChange={(e) => {
+              setSelectedCountry(e.target.value);
+              handleChange(e);
+            }}
+          >
+            <option value="PL">Wybierz kraj</option>
+            <option value="PL">Polska</option>
+          </Select>
+          {errors.country_code && <ErrorMsg>{errors.country_code}</ErrorMsg>}
 
-        <RegisterConsents />
+          <RegisterConsents />
 
-        <Button isSecondary type="submit">
-          UTWÓRZ KONTO KLIENTA
-        </Button>
-        <Button>
-          <Link href="/">
-            <a>POWRÓT</a>
-          </Link>
-        </Button>
-      </Styled.AuthWrapper>
+          <Button isSecondary type="submit">
+            UTWÓRZ KONTO KLIENTA
+          </Button>
+          <Button>
+            <Link href="/">
+              <a>POWRÓT</a>
+            </Link>
+          </Button>
+        </Styled.AuthWrapper>
+      ) : (
+        <Styled.AuthWrapper onSubmit={handleLogin}>
+          <legend>
+            <span>DANE DO LOGOWANIA</span>
+          </legend>
+          <Input
+            onChange={handleLoginChange}
+            value={userForm.email}
+            type="text"
+            placeholder="Email"
+            name="email"
+          />
+          {errorsLogin && <ErrorMsg>{errorsLogin.email}</ErrorMsg>}
+          <Input
+            onChange={handleLoginChange}
+            value={userForm.password}
+            type="password"
+            placeholder="Password"
+            name="password"
+          />
+          {errorsLogin && <ErrorMsg>{errorsLogin.password}</ErrorMsg>}
+          <Button isSecondary type="submit">
+            ZALOGUJ SIĘ
+          </Button>
+          <Button>
+            <Link href="/">
+              <a>POWRÓT</a>
+            </Link>
+          </Button>
+        </Styled.AuthWrapper>
+      )}
     </Styled.Wrapper>
   );
 };

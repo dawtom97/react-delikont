@@ -158,7 +158,7 @@ export const Header = ({ categories }) => {
                   <div>
                     <p>
                       NIE MASZ KONTA?{" "}
-                      <Link href="/rejestracja">ZAREJESTRUJ SIĘ</Link>
+                      <Link href="/autoryzacja">ZAREJESTRUJ SIĘ</Link>
                     </p>
                   </div>
                   <ul>
@@ -186,14 +186,22 @@ export const Header = ({ categories }) => {
               ) : null}
             </Styled.CartIcon>
           </Link>
-          <Link href="/konto/lista-zyczen">
-            <Styled.CartIcon>
+          {isLogged ? (
+            <Link href="/konto/lista-zyczen">
+              <Styled.CartIcon>
+                <AiOutlineHeart />
+                {wishlist?.items?.length ? (
+                  <Styled.CartItemsNum>
+                    {wishlist.items.length}
+                  </Styled.CartItemsNum>
+                ) : null}
+              </Styled.CartIcon>
+            </Link>
+          ) : (
+            <Link href="/autoryzacja">
               <AiOutlineHeart />
-              {wishlist?.items?.length ? (
-                <Styled.CartItemsNum>{wishlist.items.length}</Styled.CartItemsNum>
-              ) : null}
-            </Styled.CartIcon>
-          </Link>
+            </Link>
+          )}
         </Styled.IconsBar>
       </Styled.InnerWrapper>
 

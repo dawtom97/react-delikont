@@ -16,7 +16,7 @@ export const InnerWrapper = styled.main`
   & > div {
     display: flex;
     gap: 35px;
-    @media (max-width:992px) {
+    @media (max-width: 992px) {
       flex-direction: column;
     }
 
@@ -32,7 +32,7 @@ export const InnerWrapper = styled.main`
 
 export const AccountTemplate = ({ children }) => {
   const { currentUser, token } = useContext(UserContext);
-  const {showModal} = useContext(ModalContext)
+  const { showModal } = useContext(ModalContext);
   const path = useRouter();
   const paths = path.asPath.split("/");
   const title = paths[paths.length - 1];
@@ -44,16 +44,14 @@ export const AccountTemplate = ({ children }) => {
       .replace("zyczen", "życzeń")
       .replace("zamowienia", "zamówienia");
 
-
-    // useEffect(()=>{
-    //   if (!currentUser.email) {
-    //     console.log(currentUser);
-    //     path.push("/rejestracja");
-    //     showModal("Zaloguj się, aby przejść do panelu użytkownika")
-    //     return;
-    //   }
-    // },[])
-
+  // useEffect(()=>{
+  //   if (!currentUser.email) {
+  //     console.log(currentUser);
+  //     path.push("/autoryzacja");
+  //     showModal("Zaloguj się, aby przejść do panelu użytkownika")
+  //     return;
+  //   }
+  // },[])
 
   return (
     <div>
