@@ -13,16 +13,12 @@ import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 import { ErrorMsg } from "../ErrorMsg";
 import { FaUserCircle } from "react-icons/fa";
-import {IoMenu} from 'react-icons/io5';
+import { IoMenu } from "react-icons/io5";
+import { AiOutlineHeart } from "react-icons/ai";
 
 export const Header = ({ categories }) => {
-  const {
-    isLogged,
-    userLogin,
-    currentUser,
-    userLogout,
-    cart
-  } = useContext(UserContext);
+  const { isLogged, userLogin, currentUser, userLogout, cart, wishlist } =
+    useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
@@ -184,9 +180,17 @@ export const Header = ({ categories }) => {
               <BsCartCheck />
               {cart?.items?.length ? (
                 <>
-                <Styled.CartItemsNum>{cart.items.length}</Styled.CartItemsNum>
-                {/* <Styled.CartItemsValue>{cart.prices.grand_total.value}zł</Styled.CartItemsValue> */}
+                  <Styled.CartItemsNum>{cart.items.length}</Styled.CartItemsNum>
+                  {/* <Styled.CartItemsValue>{cart.prices.grand_total.value}zł</Styled.CartItemsValue> */}
                 </>
+              ) : null}
+            </Styled.CartIcon>
+          </Link>
+          <Link href="/konto/lista-zyczen">
+            <Styled.CartIcon>
+              <AiOutlineHeart />
+              {wishlist?.items?.length ? (
+                <Styled.CartItemsNum>{wishlist.items.length}</Styled.CartItemsNum>
               ) : null}
             </Styled.CartIcon>
           </Link>
@@ -195,7 +199,7 @@ export const Header = ({ categories }) => {
 
       <Styled.Nav>
         <Styled.Hamburger>
-          <IoMenu/>
+          <IoMenu />
         </Styled.Hamburger>
         <ul>
           {mainMenu.map((category) => (

@@ -11,7 +11,7 @@ z-index: 100;
 export const InnerWrapper = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 30px 10px;
+  padding: 30px 16px;
   display: flex;
   align-items: center;
 `;
