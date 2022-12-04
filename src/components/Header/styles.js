@@ -15,43 +15,6 @@ export const InnerWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
-export const SearchBox = styled.div`
-  display: flex;
-  width: 37.5%;
-  @media (max-width:992px) {
-    display: none;
-  }
-
-  & > button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 0px 20px 20px 0;
-    width: 9%;
-    border: 1px solid #e1e1e1;
-    border-left: none;
-    min-width: 44px;
-    color: #fff;
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colorPrimary};
-    & > svg {
-      font-size: 20px;
-    }
-  }
-  & > input {
-  
-    padding: 10px 0;
-    border-radius: 20px 0 0 20px;
-    width: 91%;
-    outline: none;
-    display: block;
-    height: 100%;
-    padding-left: 20px;
-    border: 1px solid #e1e1e1;
-    border-right: none;
-  }
-`;
 
 export const Logo = styled.div`
   width: 25%;

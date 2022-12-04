@@ -15,6 +15,7 @@ import { ErrorMsg } from "../ErrorMsg";
 import { FaUserCircle } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import { AiOutlineHeart } from "react-icons/ai";
+import SearchInput from "../SearchInput";
 
 export const Header = ({ categories }) => {
   const { isLogged, userLogin, currentUser, userLogout, cart, wishlist } =
@@ -69,12 +70,7 @@ export const Header = ({ categories }) => {
           </Link>
         </Styled.Logo>
 
-        <Styled.SearchBox>
-          <input type="text" placeholder="Szukaj w sklepie..." />
-          <button>
-            <FiSearch />
-          </button>
-        </Styled.SearchBox>
+        <SearchInput/>
 
         <Styled.IconsBar>
           {isLogged ? (
