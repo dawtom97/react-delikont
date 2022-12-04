@@ -10,7 +10,7 @@ export const WishlistProducts = ({ items }) => {
       <Heading level="h2">Twoje ulubione produkty</Heading>
       <div>
       {items.length ? items.map(({ product }) => (
-        <ProductCard isAlternative product={product} key={product.id}/>
+        <ProductCard product={product} key={product.id}/>
       )) : <p>Nie polubiłeś jeszcze żadnych produktów.</p>}
       </div>
     
