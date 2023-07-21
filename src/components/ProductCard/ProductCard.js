@@ -85,7 +85,7 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
 
   useEffect(() => setCardProduct(isCartProduct()), [cart]);
 
-  console.log(product);
+  // console.log(product);
 
   const isCartProduct = () =>
     cart?.items.find((item) => item.product.id === product.id);

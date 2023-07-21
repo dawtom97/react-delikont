@@ -40,7 +40,7 @@ export const DevInfoBtn = styled.button`
 `;
 
 export const MainTemplate = ({ children }) => {
-  const [crumbs, setCrumbs] = useState();
+  const [crumbs, setCrumbs] = useState([]);
   const [categories, setCategories] = useState();
   const router = useRouter();
 
@@ -68,6 +68,8 @@ export const MainTemplate = ({ children }) => {
     setCrumbs([{ href: "/", label: "Strona główna" }, ...breadcrumbs]);
   }, [router]);
 
+  console.log(crumbs);
+
   useEffect(() => {
     magentoCategories().then((res) => setCategories(res));
   }, []);
@@ -83,7 +85,10 @@ export const MainTemplate = ({ children }) => {
       <InnerWrapper>
         {isValidPage
           ? crumbs?.map((crumb, index) => (
-              <Link key={index} href={crumb?.href}>
+              <Link
+                key={index}
+                href={index == 0 ? "/" : `/kategorie/${crumbs[index]?.href}`}
+              >
                 {index !== crumbs.length - 1
                   ? crumb?.label + " > "
                   : crumb?.label}
