@@ -1,49 +1,58 @@
-import { API_URL,headers } from "./config";
+import { API_URL, headers } from "./config";
 
 export const magentoCategories = async () => {
-
   const query = {
     oparationName: "fetchCategories",
     query: `query fetchCategories {
-        category {
-            id
+         category {
+        id
+        name
+        url_key
+        children {
+            id 
             name
+            url_path
             url_key
+            level
             children {
-                id 
-                name
-                url_path
-                url_key
-                level
-                children {
-                  id 
-                  name
-                  url_path
-                  url_key
-                  level
-                  
-                }
+              id 
+              name
+              url_path
+              url_key
+              level
+              children_count
+              children {
+                      id 
+                      name
+                      url_path
+                      url_key
+                      level
+                      children_count
+                      children {
+                          id 
+                          name
+                          url_path
+                          url_key
+                          level
+                          children_count
+                      }
+              }
             }
         }
+    }
     }`,
-    variables: {}
+    variables: {},
   };
 
   const options = {
     method: "POST",
     headers,
-    body: JSON.stringify(query)
-  }
+    body: JSON.stringify(query),
+  };
 
-  const response = await(await fetch(API_URL,options)).json();
+  const response = await (await fetch(API_URL, options)).json();
   return response.data;
-
 };
-
-
-
-
-
 
 // headers: {
 //   "Content-Type": "application/json",
@@ -51,23 +60,22 @@ export const magentoCategories = async () => {
 //   "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
 // },
 
-
-  // const result = await axios({
-  //   url: API_URL,
-  //   method: "post",
-  //   withCredentials: false,
-  //   data: {
-  //     query: `{
-  //         categoryList(filters:{}) {
-  //             name
-  //             children_count
-  //             children {
-  //                 id 
-  //                 level
-  //             }
-  //         }
-  //     }`,
-  //   },
-  // });
-  // const data = result.data;
-  // return data;
+// const result = await axios({
+//   url: API_URL,
+//   method: "post",
+//   withCredentials: false,
+//   data: {
+//     query: `{
+//         categoryList(filters:{}) {
+//             name
+//             children_count
+//             children {
+//                 id
+//                 level
+//             }
+//         }
+//     }`,
+//   },
+// });
+// const data = result.data;
+// return data;

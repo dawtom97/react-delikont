@@ -2,12 +2,10 @@ import logo from "../../../public/logo.png";
 import Image from "next/dist/client/image";
 import * as Styled from "./styles";
 import Link from "next/link";
-import { FiSearch } from "react-icons/fi";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BsCartCheck } from "react-icons/bs";
-import { mainMenu } from "../../fakeData/fakeData";
 import { BiGitCompare, BiCalendar } from "react-icons/bi";
 import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
@@ -18,12 +16,20 @@ import { AiOutlineHeart } from "react-icons/ai";
 import SearchInput from "../SearchInput";
 
 export const Header = () => {
-  const { isLogged, userLogin, currentUser, userLogout, cart, wishlist,categories } =
-    useContext(UserContext);
+  const {
+    isLogged,
+    userLogin,
+    currentUser,
+    userLogout,
+    cart,
+    wishlist,
+    categories,
+  } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
-  
+
+  console.log(categories);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -71,7 +77,7 @@ export const Header = () => {
           </Link>
         </Styled.Logo>
 
-        <SearchInput/>
+        <SearchInput />
 
         <Styled.IconsBar>
           {isLogged ? (
@@ -213,17 +219,26 @@ export const Header = () => {
                 {category.name}
                 {category.children.length > 0 && (
                   <Styled.SubMenu>
-                    <ul>    
+                    <ul>
                       {category.children.map((subcat, index) => (
                         <li key={index}>
-                          <Link href={`/kategorie/${category.url_key}/${subcat.url_key}`}>
+                          <Link
+                            href={`/kategorie/${category.url_key}/${subcat.url_key}`}
+                          >
                             <span>{subcat.name}</span>
                           </Link>
 
                           {/* tutaj do poprawy */}
-                          {subcat?.categories?.map((item, index) => (
+                          {subcat?.children?.map((item, index) => (
                             <p key={index}>
-                              <Link href={item.url_path}>{item.name}</Link>
+                              <Link
+                                href={`/kategorie/${category.url_key}/${subcat.url_key}/${item.url_key}`}
+                              >
+                                {item.name}
+                              </Link>
+                              {/* {item?.children?.map((level3) => (
+                                <p key={level3.id}>{level3.name}</p>
+                              ))} */}
                             </p>
                           ))}
                         </li>

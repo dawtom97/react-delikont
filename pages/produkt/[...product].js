@@ -15,8 +15,6 @@ const ProductDetails = () => {
   } = useRouter();
   const urlKey = product && product[product.length - 1];
 
-
-
   useEffect(() => {
 
     magentoSingleProduct(urlKey)

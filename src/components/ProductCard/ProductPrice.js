@@ -126,13 +126,13 @@ export const ProductPrice = ({ product, isAlternative, cartProduct }) => {
   const checkWeightFormat = (weight) => (weight === 6 ? "kg" : " l");
 
 
-  console.log(product)
+  // console.log(product)
 
   const price = String(
     (product?.price_range?.minimum_price?.final_price?.value).toFixed(2)
   ).split(".");
 
-  const calculatePricePer =  product.format === 'kg' || product.format === 'l' ? 0.5 : 1000
+  const calculatePricePer =  product.format === 'kg' || product.format === 'l' ? 1 : 1000
 
   if (!product) return;
 

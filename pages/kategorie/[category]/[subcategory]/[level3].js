@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { Filters } from "../../../src/components/Filters";
-import { Loader } from "../../../src/components/Loader";
-import Products from "../../../src/components/Products/Products";
-import { UserContext } from "../../../src/context/UserContext";
-import { magentoCategoryProducts } from "../../../src/graphql/magentoCategoryProducts";
-import { MainTemplate } from "../../../src/templates/MainTemplate";
+import { Filters } from "../../../../src/components/Filters";
+import { Loader } from "../../../../src/components/Loader";
+import Products from "../../../../src/components/Products/Products";
+import { UserContext } from "../../../../src/context/UserContext";
+import { magentoCategoryProducts } from "../../../../src/graphql/magentoCategoryProducts";
+import { MainTemplate } from "../../../../src/templates/MainTemplate";
 
-export default function SubcategoryPage() {
+export default function Level3categoryPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,8 +34,6 @@ export default function SubcategoryPage() {
       currentCategory.children.filter((x) => x.url_key === query.subcategory)[0]
     );
   }, [currentCategory, query]);
-
-  console.log(currentSubcategory);
 
   useEffect(() => {
     if (!currentSubcategory) return;
@@ -97,10 +95,7 @@ export default function SubcategoryPage() {
   return (
     <>
       <MainTemplate>
-        <Filters
-          msg={query.subcategory}
-          onChangeFilter={handleChangeSortMethod}
-        />
+        <Filters msg={query.level3} onChangeFilter={handleChangeSortMethod} />
         {!allProducts.length ? (
           <div className="alternative-loader">
             <Loader />

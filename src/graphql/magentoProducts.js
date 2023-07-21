@@ -17,6 +17,8 @@ export const magentoProducts = async (page, sort) => {
               format
               format_ceny
               ciezar_w_jednostkach
+              featured_in_category
+              featured_product
               stock_status
               only_x_left_in_stock
               meta_keyword
@@ -186,7 +188,6 @@ export const magentoProducts = async (page, sort) => {
   };
 
   const response = await (await fetch(API_URL, options)).json();
-
 
   return response.data;
 };

@@ -75,8 +75,6 @@ export const HeartButton = styled.button`
     isFavorite ? "#f57c00" : "transparent"};
 `;
 
-
-
 export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
   const { wishlist, currentUser, addToWishlist, removeFromWishlist, cart } =
     useContext(UserContext);
@@ -86,6 +84,8 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
   const [cartProduct, setCardProduct] = useState();
 
   useEffect(() => setCardProduct(isCartProduct()), [cart]);
+
+  console.log(product);
 
   const isCartProduct = () =>
     cart?.items.find((item) => item.product.id === product.id);
@@ -146,8 +146,10 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
             width={120}
             alt={product.name}
           />
-          <a style={{maxHeight:60}}>
-            {product.name.length > 50 ? product.name.slice(0,50) + "..." : product.name}
+          <a style={{ maxHeight: 60 }}>
+            {product.name.length > 50
+              ? product.name.slice(0, 50) + "..."
+              : product.name}
           </a>
         </div>
       </Link>

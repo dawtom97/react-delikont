@@ -32,7 +32,6 @@ export default function Home() {
     });
   }, []);
 
-
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
     setIsLoading(true);
@@ -76,27 +75,25 @@ export default function Home() {
 
   return (
     <>
-        <MainTemplate>
-          {/* <Heading level="h1">Polecane produkty</Heading> */}
+      <MainTemplate>
+        <Heading level="h1">Polecane produkty</Heading>
 
-          {/* <Products products={featuredProducts} /> */}
+        <Products products={featuredProducts} />
 
-          <Filters
-            msg="Wszystkie produkty"
-            onChangeFilter={handleChangeSortMethod}
-          />
-                {!allProducts.length ? (
-                   <div className="alternative-loader">
-         <Loader  />
-         </div>
-  
-          ) :  <Products products={allProducts} lastItem={lastItemRef} />
-        }
+        <Filters
+          msg="Wszystkie produkty"
+          onChangeFilter={handleChangeSortMethod}
+        />
+        {!allProducts.length ? (
+          <div className="alternative-loader">
+            <Loader />
+          </div>
+        ) : (
+          <Products products={allProducts} lastItem={lastItemRef} />
+        )}
 
-    
-          {isLoading && <Loader/>}
-        </MainTemplate>
-
+        {isLoading && <Loader />}
+      </MainTemplate>
     </>
   );
 }
