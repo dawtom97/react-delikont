@@ -109,7 +109,12 @@ export const CartItem = ({ item }) => {
       <td>
         <Link href={productDetailsUrl}>
           <a>
-            <Image width={70} height={70} src={item.product.small_image.url} alt={item.product.name} />
+            <Image
+              width={70}
+              height={70}
+              src={item.product.small_image.url}
+              alt={item.product.name}
+            />
           </a>
         </Link>
       </td>
@@ -126,11 +131,16 @@ export const CartItem = ({ item }) => {
 
       <td>
         <p>
-          {item.product.price_range.minimum_price.regular_price.value}zł (Netto)
+          {item.product.price_range.minimum_price.regular_price.value.toFixed(
+            2
+          )}
+          zł (Netto)
         </p>
         <p>
-          {item.product.price_range.minimum_price.regular_price.value}zł
-          (Brutto)
+          {item.product.price_range.minimum_price.regular_price.value.toFixed(
+            2
+          )}
+          zł (Brutto)
         </p>
         <p>
           {!item.product.ciezar_w_jednostkach

@@ -14,6 +14,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import { AiOutlineHeart } from "react-icons/ai";
 import SearchInput from "../SearchInput";
+import { ProductCard } from "../ProductCard/ProductCard";
 
 export const Header = () => {
   const {
@@ -24,12 +25,13 @@ export const Header = () => {
     cart,
     wishlist,
     categories,
+    featuredInCategory,
   } = useContext(UserContext);
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
 
-  console.log(categories);
+  console.log(featuredInCategory);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -65,6 +67,8 @@ export const Header = () => {
   };
 
   const handleAccountClick = () => setAuthPanelVisible((prev) => !prev);
+
+  if (!categories) return;
 
   return (
     <Styled.Wrapper>
@@ -214,40 +218,65 @@ export const Header = () => {
         </Styled.Hamburger>
         <ul>
           {categories.map((category) => (
-            <Link key={category.name} href={`/kategorie/${category.url_key}`}>
+            <div key={category.id}>
               <li>
-                {category.name}
+                <Link href={`/kategorie/${category.url_key}`}>
+                  {category.name}
+                </Link>
                 {category.children.length > 0 && (
                   <Styled.SubMenu>
-                    <ul>
-                      {category.children.map((subcat, index) => (
-                        <li key={index}>
-                          <Link
-                            href={`/kategorie/${category.url_key}/${subcat.url_key}`}
-                          >
-                            <span>{subcat.name}</span>
-                          </Link>
+                    <Styled.Container>
+                      <ul>
+                        {category.children.map((subcat, index) => (
+                          <li key={index}>
+                            <Link
+                              href={`/kategorie/${category.url_key}/${subcat.url_key}`}
+                            >
+                              <span>{subcat.name}</span>
+                            </Link>
 
-                          {/* tutaj do poprawy */}
-                          {subcat?.children?.map((item, index) => (
-                            <p key={index}>
-                              <Link
-                                href={`/kategorie/${category.url_key}/${subcat.url_key}/${item.url_key}`}
-                              >
-                                {item.name}
-                              </Link>
-                              {/* {item?.children?.map((level3) => (
+                            {/* tutaj do poprawy */}
+                            {subcat?.children?.map((item, index) => (
+                              <p key={index}>
+                                <Link
+                                  href={`/kategorie/${category.url_key}/${subcat.url_key}/${item.url_key}`}
+                                >
+                                  {item.name}
+                                </Link>
+                                {/* {item?.children?.map((level3) => (
                                 <p key={level3.id}>{level3.name}</p>
                               ))} */}
-                            </p>
-                          ))}
-                        </li>
-                      ))}
-                    </ul>
+                              </p>
+                            ))}
+                          </li>
+                        ))}
+                      </ul>
+                      <Styled.FeaturedInCat>
+                        {featuredInCategory.filter(
+                          (x) => x.categories[0].id === category.id
+                        ).length > 0 ? (
+                          <>
+                            <p>Dziś polecamy:</p>
+                            <ProductCard
+                              product={
+                                featuredInCategory.filter(
+                                  (x) => x.categories[0].id === category.id
+                                )[0]
+                              }
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <p>Dziś polecamy:</p>
+                            <span>Brak wyróżnionych produktów</span>
+                          </>
+                        )}
+                      </Styled.FeaturedInCat>
+                    </Styled.Container>
                   </Styled.SubMenu>
                 )}
               </li>
-            </Link>
+            </div>
           ))}
         </ul>
       </Styled.Nav>

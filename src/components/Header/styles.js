@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.header`
-top:0;
-position: fixed;
-width: 100%;
-background-color: #fff;
-z-index: 400;
+  top: 0;
+  position: fixed;
+  width: 100%;
+  background-color: #fff;
+  z-index: 400;
 `;
 
 export const InnerWrapper = styled.div`
@@ -38,20 +38,19 @@ export const IconsBar = styled.div`
 `;
 
 export const Nav = styled.nav`
+  min-height: 35px;
   background-color: ${({ theme }) => theme.colorPrimary};
 
-  @media (max-width:992px) {
+  @media (max-width: 992px) {
     min-height: 30px;
     display: flex;
     align-items: center;
     padding: 10px;
   }
 
-
   & > ul {
-
-    @media (max-width:992px) {
-    display: none;
+    @media (max-width: 992px) {
+      display: none;
     }
 
     list-style: none;
@@ -60,7 +59,7 @@ export const Nav = styled.nav`
     margin: 0 auto;
     padding: 0px 10px;
     gap: 30px;
-    & > li {
+    & > div {
       text-transform: uppercase;
       width: auto;
       font-weight: 400;
@@ -72,7 +71,7 @@ export const Nav = styled.nav`
       font-size: 15px;
       cursor: pointer;
 
-      @media screen and (max-width:1400px) {
+      @media screen and (max-width: 1400px) {
         font-size: 13px;
       }
 
@@ -89,6 +88,7 @@ export const SubMenu = styled.div`
   z-index: 10;
   position: absolute;
   transition: 0.4s;
+
   min-height: 300px;
   box-shadow: 0px 18px 10px -18px rgba(168, 170, 189, 1);
   color: black;
@@ -100,14 +100,16 @@ export const SubMenu = styled.div`
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.2s, opacity 0.5s;
+  display: flex;
 
-  & > ul {
+  & ul {
     list-style: none;
-    max-width: 1400px;
-    margin: 0 auto;
+    flex-grow: 2;
     justify-content: flex-start;
-    display: flex;
     gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0px 20px;
   }
 
   & li {
@@ -134,6 +136,43 @@ export const SubMenu = styled.div`
     }
   }
 `;
+
+export const FeaturedInCat = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+
+  & > div {
+    width: 100%;
+  }
+
+  & > p {
+    border-bottom: 1px solid black;
+    display: block;
+    width: 100%;
+    margin-top: 0;
+    font-size: 13px;
+    font-weight: 700;
+    padding-bottom: 8px;
+  }
+`;
+
+// export const FeaturedBox = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   flex-grow: 1;
+//   align-items: center;
+//   justify-content: center;
+// `;
+
+export const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  gap: 35px;
+`;
+
 export const AuthPanel = styled.div`
   padding: 20px;
   position: absolute;
@@ -144,9 +183,9 @@ export const AuthPanel = styled.div`
   box-shadow: 8px 8px 10px -11px rgba(66, 68, 90, 1);
   text-align: center;
 
-  &  > svg {
-    font-size:60px;
-    color:#ddd;
+  & > svg {
+    font-size: 60px;
+    color: #ddd;
   }
 
   & > form {
@@ -197,7 +236,7 @@ export const AuthPanel = styled.div`
     font-size: 12px;
     text-align: center;
     font-weight: 500;
-    margin-top:20px;
+    margin-top: 20px;
 
     & a {
       color: ${({ theme }) => theme.colorGray};
@@ -206,18 +245,18 @@ export const AuthPanel = styled.div`
   & > ul {
     list-style: none;
     width: 100%;
-    padding: 0 10px;
+    /* padding: 0 10px; */
 
     & li a {
-        display: flex;
-        align-items: center;
-        font-size:10px;
-        font-weight: 700;
-        margin:8px 0;
+      display: flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      margin: 8px 0;
     }
     & svg {
-        font-size:13px;
-        margin-right:10px;
+      font-size: 13px;
+      margin-right: 10px;
     }
   }
 `;
@@ -225,42 +264,41 @@ export const AuthPanel = styled.div`
 export const CartIcon = styled.a`
   position: relative;
   cursor: pointer;
-`
+`;
 
 export const CartItemsNum = styled.span`
   background-color: red;
   display: flex;
   align-items: center;
   justify-content: center;
-  width:20px;
+  width: 20px;
   font-size: 11px;
   font-weight: 500;
   height: 20px;
   border-radius: 50%;
   color: #fff;
-  top:-10px;
+  top: -10px;
   right: -10px;
   position: absolute;
-`
+`;
 
 export const CartItemsValue = styled.span`
   position: absolute;
   font-size: 12px;
   bottom: 0;
-`
-
+`;
 
 export const Hamburger = styled.button`
-    display: none;
-    border: none;
-    background-color: transparent;
-    color: #fff;
-    cursor: pointer;
-    font-size: 2rem;
+  display: none;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-size: 2rem;
 
-    @media (max-width:992px) {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-`
+  @media (max-width: 992px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;

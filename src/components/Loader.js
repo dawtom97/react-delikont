@@ -37,16 +37,16 @@ const loadingCircleVariants = {
   },
 };
 const loadingCircleTransition = {
-  duration : 0.4,
-  yoyo:Infinity,
-  ease: 'easeInOut'
-}
+  duration: 0.4,
+  yoyo: Infinity,
+  ease: "easeInOut",
+};
 
 const loadingBox = {
-    margin: '80px auto',
-    display: 'flex',
-    justifyContent: 'center'
-}
+  margin: "80px auto",
+  display: "flex",
+  justifyContent: "center",
+};
 
 export const Loader = () => {
   return (

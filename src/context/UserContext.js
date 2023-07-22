@@ -16,6 +16,7 @@ import { magentoUpdateCartQuantity } from "../graphql/magentoUpdateCartQuantity"
 import { magentoUpdateUser } from "../graphql/magentoUpdateUser";
 import { magentoUserToken } from "../graphql/magentoUserToken";
 import { ModalContext } from "./ModalContext";
+import { magentoFeaturedInCategory } from "../graphql/magentoFeaturedInCategory";
 
 export const UserContext = createContext();
 
@@ -28,12 +29,16 @@ export const UserContextProvider = ({ children }) => {
   const [addresses, setAddresses] = useState([]);
   const [cart, setCart] = useState();
   const [orders, setOrders] = useState();
-  const [categories,setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [featuredInCategory, setFeaturedInCategory] = useState([]);
   const router = useRouter();
 
-  useEffect(()=>{
-       magentoCategories().then(res=>setCategories(res.category.children))
-  },[])
+  useEffect(() => {
+    magentoCategories().then((res) => setCategories(res.category.children));
+    magentoFeaturedInCategory().then((res) =>
+      setFeaturedInCategory(res.products.items)
+    );
+  }, []);
 
   useEffect(() => {
     const isBlockedPage =
@@ -116,7 +121,7 @@ export const UserContextProvider = ({ children }) => {
       );
 
       setIsLogged(true);
-    //  location.push("/konto/moje-konto");
+      //  location.push("/konto/moje-konto");
     } catch (error) {
       // Tymczasowe sprawdzenie lokalizacji bo wchodziły dwa modale, z kontekstu i auth w momencie rejestracji
       location.pathname === "/" &&
@@ -224,15 +229,13 @@ export const UserContextProvider = ({ children }) => {
   const updateCartQuantity = (uid, quantity) => {
     magentoUpdateCartQuantity(cart.id, uid, quantity).then(({ response }) => {
       // sprawdzenie czy jest w magazynie - do dopracowania
-     try {
-      setCart(response.data.updateCartItems.cart);
-      showModal("Zaktualizowano koszyk");
-     } catch(e) {
-      showModal("Niewystarczająca ilość w magazynie")
-     }
-    }
-    );
-   
+      try {
+        setCart(response.data.updateCartItems.cart);
+        showModal("Zaktualizowano koszyk");
+      } catch (e) {
+        showModal("Niewystarczająca ilość w magazynie");
+      }
+    });
   };
 
   const removeCart = () => setCart();
@@ -263,6 +266,7 @@ export const UserContextProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     updateCartQuantity,
+    featuredInCategory,
   };
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

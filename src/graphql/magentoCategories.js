@@ -4,6 +4,7 @@ export const magentoCategories = async () => {
   const query = {
     oparationName: "fetchCategories",
     query: `query fetchCategories {
+      
          category {
         id
         name

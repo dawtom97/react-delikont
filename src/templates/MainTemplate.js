@@ -68,8 +68,6 @@ export const MainTemplate = ({ children }) => {
     setCrumbs([{ href: "/", label: "Strona główna" }, ...breadcrumbs]);
   }, [router]);
 
-  console.log(crumbs);
-
   useEffect(() => {
     magentoCategories().then((res) => setCategories(res));
   }, []);

@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   & > div {
     display: flex;
     gap: 30px;
-    @media (max-width:992px) {
+    @media (max-width: 992px) {
       flex-direction: column;
     }
   }
@@ -121,32 +121,36 @@ export const CartInfo = ({ cart }) => {
             </ButtonsWrapper>
           </ItemsBox>
 
-            <SubmitBox>
-              <Heading level="h3">PODSUMOWANIE</Heading>
-              <p>
-                <span>Suma częściowa</span>{" "}
-                <span>
-                  {finalInfo?.cart?.prices.subtotal_excluding_tax.value} zł
-                </span>
-              </p>
-              <p>
-                <span>Dostawa</span> <span>19.99 zł</span>
-              </p>
-              <p>
-                <span>Podatek</span> <span>0,00zł</span>
-              </p>
-              <p>
-                <strong>Do zapłaty</strong>{" "}
-                <strong>
-                {(finalInfo?.cart.prices.subtotal_including_tax.value + 19.99).toFixed(2)}
-                  zł
-                </strong>
-              </p>
-              <Button isSecondary>
-                <Link href="/podsumowanie/dostawa">PRZEJDŹ DO KASY</Link>
-              </Button>
-            </SubmitBox>
-         
+          <SubmitBox>
+            <Heading level="h3">PODSUMOWANIE</Heading>
+            <p>
+              <span>Suma częściowa</span>{" "}
+              <span>
+                {finalInfo?.cart?.prices.subtotal_excluding_tax.value?.toFixed(
+                  2
+                )}{" "}
+                zł
+              </span>
+            </p>
+            <p>
+              <span>Dostawa</span> <span>19.99 zł</span>
+            </p>
+            <p>
+              <span>Podatek</span> <span>0,00zł</span>
+            </p>
+            <p>
+              <strong>Do zapłaty</strong>{" "}
+              <strong>
+                {(
+                  finalInfo?.cart.prices.subtotal_including_tax.value + 19.99
+                ).toFixed(2)}
+                zł
+              </strong>
+            </p>
+            <Button isSecondary>
+              <Link href="/podsumowanie/dostawa">PRZEJDŹ DO KASY</Link>
+            </Button>
+          </SubmitBox>
         </div>
       )}
     </Wrapper>
