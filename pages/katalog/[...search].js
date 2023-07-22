@@ -1,5 +1,11 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Filters } from "../../src/components/Filters";
 import { Loader } from "../../src/components/Loader";
 import Products from "../../src/components/Products/Products";
@@ -17,32 +23,38 @@ export default function Results() {
   const observer = useRef();
   const lastItemRef = useRef();
   const router = useRouter();
-  const params = router.query.search && router.query.search[0];
+  const params = router.query.search && router.query.search;
 
+  console.log(params);
 
   useEffect(() => {
-    magentoSearchProducts(1, sortMethod, params && params[0]).then((res) => {
-      if(!res?.products) return;
-      setIsLoading(true)
-      setAllProducts([...res.products.items]);
-      setPage(res.products.page_info);
-
-    }).finally(()=>{
-      setIsLoading(false);
-    });
+    magentoSearchProducts(1, sortMethod, params && params[0])
+      .then((res) => {
+        if (!res?.products) return;
+        setIsLoading(true);
+        setAllProducts([...res.products.items]);
+        setPage(res.products.page_info);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [params, sortMethod]);
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
-   setIsLoading(true);
+    setIsLoading(true);
 
-    magentoSearchProducts(page.current_page + 1, sortMethod, params && params[0]).then((res) => {
-     if(!res?.products) return;
+    magentoSearchProducts(
+      page.current_page + 1,
+      sortMethod,
+      params && params[0]
+    ).then((res) => {
+      if (!res?.products) return;
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
       setIsLoading(false);
     });
-  }, [isLoading, sortMethod, params,page]);
+  }, [isLoading, sortMethod, params, page]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -66,20 +78,23 @@ export default function Results() {
   }, [getMoreProducts]);
 
   const handleChangeSortMethod = (e) => {
-    const filter = e.target.dataset.filter
+    const filter = e.target.dataset.filter;
     const sortMode = filter.split(",");
-     setSortMethod({
-       type: sortMode[0],
-       mode: sortMode[1],
-     });
-   };
+    setSortMethod({
+      type: sortMode[0],
+      mode: sortMode[1],
+    });
+  };
 
   return (
     <MainTemplate>
-      <Filters msg="Wyniki wyszukiwania" onChangeFilter={handleChangeSortMethod} />
-      {!allProducts.length  ? (
+      <Filters
+        msg="Wyniki wyszukiwania"
+        onChangeFilter={handleChangeSortMethod}
+      />
+      {!allProducts.length ? (
         <div className="alternative-loader">
-        <Loader />
+          <Loader />
         </div>
       ) : (
         <Products products={allProducts} lastItem={lastItemRef} />
@@ -88,5 +103,3 @@ export default function Results() {
     </MainTemplate>
   );
 }
-
-

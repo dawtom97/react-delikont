@@ -4,7 +4,7 @@ export const magentoSearchProducts = async (page, sort, search) => {
   const query = {
     operationName: "fetchProducts",
     query: `query fetchProducts( $page:Int = ${page}) {
-        products(search: ${search},pageSize:${PRODUCTS_PER_PAGE},currentPage:$page, sort: {${sort.type}:${sort.mode}}) {
+        products(search: "${search}",pageSize:${PRODUCTS_PER_PAGE},currentPage:$page, sort: {${sort.type}:${sort.mode}}) {
             page_info{
                total_pages
                current_page
@@ -184,7 +184,7 @@ export const magentoSearchProducts = async (page, sort, search) => {
 
   try {
     const response = await (await fetch(API_URL, options)).json();
-
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);

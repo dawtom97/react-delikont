@@ -12,7 +12,7 @@ import { AddressForm } from "../AddressForm/AddressForm";
 import { Button } from "../Button";
 import { Heading } from "../Heading";
 import * as Styled from "./styles";
-import {RiMoneyDollarCircleFill} from 'react-icons/ri';
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { BsCheck } from "react-icons/bs";
 
 export const OrderCheckoutPayment = ({ addresses, cart }) => {
@@ -52,7 +52,6 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
 
   return (
     <Styled.Wrapper>
-
       <div>
         <Heading level="h3">ADRES DO RACHUNKU</Heading>
 
@@ -64,8 +63,7 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
           />
         ) : null}
         <Styled.BillingBox>
-
-        <Styled.CheckIcon>
+          <Styled.CheckIcon>
             <BsCheck />
           </Styled.CheckIcon>
 
@@ -98,12 +96,11 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
         <Heading level="h3">METODY PŁATNOŚCI</Heading>
         <Styled.RadioBox>
           <Styled.BillingMethodBox>
-            <RiMoneyDollarCircleFill/>
+            <RiMoneyDollarCircleFill />
           </Styled.BillingMethodBox>
           <p>Płatność przelewem bankowym</p>
         </Styled.RadioBox>
       </div>
-
 
       <div>
         <Heading level="h3">DANE DO WPŁATY</Heading>

@@ -35,7 +35,7 @@ export default function SubcategoryPage() {
     );
   }, [currentCategory, query]);
 
-  console.log(currentSubcategory);
+  // console.log(currentSubcategory);
 
   useEffect(() => {
     if (!currentSubcategory) return;

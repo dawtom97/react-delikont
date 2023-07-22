@@ -18,36 +18,40 @@ export default function CategoryPage() {
   });
   const observer = useRef();
   const lastItemRef = useRef();
-  const {query} = useRouter();
-  const {categories} = useContext(UserContext);
-
-  useEffect(()=>{
-      setCurrentCategory(categories.filter(x => x.url_key === query.category)[0])
-  },[categories,query]);
-
-  console.log(currentCategory)
+  const { query } = useRouter();
+  const { categories } = useContext(UserContext);
 
   useEffect(() => {
-    if(!currentCategory) return;
-    magentoCategoryProducts(1, sortMethod,currentCategory.id).then((res) => {
+    setCurrentCategory(
+      categories.filter((x) => x.url_key === query.category)[0]
+    );
+  }, [categories, query]);
+
+  // console.log(currentCategory)
+
+  useEffect(() => {
+    if (!currentCategory) return;
+    magentoCategoryProducts(1, sortMethod, currentCategory.id).then((res) => {
       setAllProducts([...res.products.items]);
       setPage(res.products.page_info);
     });
 
-    return () => setAllProducts([]) 
+    return () => setAllProducts([]);
+  }, [sortMethod, currentCategory]);
 
-  }, [sortMethod,currentCategory]);
-
-// useEffect(()=>{
-//  return () => setAllProducts([])
-// },[currentCategory])
-
+  // useEffect(()=>{
+  //  return () => setAllProducts([])
+  // },[currentCategory])
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
     setIsLoading(true);
 
-    magentoCategoryProducts(page.current_page + 1, sortMethod, currentCategory.id).then((res) => {
+    magentoCategoryProducts(
+      page.current_page + 1,
+      sortMethod,
+      currentCategory.id
+    ).then((res) => {
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
       setIsLoading(false);
@@ -86,24 +90,21 @@ export default function CategoryPage() {
 
   return (
     <>
- 
-        <MainTemplate>
-          <Filters
-            msg={currentCategory?.name}
-            onChangeFilter={handleChangeSortMethod}
-          />
-          {!allProducts.length ? (
-        <div  className="alternative-loader">
-        <Loader  />
-      </div>
-          ) :  <Products products={allProducts} lastItem={lastItemRef} />
-        }
+      <MainTemplate>
+        <Filters
+          msg={currentCategory?.name}
+          onChangeFilter={handleChangeSortMethod}
+        />
+        {!allProducts.length ? (
+          <div className="alternative-loader">
+            <Loader />
+          </div>
+        ) : (
+          <Products products={allProducts} lastItem={lastItemRef} />
+        )}
 
-         
-
-          {isLoading && <Loader/>}
-        </MainTemplate>
-      
+        {isLoading && <Loader />}
+      </MainTemplate>
     </>
   );
 }
