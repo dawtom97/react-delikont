@@ -21,6 +21,11 @@ export const magentoAddToWishlist = async (sku) => {
                   product {
                     url_key
                     id
+                    format
+                    format_ceny
+                    ciezar_w_jednostkach
+                    featured_in_category
+                    featured_product 
                     name
                     sku
                     stock_status

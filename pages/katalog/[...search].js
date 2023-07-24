@@ -25,9 +25,7 @@ export default function Results() {
   const router = useRouter();
   const params = router.query.search && router.query.search;
 
-  console.log(params);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     magentoSearchProducts(1, sortMethod, params && params[0])
       .then((res) => {
         if (!res?.products) return;

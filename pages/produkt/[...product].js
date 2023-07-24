@@ -6,8 +6,11 @@ import { MainTemplate } from "../../src/templates/MainTemplate";
 import {Loader} from '../../src/components/Loader'
 import Head from "next/head";
 
+
 const ProductDetails = () => {
   const [singleProduct, setSingleProduct] = useState();
+
+  console.log(singleProduct)
 
 
   const {

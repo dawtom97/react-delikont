@@ -111,6 +111,10 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
     }
   };
 
+  // const productDetailsUrl = `/produkt/${product.categories
+  //   ?.map((product) => [product.name.replaceAll(" ", "-").toLowerCase()])
+  //   .join("/")}/${product.name.replaceAll(" ", "-").toLowerCase()}`;
+
   const productDetailsUrl = `/produkt/${product.categories
     ?.map((product) => [product.url_key])
     .join("/")}/${product.url_key}`;

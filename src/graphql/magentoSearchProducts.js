@@ -13,7 +13,12 @@ export const magentoSearchProducts = async (page, sort, search) => {
               id
               url_key
               name
-              sku         
+              sku   
+              format
+              format_ceny
+              ciezar_w_jednostkach
+              featured_in_category
+              featured_product      
               stock_status
               only_x_left_in_stock
               meta_keyword

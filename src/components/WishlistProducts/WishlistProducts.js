@@ -5,6 +5,8 @@ import { ProductCard } from "../ProductCard/ProductCard";
 
 export const WishlistProducts = ({ items }) => {
 
+  console.log(items)
+
   return (
     <Styled.Wrapper>
       <Heading level="h2">Twoje ulubione produkty</Heading>
