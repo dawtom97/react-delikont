@@ -41,6 +41,10 @@ export const magentoLogin = async () => {
                         url_key
                         id
                         name
+                        format
+                        format_ceny
+                        ciezar_w_jednostkach
+                        featured_in_category
                         sku
                         stock_status
                         only_x_left_in_stock
