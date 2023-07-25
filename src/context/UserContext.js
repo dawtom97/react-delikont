@@ -121,7 +121,7 @@ export const UserContextProvider = ({ children }) => {
       );
 
       setIsLogged(true);
-      //  location.push("/konto/moje-konto");
+       location.push("/");
     } catch (error) {
       // Tymczasowe sprawdzenie lokalizacji bo wchodziły dwa modale, z kontekstu i auth w momencie rejestracji
       location.pathname === "/" &&

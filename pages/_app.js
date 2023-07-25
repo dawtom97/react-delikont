@@ -8,10 +8,6 @@ import { OrderContextProvider } from "../src/context/OrderContext";
 
 function MyApp({ Component, pageProps }) {
 
-
-
-
-
   return (
     <ThemeProvider theme={theme}>
       <OrderContextProvider>
@@ -19,7 +15,9 @@ function MyApp({ Component, pageProps }) {
           <UserContextProvider>
             
             <GlobalStyles />
+         
             <Component {...pageProps} />
+          
           </UserContextProvider>
         </ModalContextProvider>
       </OrderContextProvider>

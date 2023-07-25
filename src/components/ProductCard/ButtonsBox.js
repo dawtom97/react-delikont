@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../../context/UserContext";
+import { ModalContext } from "../../context/ModalContext";
+import { Loader } from "../Loader";
 
 export const Box = styled.div`
   display: flex;
@@ -55,7 +57,7 @@ export const ButtonsBox = ({cartProduct}) => {
 
   useLayoutEffect(()=>{
     setQuantity(cartProduct?.quantity)
-    setBoxes(Math.floor(cartProduct?.quantity / cartProduct?.product.cartequantity))
+    setBoxes(Math.ceil(cartProduct?.quantity / cartProduct?.product.cartequantity))
   },[cartProduct])
 
   const handleAddCart = (qty) => {
@@ -68,12 +70,10 @@ export const ButtonsBox = ({cartProduct}) => {
   }
 
   const handleRemove = (qty) => {
-    console.log(qty)
+    
     try {  
-      console.log(cartProduct.quantity, qty)
       if(quantity > 0) updateCartQuantity(cartProduct.uid, cartProduct.quantity - qty);
       else removeFromCart()
-      console.log(cartProduct.quantity, qty)
     } catch (error) {
       console.log(error)
     }

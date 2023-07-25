@@ -1,0 +1,48 @@
+.backdrop {
+    background-color: rgba(0, 0, 0, 0.457);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    background-color: white;
+    width: 80%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 6px;
+}
+
+.field {
+    padding: 10px 0;
+    border-radius: 20px;
+    width: 91%;
+    outline: none;
+    display: block;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 12%), 0 0 2px 0 rgb(0 0 0 / 14%);
+    height: 100%;
+    padding-left: 20px;
+    border: none;
+    
+}
+
+.checkText {
+    font-weight: 700;
+}
+
+.btns {
+    display: flex;
+    gap:10px
+}
+
+
+.message {
+    color: #f57c00;
+    font-weight: 700;
+}

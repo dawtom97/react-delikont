@@ -111,8 +111,6 @@ export const AuthForm = () => {
               response.data.createCustomerAddress,
             ])
         );
-
-        // await magentoCreateCompany(newCompany).then(res => console.log(res, "NOWA FIREMKA"))
         showModal("Założono nowe konto");
       });
     } else {
@@ -148,13 +146,14 @@ export const AuthForm = () => {
   };
 
   const validation = (data, dataAddress, region) => {
-    const passReg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+    const passReg=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/
+  //  const passReg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     const errors = {};
     if (!data.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i))
       errors.email = "Niepoprawny adres email";
     if (!data.password.match(passReg)) {
       errors.password =
-        "Wymagane co najmniej 6 znaków, w tym jedna duża litera i cyfra";
+        "Wymagane co najmniej 6 znaków, w tym jedna duża litera, cyfra i znak specjalny";
     }
     if (data.firstname == "") errors.firstname = "To pole jest wymagane";
     if (data.lastname == "") errors.lastname = "To pole jest wymagane";

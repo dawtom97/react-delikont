@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Filters } from "../src/components/Filters";
 import { Heading } from "../src/components/Heading";
 import { Loader } from "../src/components/Loader";
@@ -6,7 +6,8 @@ import Products from "../src/components/Products/Products";
 import { magentoFeatured } from "../src/graphql/magentoFeatured";
 import { magentoProducts } from "../src/graphql/magentoProducts";
 import { MainTemplate } from "../src/templates/MainTemplate";
-
+import ModalComponent from "../src/components/CodesModal/ModalComponent";
+import { AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
@@ -19,8 +20,18 @@ export default function Home() {
   });
   const observer = useRef();
   const lastItemRef = useRef();
+  const [zipcode,setZipcode] = useState("");
+
+  const close = () => {
+    localStorage.setItem("zipcode","checked")
+    if(localStorage.getItem("zipcode")) {
+      setZipcode("checked")
+    }
+    
+  }
 
   useEffect(() => {
+    setZipcode(localStorage.getItem("zipcode"))
     magentoProducts(1, sortMethod).then((res) => {
       setAllProducts([...res.products.items]);
       setPage(res.products.page_info);
@@ -77,6 +88,15 @@ export default function Home() {
   return (
     <>
       <MainTemplate>
+        <AnimatePresence
+          initial={false}
+          mode="wait"
+          onExitComplete={() => null}
+        >
+          {!zipcode ? (
+            <ModalComponent handleClose={close} />
+          ): null}
+        </AnimatePresence>
         <Heading level="h1">Polecane produkty</Heading>
 
         <Products products={featuredProducts} />

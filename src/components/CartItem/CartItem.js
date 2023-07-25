@@ -142,7 +142,7 @@ export const CartItem = ({ item }) => {
           )}
           zł (Brutto)
         </p>
-        <p>
+        {/* <p>
           {!item.product.ciezar_w_jednostkach
             ? (
                 (item.product.price_range.minimum_price.final_price.value /
@@ -158,7 +158,7 @@ export const CartItem = ({ item }) => {
           {!item.product.format
             ? " za kg "
             : " za " + checkWeightFormat(item.product.format)}
-        </p>
+        </p> */}
       </td>
 
       <td>
