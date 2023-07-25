@@ -211,8 +211,10 @@ export const UserContextProvider = ({ children }) => {
 
   const addToCart = (sku, quantity) => {
     if (currentUser) {
-      magentoAddToCart(cart.id, sku, quantity).then(({ response }) =>
-        setCart(response.data.addProductsToCart.cart)
+      magentoAddToCart(cart.id, sku, quantity).then(({ response }) => {
+        console.log(response,cart.id,quantity)
+        setCart(response.data?.addProductsToCart.cart)
+      }
       );
       showModal("Dodano do koszyka");
     } else {
@@ -233,6 +235,7 @@ export const UserContextProvider = ({ children }) => {
         setCart(response.data.updateCartItems.cart);
         showModal("Zaktualizowano koszyk");
       } catch (e) {
+        console.log(e, response)
         showModal("Niewystarczająca ilość w magazynie");
       }
     });

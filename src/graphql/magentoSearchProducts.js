@@ -14,6 +14,7 @@ export const magentoSearchProducts = async (page, sort, search) => {
               url_key
               name
               sku   
+              cartequantity
               format
               format_ceny
               ciezar_w_jednostkach

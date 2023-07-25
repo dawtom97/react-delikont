@@ -7,6 +7,7 @@ import { magentoFeatured } from "../src/graphql/magentoFeatured";
 import { magentoProducts } from "../src/graphql/magentoProducts";
 import { MainTemplate } from "../src/templates/MainTemplate";
 
+
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);

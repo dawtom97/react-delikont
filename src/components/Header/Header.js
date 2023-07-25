@@ -31,8 +31,6 @@ export const Header = () => {
   const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
 
-  console.log(featuredInCategory);
-
   const handleLogin = (e) => {
     e.preventDefault();
     const validationPass = validation(userForm);
@@ -234,7 +232,7 @@ export const Header = () => {
                             >
                               <span>{subcat.name}</span>
                             </Link>
-
+                            
                             {/* tutaj do poprawy */}
                             {subcat?.children?.map((item, index) => (
                               <p key={index}>

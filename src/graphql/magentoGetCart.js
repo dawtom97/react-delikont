@@ -27,6 +27,7 @@ export const magentoGetCart = async () => {
                   name
                   sku
                   uid
+                  cartequantity
                   format
                   format_ceny
                   ciezar_w_jednostkach

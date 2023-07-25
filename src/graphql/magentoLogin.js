@@ -41,6 +41,7 @@ export const magentoLogin = async () => {
                         url_key
                         id
                         name
+                        cartequantity
                         format
                         format_ceny
                         ciezar_w_jednostkach

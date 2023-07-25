@@ -14,6 +14,7 @@ export const magentoFeatured = async () => {
               url_key
               name
               sku
+              cartequantity
               format
               format_ceny
               ciezar_w_jednostkach

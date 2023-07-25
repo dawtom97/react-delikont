@@ -27,6 +27,7 @@ export const magentoAddToCart = async (cartId, sku, quantity) => {
                     product {
                       id
                       url_key
+                      cartequantity
                       name
                       sku
                       uid

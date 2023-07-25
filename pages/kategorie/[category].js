@@ -21,6 +21,8 @@ export default function CategoryPage() {
   const { query } = useRouter();
   const { categories } = useContext(UserContext);
 
+  console.log(currentCategory, categories)
+
   useEffect(() => {
     setCurrentCategory(
       categories.filter((x) => x.url_key === query.category)[0]

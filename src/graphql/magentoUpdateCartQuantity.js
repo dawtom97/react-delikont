@@ -25,6 +25,7 @@ export const magentoUpdateCartQuantity = async (cartId, itemUid,newQuantity) => 
                       id
                       url_key
                       name
+                      cartequantity
                       sku
                       uid
                       stock_status

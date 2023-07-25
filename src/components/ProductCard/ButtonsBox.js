@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../../context/UserContext";
 
@@ -49,18 +49,39 @@ export const Controls = styled.div`
 `;
 
 export const ButtonsBox = ({cartProduct}) => {
-  const { updateCartQuantity } = useContext(UserContext);
+  const { updateCartQuantity, removeFromCart } = useContext(UserContext);
+  const [quantity, setQuantity] = useState(1);
+  const [boxes, setBoxes] = useState(1);
+
+  useLayoutEffect(()=>{
+    setQuantity(cartProduct?.quantity)
+    setBoxes(Math.floor(cartProduct?.quantity / cartProduct?.product.cartequantity))
+  },[cartProduct])
 
   const handleAddCart = (qty) => {
+    console.log(quantity, qty)
     updateCartQuantity(cartProduct.uid, cartProduct.quantity + qty);
   };
 
-  const handleUpdateByInput = (qty) =>
+  const handleUpdateByInput = (qty) => {
     updateCartQuantity(cartProduct.uid, qty ? qty : 1);
+  }
 
   const handleRemove = (qty) => {
-    updateCartQuantity(cartProduct.uid, cartProduct.quantity - qty);
+    console.log(qty)
+    try {  
+      console.log(cartProduct.quantity, qty)
+      if(quantity > 0) updateCartQuantity(cartProduct.uid, cartProduct.quantity - qty);
+      else removeFromCart()
+      console.log(cartProduct.quantity, qty)
+    } catch (error) {
+      console.log(error)
+    }
+   
   };
+
+
+ // console.log(cartProduct)
 
   return (
     <Box>
@@ -70,11 +91,11 @@ export const ButtonsBox = ({cartProduct}) => {
           <button onClick={() => handleRemove(1)}>-</button>
           <input
             onChange={(e) => {
-              if (e.target.value.length == 0) handleUpdateByInput(1);
+             // if (e.target.value.length == 0) handleUpdateByInput(1);
               handleUpdateByInput(e.target.value);
             }}
             type="number"
-            value={cartProduct?.quantity == 1 ? " " : cartProduct?.quantity}
+            value={quantity}
             name="qty"
             placeholder="1"
           />
@@ -84,14 +105,15 @@ export const ButtonsBox = ({cartProduct}) => {
       <div>
         <p>kartonów:</p>
         <Controls>
-          <button>-</button>
+          <button onClick={()=>handleRemove(Number(cartProduct.product.cartequantity))}>-</button>
           <input
             onChange={() => console.log("change")}
             type="number"
             name="qty"
             placeholder="1"
+            value={boxes}
           />
-          <button>+</button>
+          <button onClick={()=>handleAddCart(Number(cartProduct.product.cartequantity))}>+</button>
         </Controls>
       </div>
     </Box>
