@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { magentoCategories } from "../graphql/magentoCategories";
-import { UserContext } from "../context/UserContext";
 import DevInfo from "../components/DevInfo/DevInfo";
 import { IoHammer } from "react-icons/io5";
 
@@ -75,9 +74,9 @@ export const MainTemplate = ({ children }) => {
   return (
     <div>
       {devInfo && <DevInfo onClick={() => setDevInfo(false)} />}
-      <DevInfoBtn onClick={() => setDevInfo((prev) => !prev)}>
+      {/* <DevInfoBtn onClick={() => setDevInfo((prev) => !prev)}>
         <IoHammer />
-      </DevInfoBtn>
+      </DevInfoBtn> */}
 
       <Header />
       <InnerWrapper>

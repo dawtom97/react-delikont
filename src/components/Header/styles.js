@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import SearchInput from "../SearchInput";
 
 export const Wrapper = styled.header`
   top: 0;
@@ -46,11 +47,24 @@ export const Nav = styled.nav`
     display: flex;
     align-items: center;
     padding: 10px;
+    justify-content: space-between;
   }
 
   & > ul {
     @media (max-width: 992px) {
-      display: none;
+      flex-direction: column;
+      top: 0;
+      position: fixed;
+      /* min-height: 100vh; */
+      max-width: 400px;
+      width: 80%;
+      padding: 16px;
+      left: 0;
+      background-color: #000000b3;
+      height: 100%;
+      overflow-y: scroll;
+      transition: 0.4s;
+      transform: translateX(-105%);
     }
 
     list-style: none;
@@ -102,6 +116,19 @@ export const SubMenu = styled.div`
   transition: visibility 0.2s, opacity 0.5s;
   display: flex;
 
+  @media (max-width: 992px) {
+    flex-direction: column;
+    position: static;
+    padding: 16px;
+    display: flex;
+    min-height: initial;
+    opacity: 1;
+    visibility: visible;
+    left: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
   & ul {
     list-style: none;
     flex-grow: 2;
@@ -110,6 +137,11 @@ export const SubMenu = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     padding: 0px 20px;
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+      color: white;
+      background-color: transparent;
+    }
   }
 
   & li {
@@ -122,6 +154,9 @@ export const SubMenu = styled.div`
       font-size: 13px;
       font-weight: 700;
       padding-bottom: 8px;
+      @media (max-width: 992px) {
+        border-bottom: 1px solid white;
+      }
     }
 
     & > p a {
@@ -132,12 +167,19 @@ export const SubMenu = styled.div`
       padding-bottom: 8px;
       font-size: 13px;
       color: ${({ theme }) => theme.colorGray};
-      border-bottom: 1px solid #e1e1e18f;
+
+      @media (max-width: 992px) {
+        display: none;
+      }
     }
   }
 `;
 
 export const FeaturedInCat = styled.div`
+  @media (max-width: 992px) {
+    display: none;
+  }
+
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -302,3 +344,23 @@ export const Hamburger = styled.button`
     align-items: center;
   }
 `;
+
+export const CloseMenu = styled.button`
+  display: none;
+
+  @media (max-width: 992px) {
+    display: block;
+    border: none;
+    font-size: 34px;
+    background-color: transparent;
+    outline: none;
+    text-align: left;
+    margin-left: -13px;
+    color: white;
+    cursor: pointer;
+  }
+`;
+
+
+  
+

@@ -8,13 +8,14 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { BsCartCheck } from "react-icons/bs";
 import { BiGitCompare, BiCalendar } from "react-icons/bi";
 import { BsSuitHeart } from "react-icons/bs";
-import { AiOutlineMail } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMail } from "react-icons/ai";
 import { ErrorMsg } from "../ErrorMsg";
 import { FaUserCircle } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import { AiOutlineHeart } from "react-icons/ai";
 import SearchInput from "../SearchInput";
 import { ProductCard } from "../ProductCard/ProductCard";
+import SearchInputMobile from "../SearchInputMobile";
 
 export const Header = () => {
   const {
@@ -30,6 +31,13 @@ export const Header = () => {
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
+  const [navVisible, setNavVisible] = useState(false)
+
+  const transform = navVisible && 'translateX(0)';
+
+  const handleShowMenu = () => {
+    setNavVisible(!navVisible)
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -211,10 +219,14 @@ export const Header = () => {
       </Styled.InnerWrapper>
 
       <Styled.Nav>
-        <Styled.Hamburger>
+        <Styled.Hamburger onClick={handleShowMenu}>
           <IoMenu />
         </Styled.Hamburger>
-        <ul>
+        <SearchInputMobile/>
+        <ul style={{transform}}>
+          <Styled.CloseMenu onClick={handleShowMenu}>
+            <AiOutlineClose/>
+          </Styled.CloseMenu>
           {categories.map((category) => (
             <div key={category.id}>
               <li>
@@ -228,6 +240,7 @@ export const Header = () => {
                         {category.children.map((subcat, index) => (
                           <li key={index}>
                             <Link
+                          
                               href={`/kategorie/${category.url_key}/${subcat.url_key}`}
                             >
                               <span>{subcat.name}</span>
@@ -237,6 +250,7 @@ export const Header = () => {
                             {subcat?.children?.map((item, index) => (
                               <p key={index}>
                                 <Link
+                           
                                   href={`/kategorie/${category.url_key}/${subcat.url_key}/${item.url_key}`}
                                 >
                                   {item.name}

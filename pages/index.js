@@ -9,6 +9,9 @@ import { MainTemplate } from "../src/templates/MainTemplate";
 import ModalComponent from "../src/components/CodesModal/ModalComponent";
 import { AnimatePresence } from "framer-motion";
 
+
+
+
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
