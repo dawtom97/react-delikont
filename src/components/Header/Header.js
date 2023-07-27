@@ -115,13 +115,6 @@ export const Header = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/konto/lista-zyczen">
-                        <a>
-                          <BsSuitHeart /> MOJA LISTA ŻYCZEŃ
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
                       <Link href="/konto/moje-zamowienia">
                         <a>
                           <BiCalendar /> MOJE ZAMÓWIENIA
@@ -202,7 +195,7 @@ export const Header = () => {
             </Styled.CartIcon>
           </Link>
           {isLogged ? (
-            <Link href="/konto/lista-zyczen">
+            <Link href="/lista-zyczen">
               <Styled.CartIcon>
                 <AiOutlineHeart />
                 {wishlist?.items?.length ? (

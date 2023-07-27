@@ -7,7 +7,7 @@ import { AccountTemplate } from '../../src/templates/AccountTemplate'
 
 const Wishlist = () => {
   const {wishlist} = useContext(UserContext);
-  console.log(wishlist)
+  console.log(wishlist);
   return (
     <AccountTemplate>
         {wishlist ? <WishlistProducts items={wishlist.items}/> : <Loader/>}

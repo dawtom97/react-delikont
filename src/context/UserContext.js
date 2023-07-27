@@ -71,7 +71,6 @@ export const UserContextProvider = ({ children }) => {
   }, [currentUser]);
 
   useEffect(() => {
-    console.log(currentUser)
     setOrders(currentUser?.orders);
   }, [currentUser]);
 
@@ -193,8 +192,9 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const addToWishlist = (sku) => {
+    console.log(sku)
     magentoAddToWishlist(sku).then((res) => {
-      setWishlist(res.addProductsToWishlist.wishlist);
+      setWishlist(res?.addProductsToWishlist.wishlist);
     });
     showModal("Dodano do ulubionych");
   };

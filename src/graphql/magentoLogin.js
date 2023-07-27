@@ -55,8 +55,9 @@ export const magentoLogin = async () => {
                       product {
                         url_key
                         id
-                        name
                         cytax
+                        name
+                        
                         cartequantity
                         format
                         format_ceny

@@ -29,6 +29,7 @@ export const magentoAddToCart = async (cartId, sku, quantity) => {
                       url_key
                       cartequantity
                       name
+                      cytax
                       sku
                       uid
                       stock_status

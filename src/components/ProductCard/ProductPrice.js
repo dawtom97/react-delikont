@@ -125,10 +125,6 @@ export const ProductPrice = ({ product, isAlternative, cartProduct }) => {
 
   const checkWeightFormat = (weight) => (weight === 6 ? "kg" : " l");
 
-  
-  console.log(product?.price_range?.minimum_price?.final_price?.value)
-  console.log(product)
-
   const price = String(
     (product?.price_range?.minimum_price?.final_price?.value).toFixed(2)
   ).split(".");

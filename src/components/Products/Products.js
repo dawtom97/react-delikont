@@ -14,8 +14,6 @@ const Products = ({ products,lastItem }) => {
 
   if (!products) return "loading...";
 
-  console.log(products)
-
   return (
     <Wrapper>
       {products.map((product, index) => {

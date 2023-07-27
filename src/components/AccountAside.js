@@ -62,11 +62,7 @@ export const AccountAside = () => {
           <span>Moje zamówienia</span>
         </LinkText>
       </Link>
-      <Link href="/konto/lista-zyczen" passHref>
-        <LinkText pathName={router.pathname}>
-          <span>Moja lista życzeń</span>
-        </LinkText>
-      </Link>
+ 
       <Link href="/konto/adresy" passHref>
         <LinkText pathName={router.pathname}>
           <span> Książka adresowa</span>
