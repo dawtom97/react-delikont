@@ -18,6 +18,7 @@ export const magentoAddToWishlist = async (sku) => {
                 items {
                   id
                   qty
+                  cytax
                   product {
                     url_key
                     id

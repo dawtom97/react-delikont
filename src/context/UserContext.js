@@ -71,6 +71,7 @@ export const UserContextProvider = ({ children }) => {
   }, [currentUser]);
 
   useEffect(() => {
+    console.log(currentUser)
     setOrders(currentUser?.orders);
   }, [currentUser]);
 

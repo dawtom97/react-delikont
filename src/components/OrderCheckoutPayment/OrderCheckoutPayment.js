@@ -14,6 +14,7 @@ import { Heading } from "../Heading";
 import * as Styled from "./styles";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { BsCheck } from "react-icons/bs";
+import { Loader } from "../Loader";
 
 export const OrderCheckoutPayment = ({ addresses, cart }) => {
   const [isEdit, setIsEdit] = useState();
@@ -23,6 +24,7 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
   const { removeCart } = useContext(UserContext);
   const router = useRouter();
   const { showModal } = useContext(ModalContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const filtered = addresses?.filter(
@@ -32,6 +34,7 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
   }, [editMode, addresses, id]);
 
   const handlePlaceOrder = async () => {
+    setIsLoading(true);
     try {
       await magentoSetBillingAddressOnCart(id, billing[0]).then((res) =>
         console.log(res)
@@ -44,9 +47,11 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
       await router.push("/podsumowanie/zakupiono");
       router.reload();
       showModal("Złożono zamówienie");
-      // removeCart();
+      removeCart();
     } catch (error) {
       showModal("Wystąpił błąd");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -107,7 +112,7 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
         <div>
           <p>Delikont Sp. z o.o.</p>
           <p>Numer konta:</p>
-          <p>00 0000 0000 0000 0000 0000 0000</p>
+          <strong>68 8447 0005 0010 7086 2000 0001</strong>
         </div>
 
         <div>
@@ -123,6 +128,11 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
           </Button>
         </Styled.ButtonsBox>
       </div>
+      {isLoading && (
+        <div className="alternative-loader">
+          <Loader />
+        </div>
+      )}
     </Styled.Wrapper>
   );
 };

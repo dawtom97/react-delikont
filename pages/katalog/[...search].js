@@ -11,15 +11,17 @@ import { Loader } from "../../src/components/Loader";
 import Products from "../../src/components/Products/Products";
 import { magentoSearchProducts } from "../../src/graphql/magentoSearchProducts";
 import { MainTemplate } from "../../src/templates/MainTemplate";
+import ProductNotFound from "../../src/components/ProductNotFound";
 
 export default function Results() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState();
   const [sortMethod, setSortMethod] = useState({
     type: "relevance",
     mode: "ASC",
   });
+  const [isLoadingResults,setIsLoadingResults] = useState(true)
   const observer = useRef();
   const lastItemRef = useRef();
   const router = useRouter();
@@ -28,13 +30,17 @@ export default function Results() {
   useLayoutEffect(() => {
     magentoSearchProducts(1, sortMethod, params && params[0])
       .then((res) => {
-        if (!res?.products) return;
+        if (!res?.products) {
+          return;
+        }
         setIsLoading(true);
+        setIsLoadingResults(true)
         setAllProducts([...res.products.items]);
         setPage(res.products.page_info);
       })
       .finally(() => {
         setIsLoading(false);
+        setIsLoadingResults(false)
       });
   }, [params, sortMethod]);
 
@@ -90,12 +96,14 @@ export default function Results() {
         msg="Wyniki wyszukiwania"
         onChangeFilter={handleChangeSortMethod}
       />
-      {!allProducts.length ? (
+      {isLoadingResults ? (
         <div className="alternative-loader">
           <Loader />
         </div>
-      ) : (
+      ) : allProducts.length > 0 ? (
         <Products products={allProducts} lastItem={lastItemRef} />
+      ) : (
+        <ProductNotFound/>
       )}
       {isLoading && <Loader />}
     </MainTemplate>

@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const loadingContainer = {
   width: "4rem",
@@ -50,6 +50,7 @@ const loadingBox = {
 
 export const Loader = () => {
   return (
+    <AnimatePresence>
     <div style={loadingBox}>
       <div className="fixed  w-full min-h-screen z-50 bg-black opacity-30" />
       <div className="flex fixed w-full justify-center items-center h-screen">
@@ -77,5 +78,6 @@ export const Loader = () => {
         </motion.div>
       </div>
     </div>
+    </AnimatePresence>
   );
 };

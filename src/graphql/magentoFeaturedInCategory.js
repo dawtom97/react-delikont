@@ -15,6 +15,7 @@ export const magentoFeaturedInCategory = async () => {
               name
               sku
               format
+              cytax
               format_ceny
               ciezar_w_jednostkach
               featured_in_category

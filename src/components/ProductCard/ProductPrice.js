@@ -125,12 +125,15 @@ export const ProductPrice = ({ product, isAlternative, cartProduct }) => {
 
   const checkWeightFormat = (weight) => (weight === 6 ? "kg" : " l");
 
-
+  
+  console.log(product?.price_range?.minimum_price?.final_price?.value)
+  console.log(product)
 
   const price = String(
     (product?.price_range?.minimum_price?.final_price?.value).toFixed(2)
   ).split(".");
-
+  const notVatPrice = product?.price_range?.minimum_price?.final_price?.value / (1 + (product?.cytax / 100))
+  const netto = notVatPrice.toFixed(2).split(".")
   const calculatePricePer =  product.format === 'kg' || product.format === 'l' ? 1 : 1000
 
   if (!product) return;
@@ -160,9 +163,9 @@ export const ProductPrice = ({ product, isAlternative, cartProduct }) => {
         </span>
       </WeightBox>
       <PriceBox>
-        <MainPrice>{price[0]}</MainPrice>
+        <MainPrice>{netto[0]}</MainPrice>
         <div>
-          <Cent>{price[1] ? price[1] : "00"}</Cent>
+          <Cent>{netto[1] ? netto[1] : "00"}</Cent>
           <Tax>
             z Vat {price[0]},{price[1] ? price[1] : "00"} zł
           </Tax>

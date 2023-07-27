@@ -9,7 +9,22 @@ export const magentoLogin = async () => {
                 lastname
                 email
 
-        
+                orders(
+                  pageSize: 1000
+                ) {
+                  items {
+                    id
+                    number
+                    order_date
+                    total {
+                      grand_total {
+                        value
+                        currency
+                      }
+                    }
+                    status
+                  }
+                }
 
                 addresses {
                   id
@@ -41,6 +56,7 @@ export const magentoLogin = async () => {
                         url_key
                         id
                         name
+                        cytax
                         cartequantity
                         format
                         format_ceny

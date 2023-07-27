@@ -24,6 +24,7 @@ export const magentoGetCart = async () => {
                 product {
                   id
                   url_key
+                  cytax
                   name
                   sku
                   uid

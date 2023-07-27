@@ -16,6 +16,7 @@ export const magentoSingleProduct = async (url) => {
                 sku
                 stock_status
                 only_x_left_in_stock
+                cytax
                 format
                 format_ceny
                 ciezar_w_jednostkach

@@ -14,6 +14,7 @@ export const magentoFeatured = async () => {
               url_key
               name
               sku
+              cytax
               cartequantity
               format
               format_ceny

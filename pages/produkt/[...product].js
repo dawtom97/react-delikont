@@ -24,36 +24,6 @@ export async function getStaticProps (context) {
 
 export async function getStaticPaths () {
  const {products} = await magentoProductPaths()
-// const query = {
-//   operationName: "fetchProducts",
-//   query: `query fetchProducts {
-//       products(search: "",pageSize:10000) {
-//           page_info{
-//              total_pages
-//              current_page
-//           }
-//           items {
-//             id
-//             url_key
-//             name
-//             sku        
-//           }
-//         }
-//   }`,
-// };
-// const headers = {
-//   "Content-type": "application/json"
-//  }
-
-
-// const options = {
-//   method: "post",
-//   headers,
-//   body: JSON.stringify(query),
-// };
-
-// const response = await (await fetch(API_URL, options)).json();
-
  const paths = products.items.map((product) => ({
   params: { product:[product.url_key] },
 }))
@@ -65,21 +35,6 @@ export async function getStaticPaths () {
 
 
 const ProductDetails = ({product:singleProduct}) => {
-//  const [singleProduct, setSingleProduct] = useState();
-
-  // const {
-  //   query: { product },
-  // } = useRouter();
-  // const urlKey = product && product[product.length - 1];
-
-  // useEffect(() => {
-
-  //  // magentoProductPaths().then(r => console.log(r.products.items.map(i => i.url_key)))
-
-  //   magentoSingleProduct(urlKey)
-  //     .then((res) => setSingleProduct(res))
-  //     .catch((err) => console.log(err));
-  // }, [urlKey]);
   const router = useRouter()
   console.log(router)
 

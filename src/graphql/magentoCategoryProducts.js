@@ -13,6 +13,7 @@ export const magentoCategoryProducts = async (page, sort, category) => {
             items {
               id
               url_key
+              cytax
               name
               sku
               format

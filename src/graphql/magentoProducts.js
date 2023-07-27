@@ -13,6 +13,7 @@ export const magentoProducts = async (page, sort) => {
               id
               url_key
               name
+              cytax
               sku
               cartequantity
               format

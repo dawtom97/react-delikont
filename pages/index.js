@@ -23,7 +23,7 @@ export default function Home() {
   });
   const observer = useRef();
   const lastItemRef = useRef();
-  const [zipcode,setZipcode] = useState("");
+  const [zipcode,setZipcode] = useState("w");
 
   const close = () => {
     localStorage.setItem("zipcode","checked")

@@ -39,6 +39,8 @@ export const Header = () => {
     setNavVisible(!navVisible)
   }
 
+  // console.log(categories)
+
   const handleLogin = (e) => {
     e.preventDefault();
     const validationPass = validation(userForm);

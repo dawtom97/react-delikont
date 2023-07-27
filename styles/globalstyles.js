@@ -35,7 +35,8 @@ a {
   position: absolute;
    top: 0%; 
    left: 0%;
-   background-color:rgba(255,255,255,0.8)
+   background-color:rgba(255,255,255,0.8);
+   transition: 0.4s;
 }
 
 `;

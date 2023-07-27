@@ -7,6 +7,8 @@ const UserOrdersPage = () => {
 
   const {orders} = useContext(UserContext);
 
+  console.log(orders)
+
   return (
     <AccountTemplate>
          <UserOrders orders={orders}/>

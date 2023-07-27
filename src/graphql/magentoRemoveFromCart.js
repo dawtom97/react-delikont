@@ -20,6 +20,7 @@ export const magentoRemoveFromCart = async (cartId, itemId) => {
                       id
                       url_key
                       name
+                      cytax
                       sku
                       uid
                       stock_status

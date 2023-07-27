@@ -54,6 +54,7 @@ export const ButtonsBox = ({cartProduct}) => {
   const { updateCartQuantity, removeFromCart } = useContext(UserContext);
   const [quantity, setQuantity] = useState(1);
   const [boxes, setBoxes] = useState(1);
+  const [isLoading, setIsLoading] = useState(false)
 
   useLayoutEffect(()=>{
     setQuantity(cartProduct?.quantity)
@@ -66,7 +67,16 @@ export const ButtonsBox = ({cartProduct}) => {
   };
 
   const handleUpdateByInput = (qty) => {
-    updateCartQuantity(cartProduct.uid, qty ? qty : 1);
+    setIsLoading(true)
+    try {
+      updateCartQuantity(cartProduct.uid, qty ? qty : 1);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
+   
+ 
   }
 
   const handleRemove = (qty) => {
@@ -116,6 +126,12 @@ export const ButtonsBox = ({cartProduct}) => {
           <button onClick={()=>handleAddCart(Number(cartProduct.product.cartequantity))}>+</button>
         </Controls>
       </div>
+
+      {isLoading && (
+          <div className="alternative-loader">
+          <Loader />
+        </div>
+      )}
     </Box>
   );
 };

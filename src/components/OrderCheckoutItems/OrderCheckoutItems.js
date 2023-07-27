@@ -26,10 +26,10 @@ export const OrderCheckoutItems = ({ cart, isPayment }) => {
 
       {isPayment && id ? (
         <Styled.SubmitBox>
-           <p>Suma <span>{finalInfo?.cart.prices.subtotal_excluding_tax.value} zł</span></p>
+           <p>Cena z podatkiem <span>{finalInfo?.cart.prices.subtotal_excluding_tax.value} zł</span></p>
            <p>Dostawa <span>{shippingPrice} zł</span></p>
            {/* <p>{shippingMethod}</p> */}
-           <p>Podatek <span>0,00 zł</span></p>
+           {/* <p>Podatek <span>0,00 zł</span></p> */}
            <p><strong>Łącznie <span>{(finalInfo?.cart.prices.subtotal_including_tax.value + shippingPrice).toFixed(2)} zł</span></strong></p>
         </Styled.SubmitBox>
       ) : null}

@@ -82,6 +82,9 @@ export const CartInfo = ({ cart }) => {
 
   if (!cart && orderShippingMethod) return "Loading...";
 
+
+  console.log(cart)
+
   return (
     <Wrapper>
       <Heading level="h1">Koszyk</Heading>
@@ -124,7 +127,7 @@ export const CartInfo = ({ cart }) => {
           <SubmitBox>
             <Heading level="h3">PODSUMOWANIE</Heading>
             <p>
-              <span>Suma częściowa</span>{" "}
+              <span>Cena z podatkiem</span>{" "}
               <span>
                 {finalInfo?.cart?.prices.subtotal_excluding_tax.value?.toFixed(
                   2
@@ -135,9 +138,9 @@ export const CartInfo = ({ cart }) => {
             <p>
               <span>Dostawa</span> <span>19.99 zł</span>
             </p>
-            <p>
+            {/* <p>
               <span>Podatek</span> <span>0,00zł</span>
-            </p>
+            </p> */}
             <p>
               <strong>Do zapłaty</strong>{" "}
               <strong>

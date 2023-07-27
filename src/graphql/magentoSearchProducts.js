@@ -12,6 +12,7 @@ export const magentoSearchProducts = async (page, sort, search) => {
             items {
               id
               url_key
+              cytax
               name
               sku   
               cartequantity
@@ -190,7 +191,6 @@ export const magentoSearchProducts = async (page, sort, search) => {
 
   try {
     const response = await (await fetch(API_URL, options)).json();
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
