@@ -10,7 +10,7 @@ import Image from "next/image";
 import myImageLoader from "../../utils/imageLoader";
 
 export const Card = styled.article`
-  width: calc(15% - 10px);
+  /* width: calc(15% - 10px); */
   border: 1px solid transparent;
   box-shadow: 0 0 2px 0 rgb(0 0 0 / 10%);
   border-radius: 6px;
@@ -24,7 +24,7 @@ export const Card = styled.article`
   text-align: center;
   transition: 0.4s;
 
-  @media screen and (max-width: 1440px) {
+  /* @media screen and (max-width: 1440px) {
     width: calc(17% - 10px);
   }
   @media screen and (max-width: 1440px) {
@@ -38,7 +38,7 @@ export const Card = styled.article`
   }
   @media screen and (max-width: 576px) {
     width: calc(50% - 10px);
-  }
+  } */
 
   & img {
     width: 100%;
@@ -134,6 +134,7 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
       }}
     >
       <HeartButton
+        aria-label="Dodaj do ulubionych"
         onClick={() => handleAddToWishlist(isFavorite, product.sku)}
         isFavorite={isFavorite}
       >

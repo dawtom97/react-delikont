@@ -82,9 +82,6 @@ export const CartInfo = ({ cart }) => {
 
   if (!cart && orderShippingMethod) return "Loading...";
 
-
-  console.log(cart)
-
   return (
     <Wrapper>
       <Heading level="h1">Koszyk</Heading>

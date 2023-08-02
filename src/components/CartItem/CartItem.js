@@ -102,6 +102,7 @@ export const CartItem = ({ item }) => {
     ?.map((product) => [product.url_key])
     .join("/")}/${item.product.url_key}`;
 
+
     const notVatPrice = item?.product.price_range.minimum_price.regular_price.value / (1 + (item?.product.cytax / 100))
     const netto = notVatPrice.toFixed(2)
 

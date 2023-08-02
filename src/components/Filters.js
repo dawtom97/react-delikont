@@ -117,6 +117,9 @@ export const Filters = ({ onChangeFilter, msg }) => {
               <div onClick={onChangeFilter} data-filter="price,DESC">
                 Cena malejąco
               </div>
+              <div onClick={onChangeFilter} data-filter="relevance,DESC">
+                Stosowność
+              </div>
             </FiltersContent>
           ) : null}
         </AnimatePresence>

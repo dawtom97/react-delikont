@@ -111,7 +111,7 @@ export const SingleProduct = ({ product }) => {
               <Styled.StatusMsg>
                 <AiFillHeart />
                 <span>
-                  NA <Link href="/konto/lista-zyczen">LIŚCIE ŻYCZEŃ</Link>
+                  NA <Link href="/lista-zyczen">LIŚCIE ŻYCZEŃ</Link>
                 </span>
               </Styled.StatusMsg>
             ) : null}

@@ -71,8 +71,10 @@ export const magentoFinalCartInfo = async(id) => {
               }
               items {
                 id
+           
                 product {
                   name
+                
                   sku
                 }
                 quantity

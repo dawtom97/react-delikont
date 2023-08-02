@@ -17,11 +17,13 @@ export default function Results() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState();
+
+  // TODO Możliwe że trzeba będzie dać sort by relevance jako domyślny filtr...
   const [sortMethod, setSortMethod] = useState({
     type: "relevance",
-    mode: "ASC",
+    mode: "DESC",
   });
-  const [isLoadingResults,setIsLoadingResults] = useState(true)
+  const [isLoadingResults, setIsLoadingResults] = useState(true);
   const observer = useRef();
   const lastItemRef = useRef();
   const router = useRouter();
@@ -34,13 +36,13 @@ export default function Results() {
           return;
         }
         setIsLoading(true);
-        setIsLoadingResults(true)
+        setIsLoadingResults(true);
         setAllProducts([...res.products.items]);
         setPage(res.products.page_info);
       })
       .finally(() => {
         setIsLoading(false);
-        setIsLoadingResults(false)
+        setIsLoadingResults(false);
       });
   }, [params, sortMethod]);
 
@@ -103,7 +105,7 @@ export default function Results() {
       ) : allProducts.length > 0 ? (
         <Products products={allProducts} lastItem={lastItemRef} />
       ) : (
-        <ProductNotFound/>
+        <ProductNotFound />
       )}
       {isLoading && <Loader />}
     </MainTemplate>

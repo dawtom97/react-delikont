@@ -19,6 +19,7 @@ export const magentoRemoveFromWishlist = async (productId, wishlistId) => {
                       url_key
                       id
                       name
+                      cytax
                       sku
                       stock_status
                       only_x_left_in_stock
