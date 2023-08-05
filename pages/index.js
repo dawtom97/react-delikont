@@ -9,35 +9,34 @@ import { MainTemplate } from "../src/templates/MainTemplate";
 import ModalComponent from "../src/components/CodesModal/ModalComponent";
 import { AnimatePresence } from "framer-motion";
 
-
-
-
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [moreLoading, setMoreLoading] = useState(false)
   const [sortMethod, setSortMethod] = useState({
     type: "relevance",
     mode: "ASC",
   });
   const observer = useRef();
   const lastItemRef = useRef();
-  const [zipcode,setZipcode] = useState("w");
+  const [zipcode, setZipcode] = useState("w");
 
   const close = () => {
-    localStorage.setItem("zipcode","checked")
-    if(localStorage.getItem("zipcode")) {
-      setZipcode("checked")
+    localStorage.setItem("zipcode", "checked");
+    if (localStorage.getItem("zipcode")) {
+      setZipcode("checked");
     }
-    
-  }
+  };
 
   useEffect(() => {
-    setZipcode(localStorage.getItem("zipcode"))
+    setZipcode(localStorage.getItem("zipcode"));
+    setIsLoading(true);
     magentoProducts(1, sortMethod).then((res) => {
       setAllProducts([...res.products.items]);
       setPage(res.products.page_info);
+      setIsLoading(false);
     });
   }, [sortMethod]);
 
@@ -49,14 +48,14 @@ export default function Home() {
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
-    setIsLoading(true);
+    setMoreLoading(true);
 
     magentoProducts(page.current_page + 1, sortMethod).then((res) => {
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
-      setIsLoading(false);
+      setMoreLoading(false);
     });
-  }, [page, isLoading]);
+  }, [page, moreLoading]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -96,13 +95,11 @@ export default function Home() {
           mode="wait"
           onExitComplete={() => null}
         >
-          {!zipcode ? (
-            <ModalComponent handleClose={close} />
-          ): null}
+          {!zipcode ? <ModalComponent handleClose={close} /> : null}
         </AnimatePresence>
-        <Heading level="h1">Polecane produkty</Heading>
+        {/* <Heading level="h1">Polecane produkty</Heading>
 
-        <Products products={featuredProducts} />
+        <Products products={featuredProducts} /> */}
 
         <Filters
           msg="Wszystkie produkty"
@@ -110,13 +107,18 @@ export default function Home() {
         />
         {!allProducts.length ? (
           <div className="alternative-loader">
-            <Loader />
+            {<Loader />}
           </div>
         ) : (
           <Products products={allProducts} lastItem={lastItemRef} />
         )}
 
-        {isLoading && <Loader />}
+        {isLoading && allProducts.length ? (
+          <div className="alternative-loader">
+            <Loader />
+          </div>
+        ) : null}
+        {moreLoading && <Loader/>}
       </MainTemplate>
     </>
   );

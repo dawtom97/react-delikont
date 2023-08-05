@@ -80,6 +80,7 @@ export const Nav = styled.nav`
       text-align: left;
       color: #fff;
       height: 100%;
+      flex-grow: 1;
       padding: 10px 0px;
       white-space: nowrap;
       font-size: 15px;
@@ -306,6 +307,14 @@ export const AuthPanel = styled.div`
 export const CartIcon = styled.a`
   position: relative;
   cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  align-items: center;
+
+  & span {
+    margin: 5px;
+  }
 `;
 
 export const CartItemsNum = styled.span`
@@ -325,10 +334,13 @@ export const CartItemsNum = styled.span`
 `;
 
 export const CartItemsValue = styled.span`
-  position: absolute;
-  font-size: 12px;
-  bottom: 0;
+   
 `;
+
+export const CartText = styled.span`
+  display: block;
+  font-size: 13px;
+`
 
 export const Hamburger = styled.button`
   display: none;

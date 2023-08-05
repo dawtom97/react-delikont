@@ -22,6 +22,14 @@ export const ImageBox = styled.div`
   justify-content: center;
   position: relative;
 
+  @media (max-width:768px) {
+    & > span {
+      position: static !important;
+      height: 240px !important;
+    }
+  }
+
+
   & img {
     width: 80%;
     @media (max-width: 768px) {

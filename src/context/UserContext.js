@@ -17,12 +17,14 @@ import { magentoUpdateUser } from "../graphql/magentoUpdateUser";
 import { magentoUserToken } from "../graphql/magentoUserToken";
 import { ModalContext } from "./ModalContext";
 import { magentoFeaturedInCategory } from "../graphql/magentoFeaturedInCategory";
+import { Loader } from "../components/Loader";
 
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState();
   const [currentUser, setCurrentUser] = useState(null);
   const location = useRouter();
   const [wishlist, setWishlist] = useState();
@@ -192,7 +194,7 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const addToWishlist = (sku) => {
-    console.log(sku)
+    console.log(sku);
     magentoAddToWishlist(sku).then((res) => {
       setWishlist(res?.addProductsToWishlist.wishlist);
     });
@@ -212,32 +214,41 @@ export const UserContextProvider = ({ children }) => {
 
   const addToCart = (sku, quantity) => {
     if (currentUser) {
-      magentoAddToCart(cart.id, sku, quantity).then(({ response }) => {
-        console.log(response,cart.id,quantity)
-        setCart(response.data?.addProductsToCart.cart)
-      }
-      );
-      showModal("Dodano do koszyka");
+      setIsLoading(true);
+      magentoAddToCart(cart.id, sku, quantity)
+        .then(({ response }) => {
+          console.log(response, cart.id, quantity);
+          setCart(response.data?.addProductsToCart.cart);
+          setIsLoading(false);
+        })
+        .finally(() => showModal("Dodano do koszyka"));
     } else {
       showModal("Zaloguj się aby dodać do koszyka");
     }
   };
 
   const removeFromCart = (id) => {
-    magentoRemoveFromCart(cart.id, id).then(({ response }) =>
-      setCart(response.data.removeItemFromCart.cart)
-    );
-    showModal("Usunięto z koszyka");
+    setIsLoading(true);
+
+    magentoRemoveFromCart(cart.id, id)
+      .then(({ response }) => {
+        setCart(response.data.removeItemFromCart.cart);
+        setIsLoading(false);
+      })
+      .finally(() => showModal("Usunięto z koszyka"));
   };
   const updateCartQuantity = (uid, quantity) => {
+    setIsLoading(true);
     magentoUpdateCartQuantity(cart.id, uid, quantity).then(({ response }) => {
       // sprawdzenie czy jest w magazynie - do dopracowania
       try {
         setCart(response.data.updateCartItems.cart);
         showModal("Zaktualizowano koszyk");
       } catch (e) {
-        console.log(e, response)
+        console.log(e, response);
         showModal("Niewystarczająca ilość w magazynie");
+      } finally {
+        setIsLoading(false);
       }
     });
   };
@@ -273,5 +284,14 @@ export const UserContextProvider = ({ children }) => {
     featuredInCategory,
   };
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={user}>
+      {children}
+      {isLoading ? (
+        <div className="alternative-loader">
+          <Loader />
+        </div>
+      ) : null}
+    </UserContext.Provider>
+  );
 };

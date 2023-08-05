@@ -10,7 +10,7 @@ import { BiGitCompare, BiCalendar } from "react-icons/bi";
 import { BsSuitHeart } from "react-icons/bs";
 import { AiOutlineClose, AiOutlineMail } from "react-icons/ai";
 import { ErrorMsg } from "../ErrorMsg";
-import { FaUserCircle } from "react-icons/fa";
+import { BiUserCircle } from "react-icons/bi";
 import { IoMenu } from "react-icons/io5";
 import { AiOutlineHeart } from "react-icons/ai";
 import SearchInput from "../SearchInput";
@@ -31,13 +31,13 @@ export const Header = () => {
   const [authPanelVisible, setAuthPanelVisible] = useState(false);
   const [userForm, setUserForm] = useState({});
   const [errors, setErrors] = useState([]);
-  const [navVisible, setNavVisible] = useState(false)
+  const [navVisible, setNavVisible] = useState(false);
 
-  const transform = navVisible && 'translateX(0)';
+  const transform = navVisible && "translateX(0)";
 
   const handleShowMenu = () => {
-    setNavVisible(!navVisible)
-  }
+    setNavVisible(!navVisible);
+  };
 
   // console.log(categories)
 
@@ -94,12 +94,12 @@ export const Header = () => {
         <Styled.IconsBar>
           {isLogged ? (
             <>
-              <button onClick={handleAccountClick}>
-                <FaRegUserCircle />
+              <button style={{marginTop:"4px"}} onClick={handleAccountClick}>
+              <BiUserCircle size={32}/>
               </button>
               {authPanelVisible ? (
                 <Styled.AuthPanel>
-                  <FaUserCircle />
+                  <BiUserCircle />
                   <p>Cześć {currentUser?.firstname}!</p>
 
                   <button aria-label="Wyloguj się" onClick={() => userLogout()}>
@@ -134,8 +134,8 @@ export const Header = () => {
             </>
           ) : (
             <>
-              <button onClick={handleAccountClick}>
-                <FaRegUserCircle />
+              <button style={{marginTop:"4px"}} onClick={handleAccountClick}>
+                <BiUserCircle size={32}/>
               </button>
               {authPanelVisible ? (
                 <Styled.AuthPanel>
@@ -183,17 +183,6 @@ export const Header = () => {
             </>
           )}
 
-          <Link href="/koszyk">
-            <Styled.CartIcon>
-              <BsCartCheck />
-              {cart?.items?.length ? (
-                <>
-                  <Styled.CartItemsNum>{cart.items.length}</Styled.CartItemsNum>
-                  {/* <Styled.CartItemsValue>{cart.prices.grand_total.value}zł</Styled.CartItemsValue> */}
-                </>
-              ) : null}
-            </Styled.CartIcon>
-          </Link>
           {isLogged ? (
             <Link href="/lista-zyczen">
               <Styled.CartIcon>
@@ -210,6 +199,21 @@ export const Header = () => {
               <AiOutlineHeart />
             </Link>
           )}
+
+          <Link href="/koszyk">
+            <Styled.CartIcon>
+              <BsCartCheck />
+              <div>
+                  <>
+                    {/* <Styled.CartItemsNum>{cart.items.length}</Styled.CartItemsNum> */}
+                    <Styled.CartText>Mój koszyk:</Styled.CartText>
+                    <Styled.CartItemsValue>
+                      {cart?.items?.length ? cart.prices.grand_total.value : '0.00'} zł
+                    </Styled.CartItemsValue>
+                  </>         
+              </div>
+            </Styled.CartIcon>
+          </Link>
         </Styled.IconsBar>
       </Styled.InnerWrapper>
 
@@ -217,10 +221,10 @@ export const Header = () => {
         <Styled.Hamburger onClick={handleShowMenu}>
           <IoMenu />
         </Styled.Hamburger>
-        <SearchInputMobile/>
-        <ul style={{transform}}>
+        <SearchInputMobile />
+        <ul style={{ transform }}>
           <Styled.CloseMenu onClick={handleShowMenu}>
-            <AiOutlineClose/>
+            <AiOutlineClose />
           </Styled.CloseMenu>
           {categories.map((category) => (
             <div key={category.id}>
@@ -235,17 +239,15 @@ export const Header = () => {
                         {category.children.map((subcat, index) => (
                           <li key={index}>
                             <Link
-                          
                               href={`/kategorie/${category.url_key}/${subcat.url_key}`}
                             >
                               <span>{subcat.name}</span>
                             </Link>
-                            
+
                             {/* tutaj do poprawy */}
                             {subcat?.children?.map((item, index) => (
                               <p key={index}>
                                 <Link
-                           
                                   href={`/kategorie/${category.url_key}/${subcat.url_key}/${item.url_key}`}
                                 >
                                   {item.name}

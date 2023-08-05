@@ -18,6 +18,8 @@ export const SingleProduct = ({ product }) => {
 
   const [cartProduct, setCardProduct] = useState();
 
+  console.log(product)
+
   useEffect(() => setCardProduct(isCartProduct()), [cart]);
 
   const isCartProduct = () =>

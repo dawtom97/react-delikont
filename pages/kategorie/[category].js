@@ -7,35 +7,6 @@ import { UserContext } from "../../src/context/UserContext";
 import { magentoCategoryProducts } from "../../src/graphql/magentoCategoryProducts";
 import { MainTemplate } from "../../src/templates/MainTemplate";
 
-// export async function getStaticProps(context) {
-//   const ctx = context.params.category;
-
-//   const products = await magentoCategoryProducts(
-//     1,
-//     { type: "relevance", mode: "ASC" },
-//     ctx
-//   );
-//   console.log(ctx);
-
-//   return {
-//     props: {
-//       products,
-//     },
-//     revalidate: 60,
-//   };
-// }
-
-// export async function getStaticPaths() {
-//   const categories = await magentoCategories();
-//   const paths = categories.category.children.map((cat) => ({
-//     params: { category: String(cat.id) },
-//   }));
-
-//   return {
-//     paths,
-//     fallback: true,
-//   };
-// }
 
 export default function CategoryPage() {
   const [allProducts, setAllProducts] = useState([]);
