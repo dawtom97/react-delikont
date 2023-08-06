@@ -1,5 +1,12 @@
 import { useRouter } from "next/router";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Filters } from "../../../src/components/Filters";
 import { Loader } from "../../../src/components/Loader";
 import Products from "../../../src/components/Products/Products";
@@ -11,6 +18,7 @@ export default function SubcategoryPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [moreLoading, setMoreLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState([]);
   const [currentSubcategory, setCurrentSubcategory] = useState([]);
   const [sortMethod, setSortMethod] = useState({
@@ -37,21 +45,23 @@ export default function SubcategoryPage() {
 
   // console.log(currentSubcategory);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!currentSubcategory) return;
+    setIsLoading(true);
     magentoCategoryProducts(1, sortMethod, currentSubcategory.id).then(
       (res) => {
         setAllProducts([...res.products.items]);
         setPage(res.products.page_info);
+        setIsLoading(false);
       }
     );
 
-    return () => setAllProducts([]);
+    // return () => setAllProducts([]);
   }, [sortMethod, currentSubcategory]);
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
-    setIsLoading(true);
+    setMoreLoading(true);
 
     magentoCategoryProducts(
       page.current_page + 1,
@@ -60,9 +70,9 @@ export default function SubcategoryPage() {
     ).then((res) => {
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
-      setIsLoading(false);
+      setMoreLoading(false);
     });
-  }, [page, isLoading]);
+  }, [page, moreLoading]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -109,7 +119,12 @@ export default function SubcategoryPage() {
           <Products products={allProducts} lastItem={lastItemRef} />
         )}
 
-        {isLoading && <Loader />}
+        {isLoading && allProducts.length ? (
+          <div className="alternative-loader">
+            <Loader />
+          </div>
+        ) : null}
+        {moreLoading && <Loader />}
       </MainTemplate>
     </>
   );

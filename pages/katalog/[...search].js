@@ -17,7 +17,7 @@ export default function Results() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState();
-
+  const [moreLoading, setMoreLoading] = useState(false);
   // TODO Możliwe że trzeba będzie dać sort by relevance jako domyślny filtr...
   const [sortMethod, setSortMethod] = useState({
     type: "relevance",
@@ -30,6 +30,7 @@ export default function Results() {
   const params = router.query.search && router.query.search;
 
   useLayoutEffect(() => {
+    setIsLoading(true);
     magentoSearchProducts(1, sortMethod, params && params[0])
       .then((res) => {
         if (!res?.products) {
@@ -48,7 +49,7 @@ export default function Results() {
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
-    setIsLoading(true);
+    setMoreLoading(true);
 
     magentoSearchProducts(
       page.current_page + 1,
@@ -58,9 +59,9 @@ export default function Results() {
       if (!res?.products) return;
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
-      setIsLoading(false);
+      setMoreLoading(false);
     });
-  }, [isLoading, sortMethod, params, page]);
+  }, [moreLoading, sortMethod, params, page]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -107,7 +108,12 @@ export default function Results() {
       ) : (
         <ProductNotFound />
       )}
-      {isLoading && <Loader />}
+      {isLoading && allProducts.length ? (
+        <div className="alternative-loader">
+          <Loader />
+        </div>
+      ) : null}
+      {moreLoading && <Loader />}
     </MainTemplate>
   );
 }

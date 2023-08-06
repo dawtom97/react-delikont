@@ -11,6 +11,7 @@ export default function Level3categoryPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [moreLoading, setMoreLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState([]);
   const [currentSubcategory, setCurrentSubcategory] = useState([]);
   const [sortMethod, setSortMethod] = useState({
@@ -37,19 +38,21 @@ export default function Level3categoryPage() {
 
   useEffect(() => {
     if (!currentSubcategory) return;
+    setIsLoading(true);
     magentoCategoryProducts(1, sortMethod, currentSubcategory.id).then(
       (res) => {
         setAllProducts([...res.products.items]);
         setPage(res.products.page_info);
+        setIsLoading(false);
       }
     );
 
-    return () => setAllProducts([]);
+    // return () => setAllProducts([]);
   }, [sortMethod, currentSubcategory]);
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
-    setIsLoading(true);
+    setMoreLoading(true);
 
     magentoCategoryProducts(
       page.current_page + 1,
@@ -58,9 +61,9 @@ export default function Level3categoryPage() {
     ).then((res) => {
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
-      setIsLoading(false);
+      setMoreLoading(false);
     });
-  }, [page, isLoading]);
+  }, [page, moreLoading]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -104,7 +107,12 @@ export default function Level3categoryPage() {
           <Products products={allProducts} lastItem={lastItemRef} />
         )}
 
-        {isLoading && <Loader />}
+        {isLoading && allProducts.length ? (
+          <div className="alternative-loader">
+            <Loader />
+          </div>
+        ) : null}
+        {moreLoading && <Loader />}
       </MainTemplate>
     </>
   );

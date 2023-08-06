@@ -1,5 +1,12 @@
 import { useRouter } from "next/router";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Filters } from "../../src/components/Filters";
 import { Loader } from "../../src/components/Loader";
 import Products from "../../src/components/Products/Products";
@@ -7,11 +14,11 @@ import { UserContext } from "../../src/context/UserContext";
 import { magentoCategoryProducts } from "../../src/graphql/magentoCategoryProducts";
 import { MainTemplate } from "../../src/templates/MainTemplate";
 
-
 export default function CategoryPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [moreLoading, setMoreLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState([]);
   const [sortMethod, setSortMethod] = useState({
     type: "relevance",
@@ -22,25 +29,25 @@ export default function CategoryPage() {
   const { query } = useRouter();
   const { categories } = useContext(UserContext);
 
-  console.log(currentCategory, categories)
-
   useEffect(() => {
     setCurrentCategory(
       categories.filter((x) => x.url_key === query.category)[0]
     );
   }, [categories, query]);
 
-  // console.log(currentCategory)
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!currentCategory) return;
+    setIsLoading(true);
     magentoCategoryProducts(1, sortMethod, currentCategory.id).then((res) => {
       setAllProducts([...res.products.items]);
       setPage(res.products.page_info);
+      setIsLoading(false);
     });
 
-    return () => setAllProducts([]);
+    // return () => setAllProducts([]);
   }, [sortMethod, currentCategory]);
+
+  console.log("JEST", isLoading);
 
   // useEffect(()=>{
   //  return () => setAllProducts([])
@@ -48,7 +55,7 @@ export default function CategoryPage() {
 
   const getMoreProducts = useCallback(() => {
     if (page.current_page >= page.total_pages || isLoading) return;
-    setIsLoading(true);
+    setMoreLoading(true);
 
     magentoCategoryProducts(
       page.current_page + 1,
@@ -57,9 +64,9 @@ export default function CategoryPage() {
     ).then((res) => {
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
-      setIsLoading(false);
+      setMoreLoading(false);
     });
-  }, [page, isLoading]);
+  }, [page, moreLoading]);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -99,14 +106,17 @@ export default function CategoryPage() {
           onChangeFilter={handleChangeSortMethod}
         />
         {!allProducts.length ? (
-          <div className="alternative-loader">
-            <Loader />
-          </div>
+          <div className="alternative-loader">{<Loader />}</div>
         ) : (
           <Products products={allProducts} lastItem={lastItemRef} />
         )}
 
-        {isLoading && <Loader />}
+        {isLoading && allProducts.length ? (
+          <div className="alternative-loader">
+            <Loader />
+          </div>
+        ) : null}
+        {moreLoading && <Loader />}
       </MainTemplate>
     </>
   );

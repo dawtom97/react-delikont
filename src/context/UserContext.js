@@ -87,14 +87,17 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const updateUserInfo = (user) => {
-    magentoUpdateUser(user).then(({ response }) =>
-      setCurrentUser({
-        addresses,
-        wishlist,
-        ...response.data.updateCustomer.customer,
+    setIsLoading(true);
+    magentoUpdateUser(user)
+      .then(({ response }) => {
+        setCurrentUser({
+          addresses,
+          wishlist,
+          ...response.data.updateCustomer.customer,
+        });
+        setIsLoading(false);
       })
-    );
-    showModal("Zaktualizowano dane");
+      .finally(() => showModal("Zaktualizowano dane"));
   };
   const changeUserPassword = (passwords) => {
     magentoChangeUserPassword(passwords).then(({ response }) => {
@@ -132,65 +135,81 @@ export const UserContextProvider = ({ children }) => {
   };
 
   const editAddress = (address) => {
-    magentoEditCustomerAddress(address).then((res) => {
-      setAddresses((prev) => [
-        ...prev.filter(
-          (ad) =>
-            ad.default_billing !==
-              res.response.data.updateCustomerAddress.default_billing ||
-            ad.default_shipping == ad.default_billing
-        ),
-        res.response.data.updateCustomerAddress,
-      ]);
-    });
-    showModal("Zaktualizowano adres");
+    setIsLoading(true);
+    magentoEditCustomerAddress(address)
+      .then((res) => {
+        setAddresses((prev) => [
+          ...prev.filter(
+            (ad) =>
+              ad.default_billing !==
+                res.response.data.updateCustomerAddress.default_billing ||
+              ad.default_shipping == ad.default_billing
+          ),
+          res.response.data.updateCustomerAddress,
+        ]);
+        setIsLoading(false);
+      })
+      .finally(() => showModal("Zaktualizowano adres"));
   };
 
   const editAdditionalAddress = (address) => {
-    magentoEditCustomerAddress(address).then(({ response }) => {
-      setAddresses((prev) => [
-        ...prev.filter(
-          (ad) =>
-            (ad.default_shipping == ad.default_billing &&
-              ad.id !== response.data.updateCustomerAddress.id) ||
-            ad.default_shipping !== ad.default_billing
-        ),
-        response.data.updateCustomerAddress,
-      ]);
-    });
-    showModal("Zaktualizowano adres");
+    setIsLoading(true);
+    magentoEditCustomerAddress(address)
+      .then(({ response }) => {
+        setAddresses((prev) => [
+          ...prev.filter(
+            (ad) =>
+              (ad.default_shipping == ad.default_billing &&
+                ad.id !== response.data.updateCustomerAddress.id) ||
+              ad.default_shipping !== ad.default_billing
+          ),
+          response.data.updateCustomerAddress,
+        ]);
+        setIsLoading(false);
+      })
+      .finally(() => showModal("Zaktualizowano adres"));
   };
 
   const createAddress = (address) => {
-    magentoCreateCustomerAddress(address).then(({ response }) => {
-      setAddresses((prev) => [...prev, response.data.createCustomerAddress]);
-    });
-    showModal("Dodano nowy adres");
+    setIsLoading(true);
+    magentoCreateCustomerAddress(address)
+      .then(({ response }) => {
+        setAddresses((prev) => [...prev, response.data.createCustomerAddress]);
+        setIsLoading(false);
+      })
+      .finally(() => showModal("Dodano nowy adres"));
   };
 
   const deleteAddress = (id) => {
-    magentoDeleteAddress(id).then(({ response }) => {
-      setAddresses((prev) => [...prev.filter((address) => address.id !== id)]);
-    });
-    showModal("Usunięto adres");
+    setIsLoading(true);
+    magentoDeleteAddress(id)
+      .then(({ response }) => {
+        setAddresses((prev) => [
+          ...prev.filter((address) => address.id !== id),
+        ]);
+        setIsLoading(false);
+      })
+      .finally(() => showModal("Usunięto adres"));
   };
 
   const changeDefaultShippingAddress = (id) => {
-    magentoSetDefaultShipping(id).then(({ response }) => {
-      const previous = addresses.filter((ad) => ad.default_shipping === true);
-      previous[0].default_shipping = false;
-      setAddresses((prev) => [
-        ...prev.filter(
-          (ad) =>
-            (ad.default_shipping == ad.default_billing &&
-              ad.id !== response.data.updateCustomerAddress.id) ||
-            ad.default_shipping !== ad.default_billing
-        ),
-        response.data.updateCustomerAddress,
-      ]);
-    });
-
-    showModal("Zmieniono domyślny adres dostawy");
+    setIsLoading(true);
+    magentoSetDefaultShipping(id)
+      .then(({ response }) => {
+        const previous = addresses.filter((ad) => ad.default_shipping === true);
+        previous[0].default_shipping = false;
+        setAddresses((prev) => [
+          ...prev.filter(
+            (ad) =>
+              (ad.default_shipping == ad.default_billing &&
+                ad.id !== response.data.updateCustomerAddress.id) ||
+              ad.default_shipping !== ad.default_billing
+          ),
+          response.data.updateCustomerAddress,
+        ]);
+        setIsLoading(false);
+      })
+      .finally(() => showModal("Zmieniono domyślny adres dostawy"));
   };
 
   const addToWishlist = (sku) => {
