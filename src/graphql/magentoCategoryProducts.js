@@ -5,7 +5,7 @@ export const magentoCategoryProducts = async (page, sort, category) => {
   const query = {
     operationName: "fetchProducts",
     query: `query fetchProducts( $page:Int = ${page}) {
-        products(search: "",pageSize:${PRODUCTS_PER_PAGE},currentPage:$page, sort: {${sort.type}:${sort.mode}}) 
+        products(search: "",filter: {category_id: {eq:${category}}} ,pageSize:${PRODUCTS_PER_PAGE},currentPage:$page, sort: {${sort.type}:${sort.mode}}) 
     {
         page_info{
           total_pages
