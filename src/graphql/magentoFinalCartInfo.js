@@ -74,7 +74,10 @@ export const magentoFinalCartInfo = async(id) => {
            
                 product {
                   name
-                
+                  stock_status
+                  cartequantity
+               
+                  only_x_left_in_stock
                   sku
                 }
                 quantity

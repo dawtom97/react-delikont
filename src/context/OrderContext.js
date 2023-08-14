@@ -15,6 +15,8 @@ export const OrderContextProvider = ({children}) => {
     const [orderShippingMethod, setOrderShippingMethod] = useState();
     const [finalInfo, setFinalInfo] = useState();
 
+    //console.log(finalInfo?.cart?.items.map(x => x.product.stock_status))
+
     const value = {
         setOrderShippingMethod,
         setOrderAddress,

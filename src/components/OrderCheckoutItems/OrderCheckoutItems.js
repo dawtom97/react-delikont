@@ -14,7 +14,7 @@ export const OrderCheckoutItems = ({ cart, isPayment }) => {
     magentoFinalCartInfo(id).then(({response})=>setFinalInfo(response.data))
   },[cart.id, id, setFinalInfo])
 
-  console.log(finalInfo)
+  // console.log(finalInfo)
 
   const shippingMethod = orderShippingMethod?.selected_shipping_method.carrier_title || "";
   const shippingPrice = orderShippingMethod?.selected_shipping_method.amount.value || 19.99;

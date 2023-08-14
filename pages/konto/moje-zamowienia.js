@@ -7,7 +7,7 @@ const UserOrdersPage = () => {
 
   const {orders} = useContext(UserContext);
 
-  console.log(orders)
+  // console.log(orders)
 
   return (
     <AccountTemplate>

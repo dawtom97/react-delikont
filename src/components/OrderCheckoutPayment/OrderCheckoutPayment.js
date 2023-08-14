@@ -43,11 +43,18 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
         console.log(res)
       );
       await magentoSetPaymentMethod(id).then((res) => console.log(res));
-      await magentoPlaceOrder(id).then((res) => console.log(res));
-      await router.push("/podsumowanie/zakupiono");
-      router.reload();
-      showModal("Złożono zamówienie");
-      removeCart();
+      await magentoPlaceOrder(id).then((res) => {
+        if (res.response.errors.length > 0) {
+          showModal("Niewystarczająca ilość produktów w magazynie");
+          console.log(res)
+        } else {
+          router.push("/podsumowanie/zakupiono");
+          showModal("Złożono zamówienie");
+          removeCart();
+        }
+      });
+
+      // router.reload();
     } catch (error) {
       showModal("Wystąpił błąd");
     } finally {
