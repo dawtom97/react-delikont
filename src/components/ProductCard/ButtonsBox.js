@@ -8,7 +8,6 @@ export const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   gap: 5px;
   & p {
     text-align: center;
@@ -18,12 +17,13 @@ export const Box = styled.div`
 `;
 export const Controls = styled.div`
   display: flex;
-  width: 90px;
+  width: 70px;
   height: 30px;
   text-align: center;
   box-shadow: 0 2px 2px 0 rgb(0 0 0 / 12%), 0 0 2px 0 rgb(0 0 0 / 14%);
   border-radius: 30px;
   overflow: hidden;
+  margin-bottom: 12px;
 
   & input {
     width: 100%;
@@ -50,89 +50,154 @@ export const Controls = styled.div`
   }
 `;
 
-export const ButtonsBox = ({cartProduct}) => {
-  const { updateCartQuantity, removeFromCart } = useContext(UserContext);
+export const Button = styled.button`
+  border: 1px solid;
+  border-color: ${({ isOutOfStock }) =>
+    isOutOfStock === true ? "#b3b3b3" : "#f57c00"};
+  border-radius: 30px;
+  background-color: transparent;
+  height: 30px;
+  text-align: center;
+  color: ${({ isOutOfStock }) =>
+    isOutOfStock === true ? "#b3b3b3" : "#f57c00"};
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+`;
+
+
+export const ButtonsBox = ({ cartProduct, product,isCart }) => {
+  const { updateCartQuantity, addToCart } =
+    useContext(UserContext);
   const [quantity, setQuantity] = useState(1);
-  const [boxes, setBoxes] = useState(1);
-  const [isLoading, setIsLoading] = useState(false)
+  const [boxes, setBoxes] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [choosenQty, setChoosenQty] = useState(1);
 
-  useLayoutEffect(()=>{
-    setQuantity(cartProduct?.quantity)
-    setBoxes(Math.ceil(cartProduct?.quantity / cartProduct?.product.cartequantity))
-  },[cartProduct])
+  useLayoutEffect(() => {
+    setQuantity(cartProduct?.quantity);
+  }, [cartProduct]);
 
-  const handleAddCart = (qty) => {
-    console.log(quantity, qty)
-    updateCartQuantity(cartProduct.uid, cartProduct.quantity + qty);
-  };
+  // const handleRemove = (qty) => {
+  //   try {
+  //     if (quantity > 0)
+  //       updateCartQuantity(cartProduct.uid, cartProduct.quantity - qty);
+  //     else removeFromCart();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const handleUpdateByInput = (qty) => {
-    setIsLoading(true)
-    try {
-      updateCartQuantity(cartProduct.uid, qty ? qty : 1);
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-   
- 
-  }
-
-  const handleRemove = (qty) => {
-    
-    try {  
-      if(quantity > 0) updateCartQuantity(cartProduct.uid, cartProduct.quantity - qty);
-      else removeFromCart()
-    } catch (error) {
-      console.log(error)
-    }
-   
-  };
-
-
- // console.log(cartProduct)
+  console.log(product)
 
   return (
+    <>
     <Box>
       <div>
         <p>sztuk:</p>
         <Controls>
-          <button onClick={() => handleRemove(1)}>-</button>
+          <button
+            onClick={() => {
+              if (choosenQty > 1) {
+                setChoosenQty(choosenQty - 1);
+                setBoxes(Math.ceil(choosenQty / product.cartequantity));
+              } else {
+                setChoosenQty(1);
+              }
+              if(quantity > 1) {
+                setQuantity(quantity - 1)
+              }
+            }}
+          >
+            -
+          </button>
           <input
             onChange={(e) => {
-             // if (e.target.value.length == 0) handleUpdateByInput(1);
-              handleUpdateByInput(e.target.value);
+
+              setChoosenQty(Number(e.target.value));
+              setQuantity(Number(e.target.value))
+              console.log(e.target.value)
             }}
             type="number"
-            value={quantity}
+            value={cartProduct ? quantity : choosenQty}
             name="qty"
             placeholder="1"
           />
-          <button onClick={() => handleAddCart(1)}>+</button>
+          <button
+            onClick={() => {
+              setChoosenQty(Number(choosenQty) + 1);
+              setQuantity(Number(quantity) + 1)
+              setBoxes(Math.ceil(choosenQty / product?.cartequantity));
+            }}
+          >
+            +
+          </button>
         </Controls>
       </div>
       <div>
         <p>kartonów:</p>
         <Controls>
-          <button onClick={()=>handleRemove(Number(cartProduct.product.cartequantity))}>-</button>
+          <button
+            onClick={() => {
+              if (boxes > 0) {
+                setBoxes(boxes - 1);
+                setChoosenQty(
+                  choosenQty > 0
+                    ? choosenQty - Number(product?.cartequantity)
+                    : 1
+                );
+                setQuantity(
+                  quantity > 0
+                    ? quantity - Number(product?.cartequantity)
+                    : 1
+                );
+              }
+            }}
+          >
+            -
+          </button>
           <input
-            onChange={() => console.log("change")}
+            onChange={(e) => setBoxes(Number(e.target.value))}
             type="number"
             name="qty"
-            placeholder="1"
-            value={boxes}
+            placeholder={0}
+            value={cartProduct ? Math.ceil(quantity / product?.cartequantity) : boxes}
           />
-          <button onClick={()=>handleAddCart(Number(cartProduct.product.cartequantity))}>+</button>
+          <button
+            onClick={() => {
+              setBoxes(Number(boxes) + 1);
+              setChoosenQty(choosenQty + Number(product?.cartequantity));
+              setQuantity(quantity + Number(product?.cartequantity));
+            }}
+          >
+            +
+          </button>
         </Controls>
       </div>
 
       {isLoading && (
-          <div className="alternative-loader">
+        <div className="alternative-loader">
           <Loader />
         </div>
       )}
     </Box>
+{!isCart ? (
+    <Button onClick={() => {
+      if(cartProduct) {
+
+        updateCartQuantity(cartProduct.uid, cartProduct.quantity + choosenQty)
+      } else {
+        addToCart(product.sku, choosenQty)
+      }
+      
+    }}>
+    DODAJ DO KOSZYKA
+  </Button>
+):(
+ null
+)}
+  
+
+    </>
   );
 };
-

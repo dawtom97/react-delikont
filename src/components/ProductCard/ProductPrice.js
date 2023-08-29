@@ -121,16 +121,20 @@ export const WishlistButtonsBox = styled.div`
 `;
 
 export const ProductPrice = ({ product, isAlternative, cartProduct }) => {
-  const { removeFromWishlist, addToCart } = useContext(UserContext);
+  const { removeFromWishlist, addToCart, removeFromCart } =
+    useContext(UserContext);
 
   const checkWeightFormat = (weight) => (weight === 6 ? "kg" : " l");
 
   const price = String(
     (product?.price_range?.minimum_price?.final_price?.value).toFixed(2)
   ).split(".");
-  const notVatPrice = product?.price_range?.minimum_price?.final_price?.value / (1 + (product?.cytax / 100))
-  const netto = notVatPrice.toFixed(2).split(".")
-  const calculatePricePer =  product.format === 'kg' || product.format === 'l' ? 1 : 1000
+  const notVatPrice =
+    product?.price_range?.minimum_price?.final_price?.value /
+    (1 + product?.cytax / 100);
+  const netto = notVatPrice.toFixed(2).split(".");
+  const calculatePricePer =
+    product.format === "kg" || product.format === "l" ? 1 : 1000;
 
   if (!product) return;
 
@@ -153,7 +157,7 @@ export const ProductPrice = ({ product, isAlternative, cartProduct }) => {
             : (
                 (product?.price_range?.minimum_price?.final_price.value /
                   product.ciezar_w_jednostkach) *
-                  calculatePricePer
+                calculatePricePer
               ).toFixed(2) + " zł"}
           /{!product.format ? " kg" : product.format_ceny}
         </span>
@@ -170,13 +174,12 @@ export const ProductPrice = ({ product, isAlternative, cartProduct }) => {
 
       {product.stock_status === "IN_STOCK" ? (
         <>
-          {cartProduct ? (
-            <ButtonsBox cartProduct={cartProduct} />
-          ) : (
-            <Button onClick={() => addToCart(product.sku, 1)}>
+            <ButtonsBox cartProduct={cartProduct} product={product} />
+  
+            {/* <Button onClick={() => addToCart(product.sku, 1)}>
               DODAJ DO KOSZYKA
-            </Button>
-          )}
+            </Button> */}
+         
         </>
       ) : !isAlternative ? (
         <Button isOutOfStock disabled>

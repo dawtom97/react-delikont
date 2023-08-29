@@ -21,6 +21,7 @@ export const magentoSingleProduct = async (url) => {
                 format_ceny
                 ciezar_w_jednostkach
                 meta_keyword
+                cartequantity
                 meta_description
                 special_price
                 special_from_date

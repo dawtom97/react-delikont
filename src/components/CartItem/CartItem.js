@@ -164,7 +164,7 @@ export const CartItem = ({ item }) => {
       </td>
 
       <td>
-        <ButtonsBox cartProduct={cartProduct} />
+        <ButtonsBox isCart product={cartProduct?.product} cartProduct={cartProduct} />
       </td>
 
       <td>

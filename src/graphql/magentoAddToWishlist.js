@@ -22,6 +22,7 @@ export const magentoAddToWishlist = async (sku) => {
                     url_key
                     id
                     cytax
+                    cartequantity
                     format
                     format_ceny
                     ciezar_w_jednostkach

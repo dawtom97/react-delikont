@@ -14,9 +14,7 @@ export const magentoGetCart = async () => {
                 }
              
         
-              }
-              
-        
+              }       
               items {
                 id
                 uid
