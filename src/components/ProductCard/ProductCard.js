@@ -8,6 +8,7 @@ import { ModalContext } from "../../context/ModalContext";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import myImageLoader from "../../utils/imageLoader";
+import { IoTrashBin } from "react-icons/io5";
 
 export const Card = styled.article`
   /* width: calc(15% - 10px); */
@@ -75,8 +76,26 @@ export const HeartButton = styled.button`
     isFavorite ? "#f57c00" : "transparent"};
 `;
 
+export const CloseButton = styled.button`
+  left: 5px;
+  position: absolute;
+  top: 5px;
+  cursor: pointer;
+  z-index: 10;
+  width: 30px;
+  border-radius: 50%;
+  border: 1px solid ${({ theme }) => theme.colorPrimary};
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  background-color: #f57c00;
+`;
+
 export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
-  const { wishlist, currentUser, addToWishlist, removeFromWishlist, cart } =
+  const { wishlist, currentUser, addToWishlist, removeFromWishlist, cart,removeFromCart } =
     useContext(UserContext);
   const [isFavorite, setIsFavorite] = useState(null);
   const { showModal } = useContext(ModalContext);
@@ -138,6 +157,12 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
       >
         <AiFillHeart />
       </HeartButton>
+
+      {cartProduct && (
+        <CloseButton onClick={()=>removeFromCart(cartProduct.id)}>
+          <IoTrashBin />
+        </CloseButton>
+      )}
 
       <Link href={productDetailsUrl}>
         <div>

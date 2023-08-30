@@ -25,6 +25,18 @@ export const Wrapper = styled.tr`
     align-items: flex-start;
   }
 
+  & .plus {
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 21px;
+
+    & button {
+      margin-left: 5px;
+      /* position: relative; */
+    }
+  }
+
   & > td > button {
     border-radius: 50%;
     font-size: 18px;
@@ -88,7 +100,6 @@ export const Controls = styled.div`
 
 export const CartItem = ({ item }) => {
   const { removeFromCart, updateCartQuantity } = useContext(UserContext);
-  const [quantity, setQuantity] = useState(item.quantity);
   const { cart } = useContext(UserContext);
 
   const [cartProduct, setCardProduct] = useState();
@@ -102,11 +113,10 @@ export const CartItem = ({ item }) => {
     ?.map((product) => [product.url_key])
     .join("/")}/${item.product.url_key}`;
 
-
-    const notVatPrice = item?.product.price_range.minimum_price.regular_price.value / (1 + (item?.product.cytax / 100))
-    const netto = notVatPrice.toFixed(2)
-
-  const checkWeightFormat = (weight) => (weight === 6 ? " kg" : " litr");
+  const notVatPrice =
+    item?.product.price_range.minimum_price.regular_price.value /
+    (1 + item?.product.cytax / 100);
+  const netto = notVatPrice.toFixed(2);
 
   return (
     <Wrapper>
@@ -144,33 +154,21 @@ export const CartItem = ({ item }) => {
           )}
           zł (Brutto)
         </p>
-        {/* <p>
-          {!item.product.ciezar_w_jednostkach
-            ? (
-                (item.product.price_range.minimum_price.final_price.value /
-                  item.product.weight) *
-                1000
-              ).toFixed(2)
-            : (
-                (item.product.price_range?.minimum_price?.final_price.value /
-                  item.product.ciezar_w_jednostkach) *
-                1000
-              ).toFixed(2)}
-
-          {!item.product.format
-            ? " za kg "
-            : " za " + checkWeightFormat(item.product.format)}
-        </p> */}
       </td>
 
-      <td>
-        <ButtonsBox isCart product={cartProduct?.product} cartProduct={cartProduct} />
+      <td className="plus">
+        <ButtonsBox
+          isCart
+          product={cartProduct?.product}
+          cartProduct={cartProduct}
+        />
       </td>
 
       <td>
         <button onClick={() => removeFromCart(item.id)}>
           <IoTrashBin />
         </button>
+        {/* <button onClick={() => console.log(cartProduct.id)}>x</button> */}
       </td>
     </Wrapper>
   );
