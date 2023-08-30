@@ -77,7 +77,7 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
   useLayoutEffect(() => {
     if (cartProduct) {
       setQuantity(cartProduct?.quantity);
-      setBoxes(Math.ceil(quantity / product?.cartequantity));
+      setBoxes(Math.floor(quantity / product?.cartequantity));
     }
   }, [cartProduct]);
 
@@ -98,7 +98,7 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
               onClick={(e) => {
                 if (quantity > 1) {
                   setQuantity(quantity - 1);
-                  setBoxes(Math.ceil(quantity / product.cartequantity));
+                  setBoxes(Math.floor(quantity / product.cartequantity));
                 }
               }}
             >
@@ -108,7 +108,7 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
               onChange={(e) => {
                 setQuantity(Number(e.target.value));
 
-                setBoxes(Math.ceil(quantity / product?.cartequantity));
+                setBoxes(Math.floor(quantity / product?.cartequantity));
               }}
               type="number"
               value={quantity}
@@ -118,7 +118,7 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
             <button
               onClick={() => {
                 setQuantity(Number(quantity) + 1);
-                setBoxes(Math.ceil(quantity / product?.cartequantity));
+                setBoxes(Math.floor(quantity / product?.cartequantity));
               }}
             >
               +
@@ -150,7 +150,7 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
               value={
                 // jak coś to samo boxes zostawić
                 cartProduct
-                  ? Math.ceil(quantity / product?.cartequantity)
+                  ? Math.floor(quantity / product?.cartequantity)
                   : boxes
               }
             />
