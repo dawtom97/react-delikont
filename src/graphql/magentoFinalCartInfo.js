@@ -76,7 +76,7 @@ export const magentoFinalCartInfo = async(id) => {
                   name
                   stock_status
                   cartequantity
-               
+                  cyqty
                   only_x_left_in_stock
                   sku
                 }

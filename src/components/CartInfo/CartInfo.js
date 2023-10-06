@@ -75,8 +75,6 @@ export const CartInfo = ({ cart }) => {
     useContext(OrderContext);
 
 
-    console.log(cart.items)
-
   useEffect(() => {
     magentoFinalCartInfo(cart.id)
       .then(({ response }) => setFinalInfo(response.data))

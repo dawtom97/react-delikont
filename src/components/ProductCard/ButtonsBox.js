@@ -77,7 +77,7 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
   useLayoutEffect(() => {
     if (cartProduct) {
       setQuantity(cartProduct?.quantity);
-      setBoxes(Math.floor(quantity / product?.cartequantity));
+      setBoxes(Math.floor( quantity / product?.cartequantity));
     }
   }, [cartProduct]);
 
@@ -148,7 +148,6 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
               name="qty"
               placeholder={0}
               value={
-                // jak coś to samo boxes zostawić
                 cartProduct
                   ? Math.floor(quantity / product?.cartequantity)
                   : boxes
@@ -156,8 +155,11 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
             />
             <button
               onClick={() => {
+            console.log(Number(boxes) + 1,boxes)
+              // TODO niektóre produkty mają cartequantity 0.....
                 setBoxes(Number(boxes) + 1);
-                setQuantity(quantity + Number(product?.cartequantity));
+                setQuantity(quantity + Number(product?.cartequantity) );
+                // setQuantity(quantity === 1 ? Number(product?.cartequantity) : quantity + Number(product?.cartequantity) );
               }}
             >
               +

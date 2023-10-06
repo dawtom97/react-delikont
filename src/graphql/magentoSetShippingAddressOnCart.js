@@ -1,6 +1,17 @@
 import { API_URL, headers } from "./config";
 
-export const magentoSetShippingAddressOnCart = async (id, address) => {
+const test = {
+  firstname: "",
+  lastname: "",
+  street: [""],
+  city: "",
+region:"",
+telephone: "",
+postcode: "",
+country_code: ""
+}
+
+export const magentoSetShippingAddressOnCart = async (id, address = test) => {
 
   const query = {
     operationName: "setShippingAddressOnCart",

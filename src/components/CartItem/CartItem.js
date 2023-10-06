@@ -101,10 +101,14 @@ export const Controls = styled.div`
 export const CartItem = ({ item }) => {
   const { removeFromCart, updateCartQuantity } = useContext(UserContext);
   const { cart } = useContext(UserContext);
-
+  
   const [cartProduct, setCardProduct] = useState();
+  const [inStock, setInStock] = useState(true)
 
-  useEffect(() => setCardProduct(isCartProduct()), [cart]);
+  useEffect(() => {
+    setCardProduct(isCartProduct())
+    checkQty()
+  }, [cart]);
 
   const isCartProduct = () =>
     cart?.items.find((v) => v.product.id === item.product.id);
@@ -117,6 +121,15 @@ export const CartItem = ({ item }) => {
     item?.product.price_range.minimum_price.regular_price.value /
     (1 + item?.product.cytax / 100);
   const netto = notVatPrice.toFixed(2);
+
+  const checkQty = () => {
+    if(item.quantity > item.product.cyqty) {
+      setInStock(false)
+    } else {
+      setInStock(true)
+    }
+  }
+
 
   return (
     <Wrapper>
@@ -138,7 +151,9 @@ export const CartItem = ({ item }) => {
           <a>
             <p>
               {item.product.name} {item.product.weight}g
+
             </p>
+            {!inStock && <span style={{color:'red',fontSize:12, fontWeight:'bold'}}>Wybrana ilość nie jest już dostępna</span>}
           </a>
         </Link>
       </td>

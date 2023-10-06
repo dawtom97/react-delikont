@@ -26,6 +26,9 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
   const { showModal } = useContext(ModalContext);
   const [isLoading, setIsLoading] = useState(false);
 
+
+  console.log(cart)
+
   useEffect(() => {
     const filtered = addresses?.filter(
       (address) => address.default_billing === true
@@ -36,9 +39,10 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
   const handlePlaceOrder = async () => {
     setIsLoading(true);
     try {
-      await magentoSetBillingAddressOnCart(id, billing[0]).then((res) =>
-        console.log(res)
-      );
+      await magentoSetBillingAddressOnCart(
+        id,
+        billing[0] ? billing[0] : addresses[0]
+      ).then((res) => console.log(res));
       await magentoSetShippingMethodOnCart(cart.id).then((res) =>
         console.log(res)
       );
@@ -46,16 +50,18 @@ export const OrderCheckoutPayment = ({ addresses, cart }) => {
       await magentoPlaceOrder(id).then((res) => {
         if (res.response.errors.length > 0) {
           showModal("Niewystarczająca ilość produktów w magazynie");
-          console.log(res)
+          console.log(res);
         } else {
           router.push("/podsumowanie/zakupiono");
           showModal("Złożono zamówienie");
           removeCart();
         }
+        console.log(res);
       });
 
       // router.reload();
     } catch (error) {
+      console.log(error);
       showModal("Wystąpił błąd");
     } finally {
       setIsLoading(false);
