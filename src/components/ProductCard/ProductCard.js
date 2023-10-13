@@ -166,14 +166,15 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
 
       <Link href={productDetailsUrl}>
         <div>
-          <Image
+          {/* <Image
             // loader={myImageLoader}
             src={product.image?.url}
             priority={true}
             height={150}
             width={120}
             alt={product.name}
-          />
+          /> */}
+          <img src={product.image?.url} alt={product.name}/>
           <a style={{ maxHeight: 60 }}>
             {product.name.length > 50
               ? product.name.slice(0, 50) + "..."

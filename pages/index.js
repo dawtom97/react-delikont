@@ -34,6 +34,7 @@ export default function Home() {
     setZipcode(localStorage.getItem("zipcode"));
     setIsLoading(true);
     magentoProducts(1, sortMethod).then((res) => {
+      console.log(res)
       setAllProducts([...res.products.items]);
       setPage(res.products.page_info);
       setIsLoading(false);
@@ -51,6 +52,7 @@ export default function Home() {
     setMoreLoading(true);
 
     magentoProducts(page.current_page + 1, sortMethod).then((res) => {
+      console.log(sortMethod,res)
       setPage(res.products.page_info);
       setAllProducts((prev) => [...prev, ...res.products.items]);
       setMoreLoading(false);

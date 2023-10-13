@@ -22,7 +22,7 @@ export const FiltersBox = styled.div`
   align-items: center;
   position: relative;
   height: 33px;
-  width: 170px;
+  padding: 0 10px;
   text-align: center;
   z-index: 100;
   gap: 10px;
@@ -86,13 +86,20 @@ export const FiltersContent = styled.div`
 
 export const Filters = ({ onChangeFilter, msg }) => {
   const [showFilters, setShowFilters] = useState(false);
+  const [filterType, setFilterType] = useState("Stosowność")
+
+
+  const handleChangeFilter = (e) => {
+    onChangeFilter(e)
+    setFilterType(e.target.dataset.type)
+  }
 
   return (
     <Wrapper>
       <Heading level="h1">{msg}</Heading>
       <FiltersBox onClick={() => setShowFilters(!showFilters)}>
         <span>
-          Sortuj według{" "}
+          Sortowanie: {filterType}
           {showFilters ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
         </span>
 
@@ -105,19 +112,19 @@ export const Filters = ({ onChangeFilter, msg }) => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <div onClick={onChangeFilter} data-filter="name,ASC">
+              <div onClick={handleChangeFilter} data-type="Nazwa produktu A-Z" data-filter="name,ASC">
                 Nazwa produktu A-Z
               </div>
-              <div onClick={onChangeFilter} data-filter="name,DESC">
+              <div onClick={handleChangeFilter} data-type="Nazwa produktu Z-A" data-filter="name,DESC">
                 Nazwa produktu Z-A
               </div>
-              <div onClick={onChangeFilter} data-filter="price,ASC">
+              <div onClick={handleChangeFilter} data-type="Cena rosnąco" data-filter="price,ASC">
                 Cena rosnąco
               </div>
-              <div onClick={onChangeFilter} data-filter="price,DESC">
+              <div onClick={handleChangeFilter} data-type="Cena malejąco" data-filter="price,DESC">
                 Cena malejąco
               </div>
-              <div onClick={onChangeFilter} data-filter="relevance,DESC">
+              <div onClick={handleChangeFilter} data-type="Stosowność" data-filter="relevance,DESC">
                 Stosowność
               </div>
             </FiltersContent>
