@@ -80,7 +80,8 @@ export const SingleProduct = ({ product }) => {
       <Styled.UpperInfo>
         <Styled.ImageBox>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <Image src={product.image.url} alt={product.name} layout="fill" objectFit="contain" />
+          {/* <Image src={product.image.url} alt={product.name} layout="fill" objectFit="contain" /> */}
+          <img src={product.image.url} alt={product.name}/>
           <Styled.HeartButton
             onClick={() =>
               handleAddToWishlist(

@@ -43,6 +43,7 @@ export const Card = styled.article`
 
   & img {
     width: 100%;
+    height: 120px;
     object-fit: contain;
     cursor: pointer;
   }
@@ -95,8 +96,14 @@ export const CloseButton = styled.button`
 `;
 
 export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
-  const { wishlist, currentUser, addToWishlist, removeFromWishlist, cart,removeFromCart } =
-    useContext(UserContext);
+  const {
+    wishlist,
+    currentUser,
+    addToWishlist,
+    removeFromWishlist,
+    cart,
+    removeFromCart,
+  } = useContext(UserContext);
   const [isFavorite, setIsFavorite] = useState(null);
   const { showModal } = useContext(ModalContext);
 
@@ -159,7 +166,7 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
       </HeartButton>
 
       {cartProduct && (
-        <CloseButton onClick={()=>removeFromCart(cartProduct.id)}>
+        <CloseButton onClick={() => removeFromCart(cartProduct.id)}>
           <IoTrashBin />
         </CloseButton>
       )}
@@ -174,7 +181,7 @@ export const ProductCard = forwardRef(({ product, isAlternative }, ref) => {
             width={120}
             alt={product.name}
           /> */}
-          <img src={product.image?.url} alt={product.name}/>
+          <img src={product.image?.url} alt={product.name} />
           <a style={{ maxHeight: 60 }}>
             {product.name.length > 50
               ? product.name.slice(0, 50) + "..."
