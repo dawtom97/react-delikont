@@ -41,8 +41,6 @@ const ProductDetails = ({ product: singleProduct }) => {
     return <Loader />;
   }
 
-  console.log(singleProduct);
-
   return (
     <MainTemplate>
       <Head>

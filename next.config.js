@@ -9,6 +9,17 @@ const nextConfig = {
   //     unoptimized: true,
   //   },
   // },
+  future: {
+    webpack5: true,
+  },
+  experimental: {
+    externalDir: true,
+    optimizeCss: true,
+    optimizeImages: true,
+    optimizeFonts: true,
+    pages: true,
+    profile: true,
+  },
   images: {
     domains: ['delikont-mbackend.pl']
   },
