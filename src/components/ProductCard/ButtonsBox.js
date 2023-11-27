@@ -77,7 +77,7 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
   useLayoutEffect(() => {
     if (cartProduct) {
       setQuantity(cartProduct?.quantity);
-      setBoxes(Math.floor( quantity / product?.cartequantity));
+      setBoxes(Math.floor(quantity / product?.cartequantity));
     }
   }, [cartProduct]);
 
@@ -95,20 +95,20 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
           <p>sztuk:</p>
           <Controls>
             <button
-              onClick={(e) => {
-                if (quantity > 1) {
-                  setQuantity(quantity - 1);
-                  setBoxes(Math.floor(quantity / product.cartequantity));
-                }
+              onClick={() => {
+                setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
+                setBoxes(Math.floor((quantity - 1) / product.cartequantity));
               }}
             >
               -
             </button>
             <input
               onChange={(e) => {
-                setQuantity(Number(e.target.value));
-
-                setBoxes(Math.floor(quantity / product?.cartequantity));
+                const value = Number(e.target.value);
+                if (!isNaN(value) && value >= 1) {
+                  setQuantity(value);
+                  setBoxes(Math.floor(value / product?.cartequantity));
+                }
               }}
               type="number"
               value={quantity}
@@ -117,14 +117,17 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
             />
             <button
               onClick={() => {
-                setQuantity(Number(quantity) + 1);
-                setBoxes(Math.floor(quantity / product?.cartequantity));
+                setQuantity((prevQuantity) => Number(prevQuantity) + 1);
+                if ((quantity + 1) % product.cartequantity === 0) {
+                  setBoxes((prevBoxes) => prevBoxes + 1);
+                }
               }}
             >
               +
             </button>
           </Controls>
         </div>
+
         <div>
           <p>kartonów:</p>
           <Controls>
@@ -139,10 +142,17 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
               -
             </button>
             <input
-              disabled="true"
+              // disabled="true"
+              // onChange={(e) => {
+              //   setBoxes(Number(e.target.value));
+              //   setQuantity(Math.ceil(boxes * product?.cartequantity));
+              // }}
               onChange={(e) => {
-                setBoxes(Number(e.target.value));
-                setQuantity(Math.ceil(boxes * product?.cartequantity));
+                const value = Number(e.target.value);
+                if (!isNaN(value) && value >= 1) {
+                  setBoxes(value);
+                  setQuantity(Math.floor(value * product?.cartequantity));
+                }
               }}
               type="number"
               name="qty"
@@ -155,11 +165,11 @@ export const ButtonsBox = ({ cartProduct, product, isCart }) => {
             />
             <button
               onClick={() => {
-            console.log(Number(boxes) + 1,boxes)
-              // TODO niektóre produkty mają cartequantity 0.....
+                console.log(Number(boxes) + 1, boxes);
+                // TODO niektóre produkty mają cartequantity 0.....
                 setBoxes(Number(boxes) + 1);
-                setQuantity(quantity + Number(product?.cartequantity) );
-                // setQuantity(quantity === 1 ? Number(product?.cartequantity) : quantity + Number(product?.cartequantity) );
+                setQuantity(quantity == 1 ? product?.cartequantity : quantity + Number(product?.cartequantity));
+            
               }}
             >
               +

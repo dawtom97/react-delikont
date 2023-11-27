@@ -24,8 +24,7 @@ export const Wrapper = styled.div`
 const Products = ({ products, lastItem }) => {
   if (!products) return "loading...";
 
-  console.log(lastItem);
-  products.forEach(p => console.log(p.id))
+  console.log(products)
 
   return (
     <Wrapper>
